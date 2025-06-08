@@ -10,7 +10,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.core.common.navigation.NotesFeature
+import com.core.common.navigation.NotesGraph
+import com.core.common.navigation.NotesScreen
 import com.core.feature_api.FeatureApi
 import com.feature.notes.ui.screen.NotesScreen
 import com.feature.notes.ui.screen.NotesViewModel
@@ -21,11 +22,10 @@ internal object InternalNotesFeatureApi : FeatureApi {
         navGraphBuilder: NavGraphBuilder,
         viewModelFactory: ViewModelProvider.Factory
     ) {
-        navGraphBuilder.navigation(
-            startDestination = NotesFeature.notesScreenRoute,
-            route = NotesFeature.nestedRoute
+        navGraphBuilder.navigation<NotesGraph>(
+            startDestination = NotesScreen
         ) {
-            composable(NotesFeature.notesScreenRoute) { navBackStackEntry ->
+            composable<NotesScreen> { navBackStackEntry ->
                 val notesViewModel = viewModel<NotesViewModel>(
                     viewModelStoreOwner = navBackStackEntry,
                     factory = viewModelFactory

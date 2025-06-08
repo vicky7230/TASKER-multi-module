@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.core.common.navigation.NotesFeature
+import com.core.common.navigation.NotesGraph
 
 @Composable
 fun AppNavGraph(
@@ -12,7 +12,7 @@ fun AppNavGraph(
     navigationProvider: NavigationProvider,
     viewModelFactory: ViewModelProvider.Factory
 ) {
-    NavHost(navController = navController, startDestination = NotesFeature.nestedRoute) {
+    NavHost(navController = navController, startDestination = NotesGraph) {
         navigationProvider.notesApi.registerGraph(navController, this, viewModelFactory)
     }
 }

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
+    kotlin("plugin.serialization") version "2.0.21"
     id("com.google.devtools.ksp")
 }
 
