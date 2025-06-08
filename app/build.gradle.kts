@@ -48,9 +48,13 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:common"))
     implementation(project(":core:feature_api"))
+
     implementation(project(":feature:notes:data"))
     implementation(project(":feature:notes:domain"))
     implementation(project(":feature:notes:ui"))
+
+    implementation(project(":feature:add_edit_note:domain"))
+    implementation(project(":feature:add_edit_note:ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

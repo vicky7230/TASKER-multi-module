@@ -65,12 +65,14 @@ dependencies {
     implementation(libs.dagger)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
+    kapt(libs.dagger.android.processor)
+    kapt(libs.dagger.compiler)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    kapt(libs.dagger.android.processor)
-    kapt(libs.dagger.compiler)
+
 
     //kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)

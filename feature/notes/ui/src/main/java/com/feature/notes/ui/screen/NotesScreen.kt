@@ -3,7 +3,11 @@ package com.feature.notes.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,13 +27,23 @@ import com.feature.notes.domain.model.Note
 fun NotesScreen(
     modifier: Modifier = Modifier,
     notesUiState: NotesUiState,
-    onAddNoteClick: () -> Unit,
-    onNoteClick: (Note) -> Unit
+    onNoteClick: (Note) -> Unit,
+    onAddNoteClick: () -> Unit
 ) {
     val state = notesUiState
     Scaffold(
         modifier = modifier,
-        topBar = {}
+        topBar = {},
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { onAddNoteClick() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Note"
+                )
+            }
+        }
     ) { padding ->
         when (state) {
             is NotesUiState.Error -> {
@@ -62,9 +76,12 @@ fun NotesScreen(
                 }
             }
 
-            is NotesUiState.NotesList ->  NotesContent(
-                modifier = Modifier.fillMaxSize().padding(padding),
-                notesUiState = state
+            is NotesUiState.NotesList -> NotesContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                notesUiState = state,
+                onNoteClick = onNoteClick
             )
         }
     }

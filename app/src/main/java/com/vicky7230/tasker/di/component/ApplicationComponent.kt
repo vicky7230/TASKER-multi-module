@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import com.core.database.di.DatabaseModule
 import com.core.network.di.NetworkModule
+import com.feature.add_edit_note.ui.di.AddEditNoteUiModule
 import com.feature.notes.data.di.NotesDataModule
 import com.feature.notes.ui.di.NotesUiModule
 import com.vicky7230.tasker.BaseApplication
@@ -23,6 +24,7 @@ import javax.inject.Singleton
         DatabaseModule::class,
         NotesDataModule::class,
         NotesUiModule::class,
+        AddEditNoteUiModule::class,
         AppModule::class,
         ViewModelModule::class,
         ActivityBindingModule::class

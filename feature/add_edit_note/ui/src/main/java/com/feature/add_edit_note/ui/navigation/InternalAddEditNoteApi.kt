@@ -1,5 +1,6 @@
-package com.feature.notes.ui.navigation
+package com.feature.add_edit_note.ui.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -10,37 +11,31 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.core.common.navigation.AddEditNoteGraph
 import com.core.common.navigation.AddEditNoteScreen
-import com.core.common.navigation.NotesGraph
-import com.core.common.navigation.NotesScreen
 import com.core.feature_api.FeatureApi
-import com.feature.notes.ui.screen.NotesScreen
-import com.feature.notes.ui.screen.NotesViewModel
+import com.feature.add_edit_note.ui.ui.AddEditNoteScreen
+import com.feature.add_edit_note.ui.ui.AddEditNoteViewModel
 
-internal object InternalNotesFeatureApi : FeatureApi {
+internal object InternalAddEditNoteApi : FeatureApi {
     override fun registerGraph(
         navHostController: NavHostController,
         navGraphBuilder: NavGraphBuilder,
         viewModelFactory: ViewModelProvider.Factory
     ) {
-        navGraphBuilder.navigation<NotesGraph>(
-            startDestination = NotesScreen
-        ) {
-            composable<NotesScreen> { navBackStackEntry ->
-                val notesViewModel = viewModel<NotesViewModel>(
+        navGraphBuilder.navigation<AddEditNoteGraph>(startDestination = AddEditNoteScreen(noteId = 0L)) {
+            composable<AddEditNoteScreen> { navBackStackEntry ->
+                val noteId = navBackStackEntry.arguments?.getLong("noteId") ?: 0L
+                Log.d("Note id", noteId.toString())
+                val addEditNoteViewModel = viewModel<AddEditNoteViewModel>(
                     viewModelStoreOwner = navBackStackEntry,
                     factory = viewModelFactory
                 )
-                val state by notesViewModel.notesUiState.collectAsStateWithLifecycle()
-                NotesScreen(
+                val state by addEditNoteViewModel.addEditeNoteUiState.collectAsStateWithLifecycle()
+                AddEditNoteScreen(
                     modifier = Modifier.fillMaxSize(),
-                    notesUiState = state,
-                    onNoteClick = { note ->
-                        navHostController.navigate(AddEditNoteScreen(noteId = note.id))
-                    },
-                    onAddNoteClick = {
-                        navHostController.navigate(AddEditNoteScreen(noteId = 0L))
-                    }
+                    addEditNoteUiState = state,
+                    onNoteContentChanged = addEditNoteViewModel::onNoteContentChanged
                 )
             }
         }

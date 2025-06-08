@@ -1,5 +1,6 @@
 package com.vicky7230.tasker.di.module
 
+import com.feature.add_edit_note.ui.navigation.AddEditNoteApi
 import com.feature.notes.ui.navigation.NotesApi
 import com.vicky7230.tasker.navigation.NavigationProvider
 import dagger.Module
@@ -9,7 +10,10 @@ import dagger.Provides
 class AppModule {
 
     @Provides
-    fun provideNavigationProvider(notesApi: NotesApi): NavigationProvider {
-        return NavigationProvider(notesApi)
+    fun provideNavigationProvider(
+        notesApi: NotesApi,
+        addEditNoteApi: AddEditNoteApi
+    ): NavigationProvider {
+        return NavigationProvider(notesApi, addEditNoteApi)
     }
 }

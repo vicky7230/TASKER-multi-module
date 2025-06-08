@@ -24,13 +24,17 @@ import com.feature.notes.domain.model.Note
 fun NotesContent(
     modifier: Modifier = Modifier,
     notesUiState: NotesUiState.NotesList,
-    onNoteClick: (Note) -> Unit = {}
+    onNoteClick: (Note) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
     ) {
         items(notesUiState.notes) {
-            NoteItem(modifier = Modifier.fillMaxWidth(), note = it)
+            NoteItem(
+                modifier = Modifier.fillMaxWidth(),
+                note = it,
+                onNoteClick = onNoteClick
+            )
         }
     }
 }
@@ -38,13 +42,15 @@ fun NotesContent(
 @Composable
 fun NoteItem(
     modifier: Modifier = Modifier,
-    note: Note
+    note: Note,
+    onNoteClick: (Note) -> Unit
 ) {
-    Box(modifier = modifier
-        .clickable {
-
-        }
-        .padding(16.dp)) {
+    Box(
+        modifier = modifier
+            .clickable {
+                onNoteClick(note)
+            }
+            .padding(16.dp)) {
         Text(
             text = note.content,
             style = TextStyle(
@@ -66,7 +72,8 @@ fun NotesContentPreview() {
     TaskerTheme {
         NotesContent(
             modifier = Modifier.fillMaxSize(),
-            notesUiState = NotesUiState.NotesList(notes)
+            notesUiState = NotesUiState.NotesList(notes),
+            onNoteClick = {}
         )
     }
 }

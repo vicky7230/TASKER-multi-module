@@ -12,11 +12,15 @@ import javax.inject.Inject
 class NotesRepositoryImpl @Inject constructor(
     private val notesDb: NotesDb
 ) : NotesRepository {
-    override suspend fun insertNote(note: Note): Long {
-        return notesDb.getNotesDao().insertNote(note.toEntity())
+    override suspend fun upsertNote(note: Note): Long {
+        return notesDb.getNotesDao().upsertNote(note.toEntity())
     }
 
     override fun getAllNotes(): Flow<List<Note>> {
         return notesDb.getNotesDao().getAllNotes().map { it.map { it.toDomain() } }
+    }
+
+    override suspend fun getNoteById(id: Long): Note? {
+        return notesDb.getNotesDao().getNoteById(id)?.toDomain()
     }
 }
