@@ -2,18 +2,10 @@ package com.feature.add_edit_note.ui.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +13,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.TaskerTheme
 import com.feature.notes.domain.model.Note
@@ -59,32 +50,18 @@ fun AddEditNoteScreen(
             AddEditNoteUiState.Idle -> {}
             AddEditNoteUiState.Loading -> {}
             is AddEditNoteUiState.NoteData -> {
-                var noteContent by remember { mutableStateOf(state.note.content) }
-                TextField(
-                    value = noteContent,
-                    onValueChange = {
-                        noteContent = it
-                        onNoteContentChanged(it)
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                    ),
-                    placeholder = { Text("Enter your note here...") },
+                NoteContent(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(padding)
-                        .padding(16.dp),
-                    minLines = 3
+                        .padding(padding),
+                    state = state,
+                    onNoteContentChanged = onNoteContentChanged
                 )
             }
         }
     }
 }
+
 
 @Preview(
     showBackground = true,
