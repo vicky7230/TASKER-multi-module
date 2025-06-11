@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -51,7 +52,7 @@ fun NoteContent(
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 10.dp, start = 16.dp)
                     .clickable { onCancelClick() },
-                text = "Cancel",
+                text = stringResource(com.core.common.R.string.cancel),
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
                     fontSize = 22.sp
@@ -63,7 +64,7 @@ fun NoteContent(
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 10.dp, end = 16.dp)
                     .clickable { onDoneClick() },
-                text = "Done",
+                text = stringResource(com.core.common.R.string.done),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp
@@ -89,7 +90,7 @@ fun NoteContent(
             ),
             placeholder = {
                 Text(
-                    text = "What do you want tot do?",
+                    text = stringResource(com.core.common.R.string.what_do_you_want_tot_do),
                     style = TextStyle(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Medium

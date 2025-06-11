@@ -80,7 +80,7 @@ fun NotesScreenPreview() {
             addEditNoteUiState = AddEditNoteUiState.NoteData(
                 Note(
                     id = 5,
-                    content = "some content here"
+                    content = ""
                 )
             ),
             onNoteContentChanged = {},

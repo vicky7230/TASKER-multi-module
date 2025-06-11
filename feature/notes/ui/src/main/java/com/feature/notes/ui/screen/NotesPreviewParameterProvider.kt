@@ -15,18 +15,18 @@ class NotesPreviewParameterProvider : PreviewParameterProvider<NotesUiState> {
 val notes = listOf(
     Note(
         id = 1,
-        content = "Content 1"
+        content = "Welcome to your notes app! This is your first note."
     ),
     Note(
         id = 2,
-        content = "Content 2"
+        content = "You can add, edit, and delete notes here."
     ),
     Note(
         id = 3,
-        content = "Content 3"
+        content = "Try creating your own note by tapping the add button!"
     ),
     Note(
         id = 4,
-        content = "Content 4"
+        content = "This app uses Room database to store your notes locally."
     ),
 )
