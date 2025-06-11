@@ -8,3 +8,7 @@ sealed class AddEditNoteUiState {
     data class NoteData(val note: Note) : AddEditNoteUiState()
     data class Error(val message: String) : AddEditNoteUiState()
 }
+
+sealed class AddEditNoteSideEffect {
+    data object finish : AddEditNoteSideEffect()
+}

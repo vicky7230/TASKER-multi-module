@@ -21,7 +21,9 @@ import com.feature.notes.domain.model.Note
 fun AddEditNoteScreen(
     modifier: Modifier = Modifier,
     addEditNoteUiState: AddEditNoteUiState,
-    onNoteContentChanged: (String) -> Unit
+    onNoteContentChanged: (String) -> Unit,
+    onCancelClick: () -> Unit,
+    onDoneClick: () -> Unit
 ) {
     val state = addEditNoteUiState
     Scaffold(
@@ -55,7 +57,9 @@ fun AddEditNoteScreen(
                         .fillMaxSize()
                         .padding(padding),
                     state = state,
-                    onNoteContentChanged = onNoteContentChanged
+                    onNoteContentChanged = onNoteContentChanged,
+                    onCancelClick = onCancelClick,
+                    onDoneClick = onDoneClick
                 )
             }
         }
@@ -79,7 +83,9 @@ fun NotesScreenPreview() {
                     content = "some content here"
                 )
             ),
-            onNoteContentChanged = {}
+            onNoteContentChanged = {},
+            onCancelClick = {},
+            onDoneClick = {}
         )
     }
 }

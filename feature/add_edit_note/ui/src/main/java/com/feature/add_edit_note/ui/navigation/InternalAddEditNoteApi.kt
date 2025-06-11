@@ -2,6 +2,7 @@ package com.feature.add_edit_note.ui.navigation
 
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import com.core.common.navigation.AddEditNoteGraph
 import com.core.common.navigation.AddEditNoteScreen
 import com.core.feature_api.FeatureApi
 import com.feature.add_edit_note.ui.ui.AddEditNoteScreen
+import com.feature.add_edit_note.ui.ui.AddEditNoteSideEffect
 import com.feature.add_edit_note.ui.ui.AddEditNoteViewModel
 
 internal object InternalAddEditNoteApi : FeatureApi {
@@ -32,10 +34,19 @@ internal object InternalAddEditNoteApi : FeatureApi {
                     factory = viewModelFactory
                 )
                 val state by addEditNoteViewModel.addEditeNoteUiState.collectAsStateWithLifecycle()
+                LaunchedEffect(Unit) {
+                    addEditNoteViewModel.sideEffect.collect { sideEffect ->
+                        when (sideEffect) {
+                            AddEditNoteSideEffect.finish -> navHostController.popBackStack()
+                        }
+                    }
+                }
                 AddEditNoteScreen(
                     modifier = Modifier.fillMaxSize(),
                     addEditNoteUiState = state,
-                    onNoteContentChanged = addEditNoteViewModel::onNoteContentChanged
+                    onNoteContentChanged = addEditNoteViewModel::onNoteContentChanged,
+                    onCancelClick = { navHostController.popBackStack() },
+                    onDoneClick = addEditNoteViewModel::saveNote
                 )
             }
         }

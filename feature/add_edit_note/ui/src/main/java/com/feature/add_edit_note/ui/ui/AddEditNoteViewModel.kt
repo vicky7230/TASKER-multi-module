@@ -12,12 +12,13 @@ import com.feature.notes.domain.model.Note
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 
 class AddEditNoteViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -35,7 +36,9 @@ class AddEditNoteViewModel @AssistedInject constructor(
     val addEditeNoteUiState: StateFlow<AddEditNoteUiState> =
         _addEditeNoteUiState.asStateFlow()
 
-    private var saveJob: Job? = null
+    private var _sideEffect = MutableSharedFlow<AddEditNoteSideEffect>()
+    val sideEffect: SharedFlow<AddEditNoteSideEffect> = _sideEffect.asSharedFlow()
+
     private var currentNote: Note? = null
 
     init {
@@ -58,15 +61,16 @@ class AddEditNoteViewModel @AssistedInject constructor(
         currentNote?.let {
             _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
         }
-        // Cancel previous save job and start a new one with debouncing
-        saveJob?.cancel()
-        saveJob = viewModelScope.launch {
-            delay(500) // Wait 500ms after user stops typing
+    }
+
+    fun saveNote() {
+        viewModelScope.launch {
             currentNote?.let { note ->
                 if (note.content.isNotBlank()) {
                     upsertNoteUseCase(note)
                 }
             }
+            _sideEffect.emit(AddEditNoteSideEffect.finish)
         }
     }
 }
