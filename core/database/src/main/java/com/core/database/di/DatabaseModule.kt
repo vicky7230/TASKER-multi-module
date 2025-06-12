@@ -19,12 +19,18 @@ class DatabaseModule {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
+                    // Pre-populate database with tags
+                    db.execSQL("INSERT INTO tags (name, color) VALUES ('Work', '#61DEA4')")
+                    db.execSQL("INSERT INTO tags (name, color) VALUES ('Shopping', '#F45E6D')")
+                    db.execSQL("INSERT INTO tags (name, color) VALUES ('Family', '#FFE761')")
+                    db.execSQL("INSERT INTO tags (name, color) VALUES ('Personal', '#B678FF')")
+
                     // Pre-populate database with sample data
-                    db.execSQL("INSERT INTO notes (content) VALUES ('Welcome to your notes app! This is your first note.')")
-                    db.execSQL("INSERT INTO notes (content) VALUES ('You can add, edit, and delete notes here.')")
-                    db.execSQL("INSERT INTO notes (content) VALUES ('Try creating your own note by tapping the add button!')")
-                    db.execSQL("INSERT INTO notes (content) VALUES ('This app uses Room database to store your notes locally.')")
-                    db.execSQL("INSERT INTO notes (content) VALUES ('Your notes are saved automatically and will persist between app sessions.')")
+                    db.execSQL("INSERT INTO notes (content, tagId) VALUES ('Welcome to your notes app! This is your first note.','1')")
+                    db.execSQL("INSERT INTO notes (content, tagId) VALUES ('You can add, edit, and delete notes here.','2')")
+                    db.execSQL("INSERT INTO notes (content, tagId) VALUES ('Try creating your own note by tapping the add button!','3')")
+                    db.execSQL("INSERT INTO notes (content, tagId) VALUES ('This app uses Room database to store your notes locally.','4')")
+                    db.execSQL("INSERT INTO notes (content, tagId) VALUES ('Your notes are saved automatically and will persist between app sessions.','1')")
                 }
             })
             .build()

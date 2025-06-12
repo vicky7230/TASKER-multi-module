@@ -35,7 +35,7 @@ import com.core.common.R
 import com.core.common.theme.Blue
 import com.core.common.theme.LightGray
 import com.core.common.theme.TaskerTheme
-import com.feature.notes.domain.model.Note
+import com.feature.notes.domain.model.NoteWithTag
 
 @Composable
 fun NoteContent(
@@ -54,8 +54,8 @@ fun NoteContent(
                     .clickable { onCancelClick() },
                 text = stringResource(com.core.common.R.string.cancel),
                 style = TextStyle(
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 22.sp
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp
                 ),
                 color = Blue
             )
@@ -66,8 +66,8 @@ fun NoteContent(
                     .clickable { onDoneClick() },
                 text = stringResource(com.core.common.R.string.done),
                 style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp
                 ),
                 color = Blue
             )
@@ -103,8 +103,8 @@ fun NoteContent(
                     modifier = Modifier
                         .fillMaxHeight()
                         .wrapContentHeight(align = Alignment.Top)
-                        .padding(start = 16.dp)
-                        .offset(y = 14.dp)
+                        .padding(start = 16.dp, end = 10.dp)
+                        .offset(y = 12.dp)
                 ) {
                     Icon(
                         modifier = Modifier.size(28.dp),
@@ -115,7 +115,7 @@ fun NoteContent(
             },
             minLines = 3,
             textStyle = TextStyle(
-                fontSize = 22.sp
+                fontSize = 18.sp
             )
         )
     }
@@ -132,7 +132,17 @@ fun NoteContentPreview() {
         NoteContent(
             modifier = Modifier
                 .fillMaxSize(),
-            state = AddEditNoteUiState.NoteData(Note(0, "")),
+            state = AddEditNoteUiState.NoteData(
+                NoteWithTag(
+                    id = 0,
+                    content = "note content",
+                    timestamp = 0,
+                    tagId = 1,
+                    done = false,
+                    tagName = "Work",
+                    tagColor = "#61DEA4"
+                )
+            ),
             onNoteContentChanged = { },
             onCancelClick = {},
             onDoneClick = {}

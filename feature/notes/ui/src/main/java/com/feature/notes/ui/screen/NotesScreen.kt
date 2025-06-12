@@ -23,13 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.TaskerTheme
-import com.feature.notes.domain.model.Note
+import com.feature.notes.domain.model.NoteWithTag
 
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
     notesUiState: NotesUiState,
-    onNoteClick: (Note) -> Unit,
+    onNoteClick: (NoteWithTag) -> Unit,
     onAddNoteClick: () -> Unit
 ) {
     val state = notesUiState

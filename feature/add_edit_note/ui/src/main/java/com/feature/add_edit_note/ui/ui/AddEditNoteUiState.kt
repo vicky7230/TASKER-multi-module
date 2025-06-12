@@ -1,11 +1,11 @@
 package com.feature.add_edit_note.ui.ui
 
-import com.feature.notes.domain.model.Note
+import com.feature.notes.domain.model.NoteWithTag
 
 sealed class AddEditNoteUiState {
     object Idle : AddEditNoteUiState()
     object Loading : AddEditNoteUiState()
-    data class NoteData(val note: Note) : AddEditNoteUiState()
+    data class NoteData(val note: NoteWithTag) : AddEditNoteUiState()
     data class Error(val message: String) : AddEditNoteUiState()
 }
 

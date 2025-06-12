@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.TaskerTheme
-import com.feature.notes.domain.model.Note
+import com.feature.notes.domain.model.NoteWithTag
 
 @Composable
 fun AddEditNoteScreen(
@@ -78,9 +78,14 @@ fun NotesScreenPreview() {
         AddEditNoteScreen(
             modifier = Modifier.fillMaxSize(),
             addEditNoteUiState = AddEditNoteUiState.NoteData(
-                Note(
+                NoteWithTag(
                     id = 5,
-                    content = ""
+                    content = "",
+                    timestamp = 0,
+                    tagId = 1,
+                    done = false,
+                    tagName = "Work",
+                    tagColor = "#61DEA4"
                 )
             ),
             onNoteContentChanged = {},

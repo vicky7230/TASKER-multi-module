@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.AddEditNoteScreen
-import com.feature.add_edit_note.domain.usecase.GetNoteByIdUseCase
+import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNoteUseCase
-import com.feature.notes.domain.model.Note
+import com.feature.notes.domain.model.NoteWithTag
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class AddEditNoteViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val getNoteByIdUseCase: GetNoteByIdUseCase,
+    private val getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase,
     private val upsertNoteUseCase: UpsertNoteUseCase
 ) : ViewModel() {
 
@@ -39,7 +39,7 @@ class AddEditNoteViewModel @AssistedInject constructor(
     private var _sideEffect = MutableSharedFlow<AddEditNoteSideEffect>()
     val sideEffect: SharedFlow<AddEditNoteSideEffect> = _sideEffect.asSharedFlow()
 
-    private var currentNote: Note? = null
+    private var currentNote: NoteWithTag? = null
 
     init {
         val addEditNoteScreen = savedStateHandle.toRoute<AddEditNoteScreen>()
@@ -48,8 +48,15 @@ class AddEditNoteViewModel @AssistedInject constructor(
 
     private fun getNoteById(noteId: Long) {
         viewModelScope.launch {
-            val note = getNoteByIdUseCase(id = noteId)
-            currentNote = note ?: Note(content = "")
+            val note = getNoteWithTagByIdUseCase(id = noteId)
+            currentNote = note ?: NoteWithTag(
+                content = "",
+                timestamp = System.currentTimeMillis(),
+                tagId = 1,
+                done = false,
+                tagName = "Work",
+                tagColor = "#61DEA4"
+            )
             currentNote?.let {
                 _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
             }
