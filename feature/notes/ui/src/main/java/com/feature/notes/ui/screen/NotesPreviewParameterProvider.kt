@@ -2,13 +2,14 @@ package com.feature.notes.ui.screen
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.feature.notes.domain.model.NoteWithTag
+import com.feature.notes.domain.model.TagWithNotes
 
 class NotesPreviewParameterProvider : PreviewParameterProvider<NotesUiState> {
     override val values = sequenceOf(
         NotesUiState.Idle,
         NotesUiState.Loading,
         NotesUiState.Error("Error, something went wrong!"),
-        NotesUiState.NotesList(notes)
+        NotesUiState.NotesList(notes, tags)
     )
 }
 
@@ -48,5 +49,32 @@ val notes = listOf(
         done = false,
         tagName = "Family",
         tagColor = "#FFE761"
+    ),
+)
+
+val tags = listOf(
+    TagWithNotes(
+        id = 1,
+        name = "Work",
+        color = "#61DEA4",
+        notes = emptyList()
+    ),
+    TagWithNotes(
+        id = 1,
+        name = "Shopping",
+        color = "#F45E6D",
+        notes = emptyList()
+    ),
+    TagWithNotes(
+        id = 1,
+        name = "Personal",
+        color = "#B678FF",
+        notes = emptyList()
+    ),
+    TagWithNotes(
+        id = 1,
+        name = "Family",
+        color = "#FFE761",
+        notes = emptyList()
     ),
 )

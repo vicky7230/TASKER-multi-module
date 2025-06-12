@@ -98,7 +98,7 @@ fun NotesContentPreview() {
     TaskerTheme {
         NotesContent(
             modifier = Modifier.fillMaxSize(),
-            notesUiState = NotesUiState.NotesList(notes),
+            notesUiState = NotesUiState.NotesList(notes, tags),
             onNoteClick = {}
         )
     }

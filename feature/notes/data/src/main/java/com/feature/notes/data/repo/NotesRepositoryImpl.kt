@@ -5,6 +5,7 @@ import com.feature.notes.data.mapper.toDomain
 import com.feature.notes.data.mapper.toEntity
 import com.feature.notes.domain.model.Note
 import com.feature.notes.domain.model.NoteWithTag
+import com.feature.notes.domain.model.TagWithNotes
 import com.feature.notes.domain.repo.NotesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -31,5 +32,9 @@ class NotesRepositoryImpl @Inject constructor(
 
     override suspend fun getNoteWithTagById(id: Long): NoteWithTag? {
         return notesDb.getNotesDao().getNoteWithTagById(id)?.toDomain()
+    }
+
+    override fun getAllTagsWithNotes(): Flow<List<TagWithNotes>> {
+        return notesDb.getTagsDao().getAllTagsWithNotes().map { it.map { it.toDomain() } }
     }
 }
