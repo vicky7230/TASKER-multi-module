@@ -81,7 +81,7 @@ fun NotesScreen(
                 }
             }
 
-            is NotesUiState.NotesList -> NotesContent(
+            is NotesUiState.NotesLoaded -> NotesContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),

@@ -28,7 +28,7 @@ class NotesViewModel @Inject constructor(
                     getAllNotesWithTagUseCase().distinctUntilChanged(),
                     getAllTagsWithNotesUseCase().distinctUntilChanged()
                 ) { notes, tags ->
-                    NotesUiState.NotesList(notes, tags)
+                    NotesUiState.NotesLoaded(notes, tags)
                 }.collect { newState ->
                     _notesUiState.update { currentState ->
                         newState

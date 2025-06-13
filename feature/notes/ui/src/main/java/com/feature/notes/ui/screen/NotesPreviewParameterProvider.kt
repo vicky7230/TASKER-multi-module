@@ -9,7 +9,7 @@ class NotesPreviewParameterProvider : PreviewParameterProvider<NotesUiState> {
         NotesUiState.Idle,
         NotesUiState.Loading,
         NotesUiState.Error("Error, something went wrong!"),
-        NotesUiState.NotesList(notes, tags)
+        NotesUiState.NotesLoaded(notes, tags)
     )
 }
 
@@ -60,19 +60,19 @@ val tags = listOf(
         notes = emptyList()
     ),
     TagWithNotes(
-        id = 1,
+        id = 2,
         name = "Shopping",
         color = "#F45E6D",
         notes = emptyList()
     ),
     TagWithNotes(
-        id = 1,
+        id = 3,
         name = "Personal",
         color = "#B678FF",
         notes = emptyList()
     ),
     TagWithNotes(
-        id = 1,
+        id = 4,
         name = "Family",
         color = "#FFE761",
         notes = emptyList()
