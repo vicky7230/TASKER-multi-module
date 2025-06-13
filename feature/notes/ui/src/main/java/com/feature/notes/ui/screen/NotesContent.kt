@@ -103,7 +103,8 @@ fun NoteItem(
                 .padding(start = 16.dp, end = 16.dp)
                 .size(28.dp),
             painter = painterResource(R.drawable.ic_ring_gray),
-            contentDescription = null
+            contentDescription = null,
+            tint = Color.Unspecified
         )
         Text(
             modifier = Modifier

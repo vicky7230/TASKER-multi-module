@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
+import com.core.common.theme.Blue
 import com.core.common.theme.TaskerTheme
 import com.feature.notes.domain.model.NoteWithTag
 
@@ -39,9 +39,9 @@ fun NotesScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { onAddNoteClick() },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White,
-                shape = CircleShape
+                containerColor = Color.White,
+                contentColor = Blue,
+                shape = CircleShape,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
