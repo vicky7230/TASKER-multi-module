@@ -2,6 +2,7 @@ package com.feature.notes.ui.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.core.common.utils.TimeUtils
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import com.feature.notes.domain.usecase.GetAllTagsWithNotesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +29,10 @@ class NotesViewModel @Inject constructor(
                     getAllNotesWithTagUseCase().distinctUntilChanged(),
                     getAllTagsWithNotesUseCase().distinctUntilChanged()
                 ) { notes, tags ->
-                    NotesUiState.NotesLoaded(notes, tags)
+                    NotesUiState.NotesLoaded(
+                        notes.filter { TimeUtils.isTimestampToday(it.timestamp) },
+                        tags
+                    )
                 }.collect { newState ->
                     _notesUiState.update { currentState ->
                         newState

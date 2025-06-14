@@ -48,7 +48,7 @@ val notes = listOf(
         tagId = 1,
         done = false,
         tagName = "Family",
-        tagColor = "#FFE761"
+        tagColor = "#006CFF"
     ),
 )
 
@@ -74,7 +74,7 @@ val tags = listOf(
     TagWithNotes(
         id = 4,
         name = "Family",
-        color = "#FFE761",
+        color = "#006CFF",
         notes = emptyList()
     ),
 )
