@@ -30,7 +30,9 @@ data class NoteEntity(
     @ColumnInfo(defaultValue = "1")
     val tagId: Long,
     @ColumnInfo(defaultValue = "false")
-    val done: Boolean
+    val done: Boolean,
+    @ColumnInfo(defaultValue = "false")
+    val isDeleted: Boolean = false
 )
 
 data class NoteWithTagEntity(
