@@ -75,9 +75,9 @@ class AddEditNoteViewModel @AssistedInject constructor(
             currentNote?.let { note ->
                 if (note.content.isNotBlank()) {
                     upsertNotesUseCase(listOf(note))
+                    _sideEffect.emit(AddEditNoteSideEffect.finish)
                 }
             }
-            _sideEffect.emit(AddEditNoteSideEffect.finish)
         }
     }
 }

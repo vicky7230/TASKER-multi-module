@@ -128,17 +128,13 @@ class AddEditNoteViewModelTest {
 
         savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
         viewModel = AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase)
-
         advanceUntilIdle()
-
 
         // Then
         viewModel.sideEffect.test {
-
             // When
             viewModel.saveNote()
             //advanceUntilIdle() // Let saveNote coroutine complete
-
             assertEquals(AddEditNoteSideEffect.finish, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
