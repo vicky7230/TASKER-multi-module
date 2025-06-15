@@ -1,14 +1,13 @@
 package com.feature.add_edit_note.domain.usecase
 
-import com.feature.notes.domain.model.Note
 import com.feature.notes.domain.model.NoteWithTag
 import com.feature.notes.domain.repo.NotesRepository
 import javax.inject.Inject
 
-class UpsertNoteUseCase @Inject constructor(
+class UpsertNotesUseCase @Inject constructor(
     private val repository: NotesRepository
 ) {
-    suspend operator fun invoke(note: NoteWithTag) {
-        repository.upsertNote(note)
+    suspend operator fun invoke(notes: List<NoteWithTag>) {
+        repository.upsertNotes(notes)
     }
 }

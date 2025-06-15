@@ -14,8 +14,8 @@ import javax.inject.Inject
 class NotesRepositoryImpl @Inject constructor(
     private val notesDb: NotesDb
 ) : NotesRepository {
-    override suspend fun upsertNote(note: NoteWithTag): Long {
-        return notesDb.getNotesDao().upsertNote(note.toEntity())
+    override suspend fun upsertNotes(notes: List<NoteWithTag>): List<Long> {
+        return notesDb.getNotesDao().upsertNotes(notes.map { it.toEntity() })
     }
 
     override fun getAllNotes(): Flow<List<Note>> {

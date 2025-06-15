@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
 
-    suspend fun upsertNote(note: NoteWithTag): Long
+    suspend fun upsertNotes(notes: List<NoteWithTag>): List<Long>
 
     fun getAllNotes(): Flow<List<Note>>
 

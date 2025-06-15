@@ -7,7 +7,7 @@ import androidx.navigation.toRoute
 import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.AddEditNoteScreen
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
-import com.feature.add_edit_note.domain.usecase.UpsertNoteUseCase
+import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
 import com.feature.notes.domain.model.NoteWithTag
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class AddEditNoteViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase,
-    private val upsertNoteUseCase: UpsertNoteUseCase
+    private val upsertNotesUseCase: UpsertNotesUseCase
 ) : ViewModel() {
 
     @AssistedFactory
@@ -74,7 +74,7 @@ class AddEditNoteViewModel @AssistedInject constructor(
         viewModelScope.launch {
             currentNote?.let { note ->
                 if (note.content.isNotBlank()) {
-                    upsertNoteUseCase(note)
+                    upsertNotesUseCase(listOf(note))
                 }
             }
             _sideEffect.emit(AddEditNoteSideEffect.finish)
