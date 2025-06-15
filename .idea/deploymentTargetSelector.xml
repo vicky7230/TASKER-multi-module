@@ -5,10 +5,13 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="NotesDaoTest">
+      <SelectionState runConfigName="AddEditNoteViewModelTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="insertNote_getAllNotes()">
+      <SelectionState runConfigName="onNoteContentChanged_should_update_note_content()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="saveNote_should_call_upsert_and_emit_side_effect()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
