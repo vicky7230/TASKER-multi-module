@@ -91,7 +91,7 @@ dependencies {
     //androidTestImplementation(libs.mockito.android)
 
     //mockk
-    androidTestImplementation("io.mockk:mockk-android:1.14.2")
+    androidTestImplementation(libs.mockk.android)
 
     //turbine
     testImplementation(libs.turbine)

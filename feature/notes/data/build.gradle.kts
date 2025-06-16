@@ -63,4 +63,12 @@ dependencies {
     //coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    //turbine
+    testImplementation(libs.turbine)
+
+    //mockk
+    testImplementation(libs.mockk.android)
+
 }
