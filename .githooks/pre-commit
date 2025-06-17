@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "🛠️  Auto-formatting with ktlint..."
+
+./gradlew ktlintFormat
+
+if [ $? -ne 0 ]; then
+  echo "❌ Ktlint check still failing. Please fix remaining issues."
+  exit 1
+fi
+
+echo "✅ All good. Proceeding with commit."
+exit 0
