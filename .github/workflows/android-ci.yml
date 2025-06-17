@@ -30,6 +30,7 @@ jobs:
   test:
     name: Run Unit Tests
     runs-on: ubuntu-latest
+    # Optional: needs: ktlint # Uncomment to make this run after ktlint
 
     steps:
       - uses: actions/checkout@v3
@@ -40,14 +41,16 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle cache
+        uses: gradle/gradle-build-action@v2
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
 
   android-test:
     name: Run Instrumented Tests
-    runs-on: macos-latest  # 🧠 Use macOS or self-hosted to run emulator
+    runs-on: macos-12
+    # Optional: needs: test # Uncomment to make this run after unit tests
 
     steps:
       - uses: actions/checkout@v3
@@ -58,11 +61,17 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Set up Android Emulator
+      - name: Setup Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 30
           target: google_apis
-          arch: arm64-v8a
+          arch: x86_64
+          avd-name: test
+          force-avd-creation: true
+          emulator-options: -no-snapshot -noaudio -no-boot-anim -no-window -gpu swiftshader_indirect
+          disable-animations: true
           script: ./gradlew connectedDebugAndroidTest
-
