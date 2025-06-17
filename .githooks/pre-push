@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "🧪 Running unit tests before push..."
+
+./gradlew testDebugUnitTest
+
+UNIT_TEST_STATUS=$?
+
+echo "📱 Running instrumented (Android) tests before push..."
+
+./gradlew connectedDebugAndroidTest
+
+ANDROID_TEST_STATUS=$?
+
+if [ $UNIT_TEST_STATUS -ne 0 ] || [ $ANDROID_TEST_STATUS -ne 0 ]; then
+  echo "❌ Tests failed. Push aborted."
+  exit 1
+else
+  echo "✅ All tests passed. Proceeding with push."
+fi

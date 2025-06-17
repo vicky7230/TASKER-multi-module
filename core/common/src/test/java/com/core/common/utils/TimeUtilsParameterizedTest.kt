@@ -20,8 +20,8 @@ class TimeUtilsParameterizedTest(
         @Parameterized.Parameters(name = "{index}: isTimestampToday({0})={1}")
         fun data(): List<Array<Any>> =
             listOf(
-                arrayOf(1749906318000, true),
-                arrayOf(1749906318001, true),
+                arrayOf(System.currentTimeMillis(), true),
+                arrayOf(System.currentTimeMillis(), true),
                 arrayOf(1633024800000, false),
             )
     }
