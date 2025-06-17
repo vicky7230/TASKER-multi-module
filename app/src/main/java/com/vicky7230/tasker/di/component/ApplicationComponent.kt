@@ -27,14 +27,15 @@ import javax.inject.Singleton
         AddEditNoteUiModule::class,
         AppModule::class,
         ViewModelModule::class,
-        ActivityBindingModule::class
-    ]
+        ActivityBindingModule::class,
+    ],
 )
 interface ApplicationComponent {
-
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): ApplicationComponent
+        fun create(
+            @BindsInstance context: Context,
+        ): ApplicationComponent
     }
 
     fun viewModelFactory(): ViewModelProvider.Factory

@@ -8,12 +8,9 @@ import dagger.Provides
 
 @Module
 class AppModule {
-
     @Provides
     fun provideNavigationProvider(
         notesApi: NotesApi,
-        addEditNoteApi: AddEditNoteApi
-    ): NavigationProvider {
-        return NavigationProvider(notesApi, addEditNoteApi)
-    }
+        addEditNoteApi: AddEditNoteApi,
+    ): NavigationProvider = NavigationProvider(notesApi, addEditNoteApi)
 }

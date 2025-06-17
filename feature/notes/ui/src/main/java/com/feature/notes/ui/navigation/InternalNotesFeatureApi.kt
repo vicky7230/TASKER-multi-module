@@ -21,16 +21,17 @@ internal object InternalNotesFeatureApi : FeatureApi {
     override fun registerGraph(
         navHostController: NavHostController,
         navGraphBuilder: NavGraphBuilder,
-        viewModelFactory: ViewModelProvider.Factory
+        viewModelFactory: ViewModelProvider.Factory,
     ) {
         navGraphBuilder.navigation<NotesGraph>(
-            startDestination = NotesScreen
+            startDestination = NotesScreen,
         ) {
             composable<NotesScreen> { navBackStackEntry ->
-                val notesViewModel = viewModel<NotesViewModel>(
-                    viewModelStoreOwner = navBackStackEntry,
-                    factory = viewModelFactory
-                )
+                val notesViewModel =
+                    viewModel<NotesViewModel>(
+                        viewModelStoreOwner = navBackStackEntry,
+                        factory = viewModelFactory,
+                    )
                 val state by notesViewModel.notesUiState.collectAsStateWithLifecycle()
                 NotesScreen(
                     modifier = Modifier.fillMaxSize(),
@@ -40,7 +41,7 @@ internal object InternalNotesFeatureApi : FeatureApi {
                     },
                     onAddNoteClick = {
                         navHostController.navigate(AddEditNoteScreen(noteId = 0L))
-                    }
+                    },
                 )
             }
         }

@@ -1,0 +1,11 @@
+[*.{kt,kts}]
+# Disable line length restriction (default is 100 or 120 or 140 depending on tooling)
+ktlint_standard_max-line-length=disabled
+
+# Disable property naming convention (e.g., variable name should be camelCase)
+ktlint_standard_property-naming=disabled
+
+# Disable underscore check in package names
+ktlint_standard_package-name=disabled
+
+ktlint_standard_function-naming=disabled

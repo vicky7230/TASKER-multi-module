@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     kotlin("plugin.serialization") version "2.0.21" // match the Kotlin version
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -21,7 +22,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -35,6 +36,7 @@ android {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -43,18 +45,18 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //dagger2
+    // dagger2
     implementation(libs.dagger)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     kapt(libs.dagger.android.processor)
     kapt(libs.dagger.compiler)
 
-    //retrofit
+    // retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.logging.interceptor)
 
-    //kotlinx-serialization
+    // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
 }

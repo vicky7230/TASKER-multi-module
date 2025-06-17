@@ -39,84 +39,92 @@ import com.feature.notes.domain.model.NoteWithTag
 
 @Composable
 fun NoteContent(
-    modifier: Modifier = Modifier,
     state: AddEditNoteUiState.NoteData,
-    onNoteContentChanged: (String) -> Unit,
+    onNoteContentChange: (String) -> Unit,
     onCancelClick: () -> Unit,
-    onDoneClick: () -> Unit
+    onDoneClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var noteContent by remember { mutableStateOf(state.note.content) }
-    Column {
+    Column(modifier = modifier) {
         Row {
             Text(
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 10.dp, start = 16.dp)
-                    .clickable { onCancelClick() },
+                modifier =
+                    Modifier
+                        .padding(top = 10.dp, bottom = 10.dp, start = 16.dp)
+                        .clickable { onCancelClick() },
                 text = stringResource(com.core.common.R.string.cancel),
-                style = TextStyle(
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp
-                ),
-                color = Blue
+                style =
+                    TextStyle(
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 18.sp,
+                    ),
+                color = Blue,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 10.dp, end = 16.dp)
-                    .clickable { onDoneClick() },
+                modifier =
+                    Modifier
+                        .padding(top = 10.dp, bottom = 10.dp, end = 16.dp)
+                        .clickable { onDoneClick() },
                 text = stringResource(com.core.common.R.string.done),
-                style = TextStyle(
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                ),
-                color = Blue
+                style =
+                    TextStyle(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp,
+                    ),
+                color = Blue,
             )
         }
 
         TextField(
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             value = noteContent,
             onValueChange = {
                 noteContent = it
-                onNoteContentChanged(it)
+                onNoteContentChange(it)
             },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-            ),
+            colors =
+                TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                ),
             placeholder = {
                 Text(
                     text = stringResource(com.core.common.R.string.what_do_you_want_tot_do),
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium
-                    ),
-                    color = LightGray
+                    style =
+                        TextStyle(
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                        ),
+                    color = LightGray,
                 )
             },
             leadingIcon = {
                 Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .wrapContentHeight(align = Alignment.Top)
-                        .padding(start = 16.dp, end = 10.dp)
-                        .offset(y = 12.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxHeight()
+                            .wrapContentHeight(align = Alignment.Top)
+                            .padding(start = 16.dp, end = 10.dp)
+                            .offset(y = 12.dp),
                 ) {
                     Icon(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(R.drawable.ic_ring_gray),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             },
             minLines = 3,
-            textStyle = TextStyle(
-                fontSize = 18.sp
-            )
+            textStyle =
+                TextStyle(
+                    fontSize = 18.sp,
+                ),
         )
     }
 }
@@ -124,28 +132,30 @@ fun NoteContent(
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    device = Devices.PIXEL_4
+    device = Devices.PIXEL_4,
 )
 @Composable
-fun NoteContentPreview() {
+private fun NoteContentPreview() {
     TaskerTheme {
         NoteContent(
-            modifier = Modifier
-                .fillMaxSize(),
-            state = AddEditNoteUiState.NoteData(
-                NoteWithTag(
-                    id = 0,
-                    content = "note content",
-                    timestamp = 0,
-                    tagId = 1,
-                    done = false,
-                    tagName = "Work",
-                    tagColor = "#61DEA4"
-                )
-            ),
-            onNoteContentChanged = { },
+            modifier =
+                Modifier
+                    .fillMaxSize(),
+            state =
+                AddEditNoteUiState.NoteData(
+                    NoteWithTag(
+                        id = 0,
+                        content = "note content",
+                        timestamp = 0,
+                        tagId = 1,
+                        done = false,
+                        tagName = "Work",
+                        tagColor = "#61DEA4",
+                    ),
+                ),
+            onNoteContentChange = { },
             onCancelClick = {},
-            onDoneClick = {}
+            onDoneClick = {},
         )
     }
 }

@@ -23,30 +23,31 @@ internal object InternalAddEditNoteApi : FeatureApi {
     override fun registerGraph(
         navHostController: NavHostController,
         navGraphBuilder: NavGraphBuilder,
-        viewModelFactory: ViewModelProvider.Factory
+        viewModelFactory: ViewModelProvider.Factory,
     ) {
         navGraphBuilder.navigation<AddEditNoteGraph>(startDestination = AddEditNoteScreen(noteId = 0L)) {
             composable<AddEditNoteScreen> { navBackStackEntry ->
                 val noteId = navBackStackEntry.arguments?.getLong("noteId") ?: 0L
                 Log.d("Note id", noteId.toString())
-                val addEditNoteViewModel = viewModel<AddEditNoteViewModel>(
-                    viewModelStoreOwner = navBackStackEntry,
-                    factory = viewModelFactory
-                )
+                val addEditNoteViewModel =
+                    viewModel<AddEditNoteViewModel>(
+                        viewModelStoreOwner = navBackStackEntry,
+                        factory = viewModelFactory,
+                    )
                 val state by addEditNoteViewModel.addEditeNoteUiState.collectAsStateWithLifecycle()
                 LaunchedEffect(Unit) {
                     addEditNoteViewModel.sideEffect.collect { sideEffect ->
                         when (sideEffect) {
-                            AddEditNoteSideEffect.finish -> navHostController.popBackStack()
+                            AddEditNoteSideEffect.Finish -> navHostController.popBackStack()
                         }
                     }
                 }
                 AddEditNoteScreen(
                     modifier = Modifier.fillMaxSize(),
                     addEditNoteUiState = state,
-                    onNoteContentChanged = addEditNoteViewModel::onNoteContentChanged,
+                    onNoteContentChange = addEditNoteViewModel::onNoteContentChanged,
                     onCancelClick = { navHostController.popBackStack() },
-                    onDoneClick = addEditNoteViewModel::saveNote
+                    onDoneClick = addEditNoteViewModel::saveNote,
                 )
             }
         }

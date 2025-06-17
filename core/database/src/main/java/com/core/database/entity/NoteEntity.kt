@@ -8,7 +8,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
-
 @Entity(
     tableName = "notes",
     foreignKeys = [
@@ -16,10 +15,10 @@ import androidx.room.Relation
             entity = TagEntity::class,
             parentColumns = ["id"],
             childColumns = ["tagId"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
-    indices = [Index(value = ["tagId"])]
+    indices = [Index(value = ["tagId"])],
 )
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
@@ -32,14 +31,14 @@ data class NoteEntity(
     @ColumnInfo(defaultValue = "false")
     val done: Boolean,
     @ColumnInfo(defaultValue = "false")
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean = false,
 )
 
 data class NoteWithTagEntity(
     @Embedded val note: NoteEntity,
     @Relation(
         parentColumn = "tagId",
-        entityColumn = "id"
+        entityColumn = "id",
     )
-    val tag: TagEntity
+    val tag: TagEntity,
 )

@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("com.google.devtools.ksp")
     id("androidx.room")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -13,7 +14,7 @@ android {
     defaultConfig {
         minSdk = 24
 
-        //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner = "com.core.database.CustomTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -23,7 +24,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -40,6 +41,7 @@ android {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -48,21 +50,21 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //dagger2
+    // dagger2
     implementation(libs.dagger)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     kapt(libs.dagger.android.processor)
     kapt(libs.dagger.compiler)
 
-    //room
+    // room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
 
-    //coroutines
+    // coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     androidTestImplementation(libs.kotlinx.coroutines.test)

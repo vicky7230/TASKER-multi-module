@@ -5,5 +5,5 @@ import com.feature.notes.ui.navigation.NotesApi
 
 data class NavigationProvider(
     val notesApi: NotesApi,
-    val addEditNoteApi: AddEditNoteApi
+    val addEditNoteApi: AddEditNoteApi,
 )

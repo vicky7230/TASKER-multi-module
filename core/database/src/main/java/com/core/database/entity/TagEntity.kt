@@ -10,14 +10,14 @@ data class TagEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val name: String,
-    val color: String
+    val color: String,
 )
 
 data class TagWithNotesEntity(
     @Embedded val tag: TagEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "tagId"
+        entityColumn = "tagId",
     )
-    val notes: List<NoteEntity>
+    val notes: List<NoteEntity>,
 )

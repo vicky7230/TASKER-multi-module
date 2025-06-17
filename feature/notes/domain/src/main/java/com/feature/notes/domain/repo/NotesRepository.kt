@@ -6,7 +6,6 @@ import com.feature.notes.domain.model.TagWithNotes
 import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
-
     suspend fun upsertNotes(notes: List<NoteWithTag>): List<Long>
 
     fun getAllNotes(): Flow<List<Note>>

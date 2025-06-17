@@ -8,6 +8,6 @@ interface FeatureApi {
     fun registerGraph(
         navHostController: NavHostController,
         navGraphBuilder: NavGraphBuilder,
-        viewModelFactory: ViewModelProvider.Factory
+        viewModelFactory: ViewModelProvider.Factory,
     )
 }

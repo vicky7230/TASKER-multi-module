@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -19,7 +20,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -33,6 +34,7 @@ android {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -41,6 +43,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //navigation compose
+    // navigation compose
     implementation(libs.androidx.navigation.compose)
 }

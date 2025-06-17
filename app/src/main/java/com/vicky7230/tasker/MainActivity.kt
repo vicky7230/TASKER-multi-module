@@ -23,7 +23,6 @@ import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
-
     @Inject
     lateinit var navigationProvider: NavigationProvider
 
@@ -37,7 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TaskerTheme {
                 val navController = rememberNavController()
-                App(navController, navigationProvider, viewModelFactory)
+                App(navHostController = navController, navigationProvider = navigationProvider, viewModelFactory = viewModelFactory)
             }
         }
     }
@@ -47,19 +46,21 @@ class MainActivity : ComponentActivity() {
 fun App(
     navHostController: NavHostController,
     navigationProvider: NavigationProvider,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.systemBars)
-            .windowInsetsPadding(WindowInsets.navigationBars),
-        color = MaterialTheme.colorScheme.background
+        modifier =
+            modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars)
+                .windowInsetsPadding(WindowInsets.navigationBars),
+        color = MaterialTheme.colorScheme.background,
     ) {
         AppNavGraph(
             navController = navHostController,
             navigationProvider = navigationProvider,
-            viewModelFactory = viewModelFactory
+            viewModelFactory = viewModelFactory,
         )
     }
 }

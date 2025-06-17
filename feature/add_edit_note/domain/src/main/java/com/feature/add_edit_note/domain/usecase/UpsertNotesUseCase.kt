@@ -4,10 +4,12 @@ import com.feature.notes.domain.model.NoteWithTag
 import com.feature.notes.domain.repo.NotesRepository
 import javax.inject.Inject
 
-class UpsertNotesUseCase @Inject constructor(
-    private val repository: NotesRepository
-) {
-    suspend operator fun invoke(notes: List<NoteWithTag>) {
-        repository.upsertNotes(notes)
+class UpsertNotesUseCase
+    @Inject
+    constructor(
+        private val repository: NotesRepository,
+    ) {
+        suspend operator fun invoke(notes: List<NoteWithTag>) {
+            repository.upsertNotes(notes)
+        }
     }
-}

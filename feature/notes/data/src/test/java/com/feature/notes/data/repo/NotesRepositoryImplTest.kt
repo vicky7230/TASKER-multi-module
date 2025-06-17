@@ -9,19 +9,20 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 class NotesRepositoryImplTest {
     private val notesDao: NotesDao = mockk(relaxed = true)
     private val tagsDao: TagsDao = mockk(relaxed = true)
-    private val notesDb: NotesDb = mockk {
-        every { getNotesDao() } returns notesDao
-        every { getTagsDao() } returns tagsDao
-    }
+    private val notesDb: NotesDb =
+        mockk {
+            every { getNotesDao() } returns notesDao
+            every { getTagsDao() } returns tagsDao
+        }
 
     private lateinit var repository: NotesRepositoryImpl
 
@@ -32,29 +33,31 @@ class NotesRepositoryImplTest {
 
     @After
     fun tearDown() {
-        //nothing
+        // nothing
     }
 
     @Test
-    fun `upsertNotes should map and return IDs`() = runTest {
-        val notes = listOf(
-            NoteWithTag(
-                1,
-                "Test",
-                timestamp = 1233L,
-                tagId = 1,
-                tagName = "Tag",
-                tagColor = "#FF0000",
-                done = false
-            )
-        )
-        val expectedIds = listOf(100L)
+    fun `upsertNotes should map and return IDs`() =
+        runTest {
+            val notes =
+                listOf(
+                    NoteWithTag(
+                        1,
+                        "Test",
+                        timestamp = 1233L,
+                        tagId = 1,
+                        tagName = "Tag",
+                        tagColor = "#FF0000",
+                        done = false,
+                    ),
+                )
+            val expectedIds = listOf(100L)
 
-        coEvery { notesDao.upsertNotes(any()) } returns expectedIds
+            coEvery { notesDao.upsertNotes(any()) } returns expectedIds
 
-        val result = repository.upsertNotes(notes)
+            val result = repository.upsertNotes(notes)
 
-        assertEquals(expectedIds, result)
-        coVerify { notesDao.upsertNotes(notes.map { it.toEntity() }) }
-    }
+            assertEquals(expectedIds, result)
+            coVerify { notesDao.upsertNotes(notes.map { it.toEntity() }) }
+        }
 }

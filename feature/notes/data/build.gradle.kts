@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     id("com.google.devtools.ksp")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -21,7 +22,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -35,6 +36,7 @@ android {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint)
 
     implementation(project(":feature:notes:domain"))
     implementation(project(":core:database"))
@@ -46,29 +48,28 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //dagger2
+    // dagger2
     implementation(libs.dagger)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     kapt(libs.dagger.android.processor)
     kapt(libs.dagger.compiler)
 
-    //room
+    // room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
 
-    //coroutines
+    // coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    //turbine
+    // turbine
     testImplementation(libs.turbine)
 
-    //mockk
+    // mockk
     testImplementation(libs.mockk.android)
-
 }

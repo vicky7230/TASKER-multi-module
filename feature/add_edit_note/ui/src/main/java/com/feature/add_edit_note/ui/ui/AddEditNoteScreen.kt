@@ -19,32 +19,34 @@ import com.feature.notes.domain.model.NoteWithTag
 
 @Composable
 fun AddEditNoteScreen(
-    modifier: Modifier = Modifier,
     addEditNoteUiState: AddEditNoteUiState,
-    onNoteContentChanged: (String) -> Unit,
+    onNoteContentChange: (String) -> Unit,
     onCancelClick: () -> Unit,
-    onDoneClick: () -> Unit
+    onDoneClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val state = addEditNoteUiState
     Scaffold(
         modifier = modifier,
-        topBar = {}
+        topBar = {},
     ) { padding ->
         when (state) {
             is AddEditNoteUiState.Error -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = state.message,
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red
-                        )
+                        style =
+                            TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Red,
+                            ),
                     )
                 }
             }
@@ -53,44 +55,45 @@ fun AddEditNoteScreen(
             AddEditNoteUiState.Loading -> {}
             is AddEditNoteUiState.NoteData -> {
                 NoteContent(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding),
                     state = state,
-                    onNoteContentChanged = onNoteContentChanged,
+                    onNoteContentChange = onNoteContentChange,
                     onCancelClick = onCancelClick,
-                    onDoneClick = onDoneClick
+                    onDoneClick = onDoneClick,
                 )
             }
         }
     }
 }
 
-
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    device = Devices.PIXEL_4
+    device = Devices.PIXEL_4,
 )
 @Composable
-fun NotesScreenPreview() {
+private fun NotesScreenPreview() {
     TaskerTheme {
         AddEditNoteScreen(
             modifier = Modifier.fillMaxSize(),
-            addEditNoteUiState = AddEditNoteUiState.NoteData(
-                NoteWithTag(
-                    id = 5,
-                    content = "",
-                    timestamp = 0,
-                    tagId = 1,
-                    done = false,
-                    tagName = "Work",
-                    tagColor = "#61DEA4"
-                )
-            ),
-            onNoteContentChanged = {},
+            addEditNoteUiState =
+                AddEditNoteUiState.NoteData(
+                    NoteWithTag(
+                        id = 5,
+                        content = "",
+                        timestamp = 0,
+                        tagId = 1,
+                        done = false,
+                        tagName = "Work",
+                        tagColor = "#61DEA4",
+                    ),
+                ),
+            onNoteContentChange = {},
             onCancelClick = {},
-            onDoneClick = {}
+            onDoneClick = {},
         )
     }
 }

@@ -10,27 +10,27 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class NotedDbMigrationTest {
-
-    private val TEST_DB = "NotesDbTest"
+    private val notesDbTest = "NotesDbTest"
 
     @get:Rule
-    val helper: MigrationTestHelper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        NotesDb::class.java,
-        emptyList(),
-        FrameworkSQLiteOpenHelperFactory()
-    )
+    val helper: MigrationTestHelper =
+        MigrationTestHelper(
+            InstrumentationRegistry.getInstrumentation(),
+            NotesDb::class.java,
+            emptyList(),
+            FrameworkSQLiteOpenHelperFactory(),
+        )
 
     @Test
     fun migrateFrom1To2_shouldMatchSchema() {
         // Create the database as it existed in version 1
-        helper.createDatabase(TEST_DB, 1).close()
+        helper.createDatabase(notesDbTest, 1).close()
 
         // Run the auto migration and validate against exported schema
         helper.runMigrationsAndValidate(
-            TEST_DB,
+            notesDbTest,
             2,
-            true
+            true,
         )
     }
 }

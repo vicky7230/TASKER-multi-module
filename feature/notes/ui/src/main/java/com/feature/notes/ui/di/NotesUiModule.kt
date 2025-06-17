@@ -7,7 +7,6 @@ import dagger.Module
 
 @Module
 abstract class NotesUiModule {
-
     @Binds
-    abstract fun bindNotesApi(notesApiImpl: NotesApiImpl) : NotesApi
+    abstract fun bindNotesApi(notesApiImpl: NotesApiImpl): NotesApi
 }

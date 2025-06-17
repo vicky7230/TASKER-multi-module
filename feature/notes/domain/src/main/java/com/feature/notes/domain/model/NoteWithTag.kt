@@ -7,5 +7,5 @@ data class NoteWithTag(
     val tagId: Long,
     val done: Boolean,
     val tagName: String,
-    val tagColor: String
+    val tagColor: String,
 )

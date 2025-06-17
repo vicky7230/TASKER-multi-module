@@ -7,7 +7,6 @@ import dagger.Module
 
 @Module
 abstract class AddEditNoteUiModule {
-
     @Binds
     abstract fun bindAddEditNoteUi(addEditNoteApiImpl: AddEditNoteApiImpl): AddEditNoteApi
 }

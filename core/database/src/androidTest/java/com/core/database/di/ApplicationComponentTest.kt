@@ -11,13 +11,16 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [DatabaseModuleTest::class])
 interface ApplicationComponentTest {
-
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): ApplicationComponentTest
+        fun create(
+            @BindsInstance context: Context,
+        ): ApplicationComponentTest
     }
 
     fun notesDb(): NotesDb
+
     fun notesDao(): NotesDao
+
     fun tagsDao(): TagsDao
 }

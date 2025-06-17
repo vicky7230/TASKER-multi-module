@@ -15,43 +15,41 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        //if (BuildConfig.DEBUG)
+        // if (BuildConfig.DEBUG)
         return HttpLoggingInterceptor().apply {
             setLevel(HttpLoggingInterceptor.Level.BODY)
         }
-        //else
-        //HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+        // else
+        // HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
     }
 
     @Singleton
     @Provides
     fun provideOkhttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+    ): OkHttpClient =
+        OkHttpClient
+            .Builder()
             .readTimeout(10 * 1000, TimeUnit.MILLISECONDS)
             .addInterceptor(httpLoggingInterceptor)
             .build()
-    }
 
     @Singleton
     @Provides
-    fun provideJson(): Json {
-        return Json { ignoreUnknownKeys = true }
-    }
+    fun provideJson(): Json = Json { ignoreUnknownKeys = true }
 
     @Singleton
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        json: Json
+        json: Json,
     ): Retrofit {
         val contentType = "application/json".toMediaType()
-        return Retrofit.Builder()
+        return Retrofit
+            .Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .client(okHttpClient)
@@ -60,7 +58,5 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
+    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 }

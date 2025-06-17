@@ -11,30 +11,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class NotesRepositoryImpl @Inject constructor(
-    private val notesDb: NotesDb
-) : NotesRepository {
-    override suspend fun upsertNotes(notes: List<NoteWithTag>): List<Long> {
-        return notesDb.getNotesDao().upsertNotes(notes.map { it.toEntity() })
-    }
+class NotesRepositoryImpl
+    @Inject
+    constructor(
+        private val notesDb: NotesDb,
+    ) : NotesRepository {
+        override suspend fun upsertNotes(notes: List<NoteWithTag>): List<Long> = notesDb.getNotesDao().upsertNotes(notes.map { it.toEntity() })
 
-    override fun getAllNotes(): Flow<List<Note>> {
-        return notesDb.getNotesDao().getAllNotes().map { it.map { it.toDomain() } }
-    }
+        override fun getAllNotes(): Flow<List<Note>> = notesDb.getNotesDao().getAllNotes().map { it.map { it.toDomain() } }
 
-    override fun getAllNotesWithTag(): Flow<List<NoteWithTag>> {
-        return notesDb.getNotesDao().getAllNotesWithTag().map { it.map { it.toDomain() } }
-    }
+        override fun getAllNotesWithTag(): Flow<List<NoteWithTag>> = notesDb.getNotesDao().getAllNotesWithTag().map { it.map { it.toDomain() } }
 
-    override suspend fun getNoteById(id: Long): Note? {
-        return notesDb.getNotesDao().getNoteById(id)?.toDomain()
-    }
+        override suspend fun getNoteById(id: Long): Note? = notesDb.getNotesDao().getNoteById(id)?.toDomain()
 
-    override suspend fun getNoteWithTagById(id: Long): NoteWithTag? {
-        return notesDb.getNotesDao().getNoteWithTagById(id)?.toDomain()
-    }
+        override suspend fun getNoteWithTagById(id: Long): NoteWithTag? = notesDb.getNotesDao().getNoteWithTagById(id)?.toDomain()
 
-    override fun getAllTagsWithNotes(): Flow<List<TagWithNotes>> {
-        return notesDb.getTagsDao().getAllTagsWithNotes().map { it.map { it.toDomain() } }
+        override fun getAllTagsWithNotes(): Flow<List<TagWithNotes>> = notesDb.getTagsDao().getAllTagsWithNotes().map { it.map { it.toDomain() } }
     }
-}

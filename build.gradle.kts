@@ -6,4 +6,26 @@ plugins {
     alias(libs.plugins.android.library) apply false
     id("com.google.devtools.ksp") version "2.0.21-1.0.27" apply false
     id("androidx.room") version "2.7.1" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "12.3.0" apply false
+}
+
+// ./gradlew ktlintCheck
+// ./gradlew ktlintFormat
+
+subprojects {
+    plugins.withId("org.jlleitschuh.gradle.ktlint") {
+        extensions.configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+            println("Using ktlint version: ${version.getOrElse("default")}")
+            version = "1.4.1" // ktlint version
+            verbose = true
+            android = true
+            outputToConsole = true
+            ignoreFailures = false
+            reporters {
+                reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+                reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+                reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
+            }
+        }
+    }
 }

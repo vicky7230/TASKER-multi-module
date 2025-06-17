@@ -10,7 +10,7 @@ import com.core.common.navigation.NotesGraph
 fun AppNavGraph(
     navController: NavHostController,
     navigationProvider: NavigationProvider,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
 ) {
     NavHost(navController = navController, startDestination = NotesGraph) {
         navigationProvider.notesApi.registerGraph(navController, this, viewModelFactory)

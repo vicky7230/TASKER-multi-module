@@ -6,7 +6,6 @@ import org.junit.Before
 import org.junit.Test
 
 class TimeUtilsTest {
-
     @Before
     fun setUp() {
         println("Before test")
@@ -19,21 +18,21 @@ class TimeUtilsTest {
 
     @Test
     fun isTimestampToday_inputIsCurrentTimestamp_returnsTrue() {
-        //Arrange
+        // Arrange
         val currentTimestamp = System.currentTimeMillis()
-        //Act
+        // Act
         val result = TimeUtils.isTimestampToday(currentTimestamp)
-        //Assert
+        // Assert
         assertEquals(result, true)
     }
 
     @Test
     fun isTimestampToday_inputIsNotCurrentTimestamp_returnsFalse() {
-        //Arrange
+        // Arrange
         val notCurrentTimestamp = 1633024800000L // 1 October 2021
-        //Act
+        // Act
         val result = TimeUtils.isTimestampToday(notCurrentTimestamp)
-        //Assert
+        // Assert
         assertEquals(result, false)
     }
 }

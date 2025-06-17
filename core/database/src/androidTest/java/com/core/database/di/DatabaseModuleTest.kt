@@ -8,12 +8,12 @@ import dagger.Provides
 
 @Module
 class DatabaseModuleTest {
-
     @Provides
-    fun provideInMemoryDatabase(context: Context): NotesDb {
-        return Room.inMemoryDatabaseBuilder(context, NotesDb::class.java).allowMainThreadQueries()
+    fun provideInMemoryDatabase(context: Context): NotesDb =
+        Room
+            .inMemoryDatabaseBuilder(context, NotesDb::class.java)
+            .allowMainThreadQueries()
             .build()
-    }
 
     @Provides
     fun provideNotesDao(notesDb: NotesDb) = notesDb.getNotesDao()

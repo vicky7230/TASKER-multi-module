@@ -12,4 +12,6 @@ object NotesScreen
 object AddEditNoteGraph
 
 @Serializable
-data class AddEditNoteScreen(val noteId: Long)
+data class AddEditNoteScreen(
+    val noteId: Long,
+)

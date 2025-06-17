@@ -40,21 +40,22 @@ import com.feature.notes.domain.model.TagWithNotes
 
 @Composable
 fun NotesContent(
-    modifier: Modifier = Modifier,
     notesUiState: NotesUiState.NotesLoaded,
-    onNoteClick: (NoteWithTag) -> Unit
+    onNoteClick: (NoteWithTag) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
     ) {
         item {
             Text(
                 modifier = Modifier.padding(start = 60.dp, top = 16.dp),
                 text = stringResource(com.core.common.R.string.today),
-                style = TextStyle(
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                style =
+                    TextStyle(
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                    ),
             )
         }
 
@@ -62,14 +63,15 @@ fun NotesContent(
             NoteItem(
                 modifier = Modifier.fillMaxWidth(),
                 note = it,
-                onNoteClick = onNoteClick
+                onNoteClick = onNoteClick,
             )
             Spacer(
-                modifier = Modifier
-                    .padding(start = 60.dp)
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(LightGray)
+                modifier =
+                    Modifier
+                        .padding(start = 60.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(LightGray),
             )
         }
 
@@ -79,21 +81,24 @@ fun NotesContent(
                 text = "Lists",
                 color = LightGray2,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
 
         items(notesUiState.tags) {
             TagItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 60.dp, end = 16.dp), tag = it
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 60.dp, end = 16.dp),
+                tag = it,
             )
             Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .background(Color.Transparent)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .background(Color.Transparent),
             )
         }
     }
@@ -101,69 +106,75 @@ fun NotesContent(
 
 @Composable
 fun NoteItem(
-    modifier: Modifier = Modifier,
     note: NoteWithTag,
-    onNoteClick: (NoteWithTag) -> Unit
+    onNoteClick: (NoteWithTag) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .clickable { onNoteClick(note) },
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .clickable { onNoteClick(note) },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .size(28.dp),
+            modifier =
+                Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .size(28.dp),
             painter = painterResource(R.drawable.ic_ring_gray),
             contentDescription = null,
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
         Text(
-            modifier = Modifier
-                .padding(end = 16.dp, top = 19.dp, bottom = 19.dp)
-                .weight(1f),
+            modifier =
+                Modifier
+                    .padding(end = 16.dp, top = 19.dp, bottom = 19.dp)
+                    .weight(1f),
             text = note.content,
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            ),
+            style =
+                TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                ),
             overflow = TextOverflow.Ellipsis,
-            maxLines = 2
+            maxLines = 2,
         )
         Box(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(12.dp)
-                .background(color = note.tagColor.toColorSafely(), shape = CircleShape)
+            modifier =
+                Modifier
+                    .padding(end = 16.dp)
+                    .size(12.dp)
+                    .background(color = note.tagColor.toColorSafely(), shape = CircleShape),
         )
     }
 }
 
 @Composable
 fun TagItem(
+    tag: TagWithNotes,
     modifier: Modifier = Modifier,
-    tag: TagWithNotes
 ) {
     Column(
-        modifier = modifier.background(
-            color = tag.color.toColorSafely(),
-            shape = RoundedCornerShape(10.dp)
-        )
+        modifier =
+            modifier.background(
+                color = tag.color.toColorSafely(),
+                shape = RoundedCornerShape(10.dp),
+            ),
     ) {
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 12.dp),
             text = tag.name,
             color = Color.White,
             fontSize = 19.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, bottom = 12.dp, top = 4.dp),
             text = tag.notes.size.toString(),
             color = LightGray,
             fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
     }
 }
@@ -171,15 +182,15 @@ fun TagItem(
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    device = Devices.PIXEL_4
+    device = Devices.PIXEL_4,
 )
 @Composable
-fun NotesContentPreview() {
+private fun NotesContentPreview() {
     TaskerTheme {
         NotesContent(
             modifier = Modifier.fillMaxSize(),
             notesUiState = NotesUiState.NotesLoaded(notes, tags),
-            onNoteClick = {}
+            onNoteClick = {},
         )
     }
 }

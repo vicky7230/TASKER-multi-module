@@ -29,10 +29,10 @@ import com.feature.notes.domain.model.NoteWithTag
 
 @Composable
 fun NotesScreen(
-    modifier: Modifier = Modifier,
     notesUiState: NotesUiState,
     onNoteClick: (NoteWithTag) -> Unit,
-    onAddNoteClick: () -> Unit
+    onAddNoteClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val state = notesUiState
     Scaffold(
@@ -44,30 +44,32 @@ fun NotesScreen(
                 containerColor = Color.White,
                 contentColor = Blue,
                 shape = CircleShape,
-                elevation = FloatingActionButtonDefaults.elevation(0.dp)
+                elevation = FloatingActionButtonDefaults.elevation(0.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Note"
+                    contentDescription = "Add Note",
                 )
             }
-        }
+        },
     ) { padding ->
         when (state) {
             is NotesUiState.Error -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = state.message,
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red
-                        )
+                        style =
+                            TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Red,
+                            ),
                     )
                 }
             }
@@ -75,22 +77,25 @@ fun NotesScreen(
             NotesUiState.Idle -> {}
             NotesUiState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
                 }
             }
 
-            is NotesUiState.NotesLoaded -> NotesContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                notesUiState = state,
-                onNoteClick = onNoteClick
-            )
+            is NotesUiState.NotesLoaded ->
+                NotesContent(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                    notesUiState = state,
+                    onNoteClick = onNoteClick,
+                )
         }
     }
 }
@@ -98,16 +103,18 @@ fun NotesScreen(
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    device = Devices.PIXEL_4
+    device = Devices.PIXEL_4,
 )
 @Composable
-fun NotesScreenPreview(@PreviewParameter(NotesPreviewParameterProvider::class) notesUiState: NotesUiState) {
+private fun NotesScreenPreview(
+    @PreviewParameter(NotesPreviewParameterProvider::class) notesUiState: NotesUiState,
+) {
     TaskerTheme {
         NotesScreen(
             modifier = Modifier.fillMaxSize(),
             notesUiState = notesUiState,
             onAddNoteClick = {},
-            onNoteClick = {}
+            onNoteClick = {},
         )
     }
 }

@@ -12,9 +12,10 @@ import com.core.database.entity.TagEntity
     entities = [NoteEntity::class, TagEntity::class],
     autoMigrations = [AutoMigration(1, 2)],
     version = 2,
-    exportSchema = true
+    exportSchema = true,
 )
 abstract class NotesDb : RoomDatabase() {
     abstract fun getNotesDao(): NotesDao
+
     abstract fun getTagsDao(): TagsDao
 }

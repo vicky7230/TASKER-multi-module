@@ -20,64 +20,65 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AddEditNoteViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
-    private val getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase,
-    private val upsertNotesUseCase: UpsertNotesUseCase
-) : ViewModel() {
+class AddEditNoteViewModel
+    @AssistedInject
+    constructor(
+        @Assisted private val savedStateHandle: SavedStateHandle,
+        private val getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase,
+        private val upsertNotesUseCase: UpsertNotesUseCase,
+    ) : ViewModel() {
+        @AssistedFactory
+        interface Factory : AssistedViewModelFactory<AddEditNoteViewModel> {
+            override fun create(savedStateHandle: SavedStateHandle): AddEditNoteViewModel
+        }
 
-    @AssistedFactory
-    interface Factory : AssistedViewModelFactory<AddEditNoteViewModel> {
-        override fun create(savedStateHandle: SavedStateHandle): AddEditNoteViewModel
-    }
+        private val _addEditeNoteUiState: MutableStateFlow<AddEditNoteUiState> =
+            MutableStateFlow(AddEditNoteUiState.Idle)
+        val addEditeNoteUiState: StateFlow<AddEditNoteUiState> =
+            _addEditeNoteUiState.asStateFlow()
 
-    private val _addEditeNoteUiState: MutableStateFlow<AddEditNoteUiState> =
-        MutableStateFlow(AddEditNoteUiState.Idle)
-    val addEditeNoteUiState: StateFlow<AddEditNoteUiState> =
-        _addEditeNoteUiState.asStateFlow()
+        private var _sideEffect = MutableSharedFlow<AddEditNoteSideEffect>()
+        val sideEffect: SharedFlow<AddEditNoteSideEffect> = _sideEffect.asSharedFlow()
 
-    private var _sideEffect = MutableSharedFlow<AddEditNoteSideEffect>()
-    val sideEffect: SharedFlow<AddEditNoteSideEffect> = _sideEffect.asSharedFlow()
+        private var currentNote: NoteWithTag? = null
 
-    private var currentNote: NoteWithTag? = null
+        init {
+            val addEditNoteScreen = savedStateHandle.toRoute<AddEditNoteScreen>()
+            getNoteById(addEditNoteScreen.noteId)
+        }
 
-    init {
-        val addEditNoteScreen = savedStateHandle.toRoute<AddEditNoteScreen>()
-        getNoteById(addEditNoteScreen.noteId)
-    }
+        private fun getNoteById(noteId: Long) {
+            viewModelScope.launch {
+                val note = getNoteWithTagByIdUseCase(id = noteId)
+                currentNote = note ?: NoteWithTag(
+                    content = "",
+                    timestamp = System.currentTimeMillis(),
+                    tagId = 1,
+                    done = false,
+                    tagName = "Work",
+                    tagColor = "#61DEA4",
+                )
+                currentNote?.let {
+                    _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
+                }
+            }
+        }
 
-    private fun getNoteById(noteId: Long) {
-        viewModelScope.launch {
-            val note = getNoteWithTagByIdUseCase(id = noteId)
-            currentNote = note ?: NoteWithTag(
-                content = "",
-                timestamp = System.currentTimeMillis(),
-                tagId = 1,
-                done = false,
-                tagName = "Work",
-                tagColor = "#61DEA4"
-            )
+        fun onNoteContentChanged(content: String) {
+            currentNote = currentNote?.copy(content = content)
             currentNote?.let {
                 _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
             }
         }
-    }
 
-    fun onNoteContentChanged(content: String) {
-        currentNote = currentNote?.copy(content = content)
-        currentNote?.let {
-            _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
-        }
-    }
-
-    fun saveNote() {
-        viewModelScope.launch {
-            currentNote?.let { note ->
-                if (note.content.isNotBlank()) {
-                    upsertNotesUseCase(listOf(note))
-                    _sideEffect.emit(AddEditNoteSideEffect.finish)
+        fun saveNote() {
+            viewModelScope.launch {
+                currentNote?.let { note ->
+                    if (note.content.isNotBlank()) {
+                        upsertNotesUseCase(listOf(note))
+                        _sideEffect.emit(AddEditNoteSideEffect.Finish)
+                    }
                 }
             }
         }
     }
-}

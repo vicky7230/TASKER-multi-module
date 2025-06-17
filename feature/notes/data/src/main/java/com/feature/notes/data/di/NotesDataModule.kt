@@ -7,7 +7,6 @@ import dagger.Module
 
 @Module
 abstract class NotesDataModule {
-
     @Binds
     abstract fun bindNotesRepository(notesRepositoryImpl: NotesRepositoryImpl): NotesRepository
 }

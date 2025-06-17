@@ -6,15 +6,16 @@ import androidx.navigation.NavHostController
 import com.core.feature_api.FeatureApi
 import javax.inject.Inject
 
-interface NotesApi: FeatureApi
+interface NotesApi : FeatureApi
 
-class NotesApiImpl @Inject constructor(): NotesApi {
-    override fun registerGraph(
-        navHostController: NavHostController,
-        navGraphBuilder: NavGraphBuilder,
-        viewModelFactory: ViewModelProvider.Factory
-    ) {
-        InternalNotesFeatureApi.registerGraph(navHostController, navGraphBuilder, viewModelFactory)
+class NotesApiImpl
+    @Inject
+    constructor() : NotesApi {
+        override fun registerGraph(
+            navHostController: NavHostController,
+            navGraphBuilder: NavGraphBuilder,
+            viewModelFactory: ViewModelProvider.Factory,
+        ) {
+            InternalNotesFeatureApi.registerGraph(navHostController, navGraphBuilder, viewModelFactory)
+        }
     }
-}
-

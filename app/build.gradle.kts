@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.serialization") version "2.0.21"
     id("com.google.devtools.ksp")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -26,7 +27,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -43,6 +44,7 @@ android {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint)
 
     implementation(project(":core:network"))
     implementation(project(":core:database"))
@@ -72,28 +74,28 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //dagger2
+    // dagger2
     implementation(libs.dagger)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     kapt(libs.dagger.android.processor)
     kapt(libs.dagger.compiler)
 
-    //navigation compose
+    // navigation compose
     implementation(libs.androidx.navigation.compose)
 
-    //room
+    // room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
 
-    //retrofit
+    // retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.logging.interceptor)
 
-    //kotlinx-serialization
+    // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
 }

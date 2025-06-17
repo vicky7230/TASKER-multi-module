@@ -13,7 +13,6 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class ViewModelModule {
-
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
@@ -25,6 +24,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(AddEditNoteViewModel::class)
-    abstract fun bindAddEditNoteViewModel(factory: AddEditNoteViewModel.Factory): @JvmSuppressWildcards AssistedViewModelFactory<out ViewModel>
-
+    abstract fun bindAddEditNoteViewModel(
+        factory: AddEditNoteViewModel.Factory,
+    ): @JvmSuppressWildcards AssistedViewModelFactory<out ViewModel>
 }

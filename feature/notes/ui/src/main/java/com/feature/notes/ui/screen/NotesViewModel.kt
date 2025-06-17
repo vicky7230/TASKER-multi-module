@@ -14,33 +14,34 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NotesViewModel @Inject constructor(
-    private val getAllNotesWithTagUseCase: GetAllNotesWithTagUseCase,
-    private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase
-) : ViewModel() {
+class NotesViewModel
+    @Inject
+    constructor(
+        private val getAllNotesWithTagUseCase: GetAllNotesWithTagUseCase,
+        private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
+    ) : ViewModel() {
+        private val _notesUiState: MutableStateFlow<NotesUiState> = MutableStateFlow(NotesUiState.Idle)
+        val notesUiState: StateFlow<NotesUiState> = _notesUiState.asStateFlow()
 
-    private val _notesUiState: MutableStateFlow<NotesUiState> = MutableStateFlow(NotesUiState.Idle)
-    val notesUiState: StateFlow<NotesUiState> = _notesUiState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            try {
-                combine(
-                    getAllNotesWithTagUseCase().distinctUntilChanged(),
-                    getAllTagsWithNotesUseCase().distinctUntilChanged()
-                ) { notes, tags ->
-                    NotesUiState.NotesLoaded(
-                        notes.filter { TimeUtils.isTimestampToday(it.timestamp) },
-                        tags
-                    )
-                }.collect { newState ->
-                    _notesUiState.update { currentState ->
-                        newState
+        init {
+            viewModelScope.launch {
+                try {
+                    combine(
+                        getAllNotesWithTagUseCase().distinctUntilChanged(),
+                        getAllTagsWithNotesUseCase().distinctUntilChanged(),
+                    ) { notes, tags ->
+                        NotesUiState.NotesLoaded(
+                            notes.filter { TimeUtils.isTimestampToday(it.timestamp) },
+                            tags,
+                        )
+                    }.collect { newState ->
+                        _notesUiState.update { currentState ->
+                            newState
+                        }
                     }
+                } catch (e: Exception) {
+                    _notesUiState.update { NotesUiState.Error(e.message ?: "Unknown error") }
                 }
-            } catch (e: Exception) {
-                _notesUiState.update { NotesUiState.Error(e.message ?: "Unknown error") }
             }
         }
     }
-}

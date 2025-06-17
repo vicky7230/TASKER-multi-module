@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.serialization") version "2.0.21"
     alias(libs.plugins.kotlin.compose)
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -22,7 +23,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -39,6 +40,7 @@ android {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint)
 
     implementation(project(":core:feature_api"))
     implementation(project(":core:common"))
@@ -58,10 +60,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //navigation compose
+    // navigation compose
     implementation(libs.androidx.navigation.compose)
 
-    //dagger2
+    // dagger2
     implementation(libs.dagger)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
@@ -73,17 +75,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //kotlinx-serialization
+    // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
 
-    //mockito
+    // mockito
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
 
-    //turbine
+    // turbine
     testImplementation(libs.turbine)
 
-    //coroutines
+    // coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     androidTestImplementation(libs.kotlinx.coroutines.test)

@@ -7,53 +7,48 @@ import com.feature.notes.domain.model.Note
 import com.feature.notes.domain.model.NoteWithTag
 import com.feature.notes.domain.model.TagWithNotes
 
-fun Note.toEntity(): NoteEntity {
-    return NoteEntity(
+fun Note.toEntity(): NoteEntity =
+    NoteEntity(
         id = id,
         content = content,
         timestamp = timestamp,
         tagId = tagId,
-        done = done
+        done = done,
     )
-}
 
-fun NoteEntity.toDomain(): Note {
-    return Note(
+fun NoteEntity.toDomain(): Note =
+    Note(
         id = id,
         content = content,
         timestamp = timestamp,
         tagId = tagId,
-        done = done
+        done = done,
     )
-}
 
-fun NoteWithTagEntity.toDomain(): NoteWithTag {
-    return NoteWithTag(
+fun NoteWithTagEntity.toDomain(): NoteWithTag =
+    NoteWithTag(
         id = note.id,
         content = note.content,
         timestamp = note.timestamp,
         tagId = note.tagId,
         done = note.done,
         tagColor = tag.color,
-        tagName = tag.name
+        tagName = tag.name,
     )
-}
 
-fun NoteWithTag.toEntity(): NoteEntity {
-    return NoteEntity(
+fun NoteWithTag.toEntity(): NoteEntity =
+    NoteEntity(
         id = id,
         content = content,
         timestamp = timestamp,
         tagId = tagId,
-        done = done
+        done = done,
     )
-}
 
-fun TagWithNotesEntity.toDomain(): TagWithNotes {
-    return TagWithNotes(
+fun TagWithNotesEntity.toDomain(): TagWithNotes =
+    TagWithNotes(
         id = tag.id,
         name = tag.name,
         color = tag.color,
-        notes = notes.map { it.toDomain() }
+        notes = notes.map { it.toDomain() },
     )
-}
