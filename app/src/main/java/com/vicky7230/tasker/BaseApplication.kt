@@ -18,7 +18,7 @@ class BaseApplication :
         applicationComponent =
             DaggerApplicationComponent
                 .factory()
-                .create(this)
+                .create(context = this, isDebug = BuildConfig.DEBUG)
 
         applicationComponent.inject(this)
     }

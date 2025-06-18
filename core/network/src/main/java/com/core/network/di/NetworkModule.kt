@@ -17,14 +17,12 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        // if (BuildConfig.DEBUG)
-        return HttpLoggingInterceptor().apply {
-            setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideHttpLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor =
+        if (isDebug) {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        } else {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
         }
-        // else
-        // HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
-    }
 
     @Singleton
     @Provides

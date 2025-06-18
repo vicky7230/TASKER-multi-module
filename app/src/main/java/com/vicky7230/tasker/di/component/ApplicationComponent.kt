@@ -35,6 +35,7 @@ interface ApplicationComponent {
     interface Factory {
         fun create(
             @BindsInstance context: Context,
+            @BindsInstance isDebug: Boolean,
         ): ApplicationComponent
     }
 

@@ -59,4 +59,12 @@ dependencies {
 
     // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
+
+    // mock web server
+    testImplementation(libs.mockwebserver)
+
+    // coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
