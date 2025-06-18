@@ -49,7 +49,7 @@ jobs:
 
   android-test:
     name: Run Instrumented Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     # Optional: needs: test # Uncomment to make this run after unit tests
 
     steps:
