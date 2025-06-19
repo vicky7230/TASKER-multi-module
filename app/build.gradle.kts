@@ -11,10 +11,42 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
 }
 
+// Load keystore properties if present
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("local.properties")
+
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+    val storeFilePath = keystoreProperties["RELEASE_STORE_FILE"] as? String
+    val storePassword = keystoreProperties["RELEASE_STORE_PASSWORD"] as? String
+    val keyAlias = keystoreProperties["RELEASE_KEY_ALIAS"] as? String
+    val keyPassword = keystoreProperties["RELEASE_KEY_PASSWORD"] as? String
+
+    if (!storeFilePath.isNullOrEmpty() &&
+        !storePassword.isNullOrEmpty() &&
+        !keyAlias.isNullOrEmpty() &&
+        !keyPassword.isNullOrEmpty()
+    ) {
+        android.signingConfigs {
+            create("release") {
+                storeFile = file(storeFilePath)
+                this.storePassword = storePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+            }
+        }
+
+        android.buildTypes {
+            getByName("release") {
+                signingConfig = android.signingConfigs.getByName("release")
+            }
+        }
+    } else {
+        logger.warn("⚠️ Keystore properties found but incomplete. Skipping release signing config.")
+    }
+} else {
+    logger.warn("⚠️ local.properties not found. Skipping release signing config.")
 }
 
 android {
@@ -31,18 +63,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file(keystoreProperties["RELEASE_STORE_FILE"] as String)
-            storePassword = keystoreProperties["RELEASE_STORE_PASSWORD"] as String
-            keyAlias = keystoreProperties["RELEASE_KEY_ALIAS"] as String
-            keyPassword = keystoreProperties["RELEASE_KEY_PASSWORD"] as String
-        }
-    }
-
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            // signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
@@ -52,6 +75,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            // signingConfig is set conditionally above
         }
         debug {
             isDebuggable = true
@@ -59,7 +83,7 @@ android {
             isShrinkResources = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            // No signingConfig specified, will use default debug keystore
+            // Uses default debug keystore
         }
     }
     compileOptions {
