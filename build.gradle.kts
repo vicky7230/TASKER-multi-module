@@ -60,6 +60,10 @@ subprojects {
 
     // ✅ Unit test logs in console
     tasks.withType<Test>().configureEach {
+        // Dynamically sets the maximum number of parallel test forks to the number of available processors.
+        // This ensures optimal CPU utilization by allowing test tasks to run concurrently
+        // without exceeding the system's processing capacity.
+        maxParallelForks = Runtime.getRuntime().availableProcessors()
         testLogging {
             events =
                 setOf(
