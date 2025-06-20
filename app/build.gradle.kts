@@ -8,7 +8,7 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.serialization") version "2.0.21"
     id("com.google.devtools.ksp")
-    id("org.jlleitschuh.gradle.ktlint")
+    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 // Load keystore properties if present
@@ -58,7 +58,7 @@ android {
         minSdk = 24
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0" // Semantic Versioning (Major.Minor.Patch)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -100,7 +100,7 @@ android {
 }
 
 dependencies {
-    ktlintRuleset(libs.ktlint)
+    // ktlintRuleset(libs.ktlint)
 
     implementation(project(":core:network"))
     implementation(project(":core:database"))

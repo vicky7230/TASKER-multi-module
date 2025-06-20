@@ -1,4 +1,6 @@
 package com.vicky7230.tasker.di
+
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
@@ -35,11 +37,19 @@ class ViewModelFactory
 
             if (creator != null) {
                 // Found a regular ViewModel, create it
+                @Suppress("TooGenericExceptionCaught")
                 try {
                     @Suppress("UNCHECKED_CAST")
                     return creator.get() as T
+                } catch (e: IllegalStateException) {
+                    Log.e("ViewModelFactory", "Assisted ViewModel creation failed: ${e.message}", e)
+                    throw e
+                } catch (e: ClassCastException) {
+                    Log.e("ViewModelFactory", "Assisted ViewModel creation failed: ${e.message}", e)
+                    throw e
                 } catch (e: Exception) {
-                    throw RuntimeException(e)
+                    Log.e("ViewModelFactory", "Assisted ViewModel creation failed: ${e.message}", e)
+                    throw e
                 }
             }
 
@@ -54,7 +64,7 @@ class ViewModelFactory
                         @Suppress("UNCHECKED_CAST")
                         val savedStateHandle =
                             extras.createSavedStateHandle()
-                                ?: throw IllegalStateException("SavedStateHandle not found in CreationExtras for assisted ViewModel.")
+                                ?: error("SavedStateHandle not found in CreationExtras for assisted ViewModel.")
                         return value.get().create(savedStateHandle) as T
                         // }
                         // else continue to throw or handle
@@ -64,12 +74,20 @@ class ViewModelFactory
                 // Found an Assisted Inject ViewModel Factory, create it with SavedStateHandle
                 val savedStateHandle =
                     extras.createSavedStateHandle()
-                        ?: throw IllegalStateException("SavedStateHandle not found in CreationExtras for assisted ViewModel.")
+                        ?: error("SavedStateHandle not found in CreationExtras for assisted ViewModel.")
+                @Suppress("TooGenericExceptionCaught")
                 try {
                     @Suppress("UNCHECKED_CAST")
                     return assistedCreatorProvider.get().create(savedStateHandle) as T
+                } catch (e: IllegalStateException) {
+                    Log.e("ViewModelFactory", "Assisted ViewModel creation failed: ${e.message}", e)
+                    throw e
+                } catch (e: ClassCastException) {
+                    Log.e("ViewModelFactory", "Assisted ViewModel creation failed: ${e.message}", e)
+                    throw e
                 } catch (e: Exception) {
-                    throw RuntimeException(e)
+                    Log.e("ViewModelFactory", "Assisted ViewModel creation failed: ${e.message}", e)
+                    throw e
                 }
             }
 

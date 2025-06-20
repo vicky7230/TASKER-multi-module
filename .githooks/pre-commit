@@ -1,13 +1,20 @@
 #!/bin/bash
 
-echo "🛠️  Auto-formatting with ktlint..."
-
+echo "🧼 Running ktlint auto-format..."
 ./gradlew ktlintFormat
 
 if [ $? -ne 0 ]; then
-  echo "❌ Ktlint check still failing. Please fix remaining issues."
+  echo "❌ Ktlint formatting failed. Fix the issues and try again."
   exit 1
 fi
 
-echo "✅ All good. Proceeding with commit."
+echo "🔍 Running Detekt static analysis..."
+./gradlew detekt
+
+if [ $? -ne 0 ]; then
+  echo "❌ Detekt found issues. Please fix them before committing."
+  exit 1
+fi
+
+echo "✅ Code is clean! Proceeding with commit."
 exit 0

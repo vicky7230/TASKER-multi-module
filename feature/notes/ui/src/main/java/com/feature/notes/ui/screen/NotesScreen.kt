@@ -55,36 +55,23 @@ fun NotesScreen(
     ) { padding ->
         when (state) {
             is NotesUiState.Error -> {
-                Box(
+                ErrorScreen(
+                    state = state,
                     modifier =
                         Modifier
                             .fillMaxSize()
                             .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = state.message,
-                        style =
-                            TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Red,
-                            ),
-                    )
-                }
+                )
             }
 
             NotesUiState.Idle -> {}
             NotesUiState.Loading -> {
-                Box(
+                LoadingScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
                             .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
+                )
             }
 
             is NotesUiState.NotesLoaded ->
@@ -100,6 +87,38 @@ fun NotesScreen(
     }
 }
 
+@Composable
+private fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun ErrorScreen(
+    state: NotesUiState.Error,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = state.message,
+            style =
+                TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Red,
+                ),
+        )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
 @Preview(
     showBackground = true,
     showSystemUi = true,

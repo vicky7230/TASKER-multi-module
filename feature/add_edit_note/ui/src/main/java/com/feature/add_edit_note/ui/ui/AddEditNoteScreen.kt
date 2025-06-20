@@ -69,6 +69,7 @@ fun AddEditNoteScreen(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Preview(
     showBackground = true,
     showSystemUi = true,

@@ -48,7 +48,8 @@ class DatabaseModule {
                                 "')",
                         )
                         db.execSQL(
-                            "INSERT INTO notes (content, tagId, timestamp) VALUES ('Your notes are saved automatically and will persist between app sessions.','1','" +
+                            "INSERT INTO notes (content, tagId, timestamp) " +
+                                "VALUES ('Your notes are saved automatically and will persist between app sessions.','1','" +
                                 System.currentTimeMillis() +
                                 "')",
                         )

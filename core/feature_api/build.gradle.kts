@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("org.jlleitschuh.gradle.ktlint")
+    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    ktlintRuleset(libs.ktlint)
+    // ktlintRuleset(libs.ktlint)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

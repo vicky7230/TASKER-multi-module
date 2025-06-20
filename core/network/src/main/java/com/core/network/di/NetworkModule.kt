@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.core.network.di
 
 import com.core.network.ApiService

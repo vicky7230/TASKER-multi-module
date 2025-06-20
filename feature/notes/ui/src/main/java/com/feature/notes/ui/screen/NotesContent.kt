@@ -179,6 +179,7 @@ fun TagItem(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Preview(
     showBackground = true,
     showSystemUi = true,

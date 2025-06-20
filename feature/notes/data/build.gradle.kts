@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     id("com.google.devtools.ksp")
-    id("org.jlleitschuh.gradle.ktlint")
+    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    ktlintRuleset(libs.ktlint)
+    // ktlintRuleset(libs.ktlint)
 
     implementation(project(":feature:notes:domain"))
     implementation(project(":core:database"))

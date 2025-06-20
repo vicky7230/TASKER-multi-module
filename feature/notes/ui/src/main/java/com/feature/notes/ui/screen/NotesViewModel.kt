@@ -25,6 +25,7 @@ class NotesViewModel
 
         init {
             viewModelScope.launch {
+                @Suppress("TooGenericExceptionCaught")
                 try {
                     combine(
                         getAllNotesWithTagUseCase().distinctUntilChanged(),

@@ -77,58 +77,73 @@ fun NoteContent(
             )
         }
 
-        TextField(
+        NoteInputField(
+            noteContent = noteContent,
+            onNoteContentChange = onNoteContentChange,
             modifier = Modifier.fillMaxSize(),
-            value = noteContent,
-            onValueChange = {
-                noteContent = it
-                onNoteContentChange(it)
-            },
-            colors =
-                TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    errorContainerColor = Color.Transparent,
-                ),
-            placeholder = {
-                Text(
-                    text = stringResource(com.core.common.R.string.what_do_you_want_tot_do),
-                    style =
-                        TextStyle(
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Medium,
-                        ),
-                    color = LightGray,
-                )
-            },
-            leadingIcon = {
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxHeight()
-                            .wrapContentHeight(align = Alignment.Top)
-                            .padding(start = 16.dp, end = 10.dp)
-                            .offset(y = 12.dp),
-                ) {
-                    Icon(
-                        modifier = Modifier.size(28.dp),
-                        painter = painterResource(R.drawable.ic_ring_gray),
-                        contentDescription = null,
-                    )
-                }
-            },
-            minLines = 3,
-            textStyle =
-                TextStyle(
-                    fontSize = 18.sp,
-                ),
         )
     }
 }
 
+@Composable
+private fun NoteInputField(
+    noteContent: String,
+    onNoteContentChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var noteContent1 = noteContent
+    TextField(
+        modifier = modifier,
+        value = noteContent1,
+        onValueChange = {
+            noteContent1 = it
+            onNoteContentChange(it)
+        },
+        colors =
+            TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+            ),
+        placeholder = {
+            Text(
+                text = stringResource(R.string.what_do_you_want_tot_do),
+                style =
+                    TextStyle(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Medium,
+                    ),
+                color = LightGray,
+            )
+        },
+        leadingIcon = {
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxHeight()
+                        .wrapContentHeight(align = Alignment.Top)
+                        .padding(start = 16.dp, end = 10.dp)
+                        .offset(y = 12.dp),
+            ) {
+                Icon(
+                    modifier = Modifier.size(28.dp),
+                    painter = painterResource(R.drawable.ic_ring_gray),
+                    contentDescription = null,
+                )
+            }
+        },
+        minLines = 3,
+        textStyle =
+            TextStyle(
+                fontSize = 18.sp,
+            ),
+    )
+}
+
+@Suppress("UnusedPrivateMember")
 @Preview(
     showBackground = true,
     showSystemUi = true,
