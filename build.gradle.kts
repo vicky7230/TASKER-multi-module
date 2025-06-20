@@ -25,6 +25,9 @@ plugins {
 // ./gradlew ktlintCheck
 // ./gradlew ktlintFormat
 
+// detekt commands
+// ./gradlew detekt
+
 subprojects {
     // ✅ Ktlint for formatting
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
