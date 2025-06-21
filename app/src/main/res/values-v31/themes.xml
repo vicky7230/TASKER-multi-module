@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Tasker" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Show splash screen icon -->
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <!-- Optional: Background color -->
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+    </style>
+</resources>
