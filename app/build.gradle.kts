@@ -11,44 +11,6 @@ plugins {
     // id("org.jlleitschuh.gradle.ktlint")
 }
 
-// Load keystore properties if present
-val keystoreProperties = Properties()
-val keystorePropertiesFile = rootProject.file("local.properties")
-
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
-    val storeFilePath = keystoreProperties["RELEASE_STORE_FILE"] as? String
-    val storePassword = keystoreProperties["RELEASE_STORE_PASSWORD"] as? String
-    val keyAlias = keystoreProperties["RELEASE_KEY_ALIAS"] as? String
-    val keyPassword = keystoreProperties["RELEASE_KEY_PASSWORD"] as? String
-
-    if (!storeFilePath.isNullOrEmpty() &&
-        !storePassword.isNullOrEmpty() &&
-        !keyAlias.isNullOrEmpty() &&
-        !keyPassword.isNullOrEmpty()
-    ) {
-        android.signingConfigs {
-            create("release") {
-                storeFile = file(storeFilePath)
-                this.storePassword = storePassword
-                this.keyAlias = keyAlias
-                this.keyPassword = keyPassword
-            }
-        }
-
-        android.buildTypes {
-            getByName("release") {
-                signingConfig = android.signingConfigs.getByName("release")
-            }
-        }
-    } else {
-        logger.warn("⚠️ Keystore properties found but incomplete. Skipping release signing config.")
-    }
-} else {
-    logger.warn("⚠️ local.properties not found. Skipping release signing config.")
-}
-
 android {
     namespace = "com.vicky7230.tasker2"
     compileSdk = 35
@@ -57,15 +19,67 @@ android {
         applicationId = "com.vicky7230.tasker2"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.1.0" // Semantic Versioning (Major.Minor.Patch)
+        versionCode = 3
+        versionName = "0.1.1" // Semantic Versioning (Major.Minor.Patch)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            // Attempt to load from environment variables first (for CI/CD)
+            val storeFilePath = System.getenv("RELEASE_STORE_FILE")
+            val storePassword = System.getenv("RELEASE_STORE_PASSWORD")
+            val keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            val keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+
+            if (storeFilePath != null &&
+                storePassword != null &&
+                keyAlias != null &&
+                keyPassword != null
+            ) {
+                // Keystore path will be relative to the project root on the runner
+                storeFile = file(storeFilePath)
+                this.storePassword = storePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+                logger.lifecycle("✅ Release signing config loaded from environment variables.")
+            } else {
+                // Fallback for local development using local.properties
+                val keystoreProperties = Properties()
+                val keystorePropertiesFile = rootProject.file("local.properties")
+
+                if (keystorePropertiesFile.exists()) {
+                    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+                    val localStoreFilePath = keystoreProperties["RELEASE_STORE_FILE"] as? String
+                    val localStorePassword = keystoreProperties["RELEASE_STORE_PASSWORD"] as? String
+                    val localKeyAlias = keystoreProperties["RELEASE_KEY_ALIAS"] as? String
+                    val localKeyPassword = keystoreProperties["RELEASE_KEY_PASSWORD"] as? String
+
+                    if (!localStoreFilePath.isNullOrEmpty() &&
+                        !localStorePassword.isNullOrEmpty() &&
+                        !localKeyAlias.isNullOrEmpty() &&
+                        !localKeyPassword.isNullOrEmpty()
+                    ) {
+                        storeFile = file(localStoreFilePath)
+                        this.storePassword = localStorePassword
+                        this.keyAlias = localKeyAlias
+                        this.keyPassword = localKeyPassword
+                        logger.lifecycle("✅ Release signing config loaded from local.properties.")
+                    } else {
+                        logger.warn("⚠️ local.properties found but incomplete for release signing. Release build might fail.")
+                    }
+                } else {
+                    logger.warn("⚠️ local.properties not found and release signing environment variables not set. Release build might fail.")
+                }
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
@@ -75,7 +89,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            // signingConfig is set conditionally above
         }
         debug {
             isDebuggable = true

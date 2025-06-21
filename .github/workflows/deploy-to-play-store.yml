@@ -1,0 +1,64 @@
+name: Deploy to Google Play Store (Manual)
+
+on:
+  workflow_dispatch: # This trigger allows manual execution from the GitHub UI
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    environment: Production # Optional: Link to an environment for stricter controls/approvals
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Ensure this matches your project's target JVM version
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Decode Keystore File
+        # This step takes your Base64-encoded keystore from GitHub Secrets
+        # and decodes it into a file on the runner.
+        run: |
+          echo "${{ secrets.RELEASE_STORE_FILE_BASE64 }}" | base64 --decode > app/release.jks
+          # Make sure the path 'app/release.jks' matches the 'storeFile = file(storeFilePath)'
+          # line in your app/build.gradle.kts and where you expect the keystore.
+          # If your app module is named differently, adjust 'app/' accordingly.
+        env:
+          # These environment variables are specific to this step's context
+          # but are crucial for the next build step to pick them up via Gradle.
+          # We define them here to ensure the keystore path is known for Gradle.
+          RELEASE_STORE_FILE: app/release.jks # The path where the decoded keystore will be saved
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+
+      - name: Build Android App Bundle (AAB)
+        run: ./gradlew bundleRelease
+        # Pass signing credentials as environment variables to Gradle.
+        # Gradle's System.getenv() will pick these up.
+        env:
+          RELEASE_STORE_FILE: app/release.jks # Path to the decoded keystore on the runner
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+
+      - name: Upload to Google Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_KEY }}
+          packageName: com.vicky7230.tasker2 # <<-- IMPORTANT: Replace with your actual app's package name
+          releaseFile: app/build/outputs/bundle/release/app-release.aab # <<-- IMPORTANT: Verify this path for your AAB
+          track: production # Options: 'production', 'beta', 'alpha', 'internal', 'internalsharing'
+          status: completed # Options: 'completed', 'draft', 'inProgress', 'halted'
+          # Optional parameters:
+          # releaseName: "v${{ github.run_number }}" # Example: Use the GitHub run number as release name
+          # releaseNotes: "New features and bug fixes!" # Static release notes
+          # whatsNewDirectory: 'path/to/whatsnew' # For localized release notes (e.g., whatsnew/en-US.txt)
+          # inAppUpdatePriority: 5 # For flexible in-app updates (0-5, 5 being highest)
+          # mappingFile: app/build/outputs/mapping/release/mapping.txt # Path to your ProGuard/R8 mapping file for deobfuscation
