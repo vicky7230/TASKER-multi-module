@@ -1,4 +1,4 @@
-package com.vicky7230.tasker
+package com.vicky7230.tasker2
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.vicky7230.tasker.debug", appContext.packageName)
+        assertEquals("com.vicky7230.tasker2.debug", appContext.packageName)
     }
 }

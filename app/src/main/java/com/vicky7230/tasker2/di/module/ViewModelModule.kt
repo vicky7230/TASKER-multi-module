@@ -1,12 +1,12 @@
-package com.vicky7230.tasker.di.module
+package com.vicky7230.tasker2.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.core.common.di.AssistedViewModelFactory
 import com.feature.add_edit_note.ui.ui.AddEditNoteViewModel
 import com.feature.notes.ui.screen.NotesViewModel
-import com.vicky7230.tasker.di.ViewModelFactory
-import com.vicky7230.tasker.di.ViewModelKey
+import com.vicky7230.tasker2.di.ViewModelFactory
+import com.vicky7230.tasker2.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

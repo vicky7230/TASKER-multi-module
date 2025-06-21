@@ -78,9 +78,8 @@ dependencies {
     // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
 
-    // mockito
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.kotlin)
+    // mockk
+    testImplementation(libs.mockk.android)
 
     // turbine
     testImplementation(libs.turbine)

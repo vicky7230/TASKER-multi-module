@@ -44,7 +44,7 @@ fun NotesScreen(
                 containerColor = Color.White,
                 contentColor = Blue,
                 shape = CircleShape,
-                elevation = FloatingActionButtonDefaults.elevation(0.dp),
+                //elevation = FloatingActionButtonDefaults.elevation(0.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

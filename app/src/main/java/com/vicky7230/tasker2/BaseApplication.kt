@@ -1,8 +1,8 @@
-package com.vicky7230.tasker
+package com.vicky7230.tasker2
 
 import android.app.Application
-import com.vicky7230.tasker.di.component.ApplicationComponent
-import com.vicky7230.tasker.di.component.DaggerApplicationComponent
+import com.vicky7230.tasker2.di.component.ApplicationComponent
+import com.vicky7230.tasker2.di.component.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector

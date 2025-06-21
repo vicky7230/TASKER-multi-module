@@ -1,4 +1,4 @@
-package com.vicky7230.tasker.di.component
+package com.vicky7230.tasker2.di.component
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
@@ -7,10 +7,10 @@ import com.core.network.di.NetworkModule
 import com.feature.add_edit_note.ui.di.AddEditNoteUiModule
 import com.feature.notes.data.di.NotesDataModule
 import com.feature.notes.ui.di.NotesUiModule
-import com.vicky7230.tasker.BaseApplication
-import com.vicky7230.tasker.di.module.ActivityBindingModule
-import com.vicky7230.tasker.di.module.AppModule
-import com.vicky7230.tasker.di.module.ViewModelModule
+import com.vicky7230.tasker2.BaseApplication
+import com.vicky7230.tasker2.di.module.ActivityBindingModule
+import com.vicky7230.tasker2.di.module.AppModule
+import com.vicky7230.tasker2.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule

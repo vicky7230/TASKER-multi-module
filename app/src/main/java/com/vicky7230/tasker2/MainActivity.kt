@@ -1,4 +1,4 @@
-package com.vicky7230.tasker
+package com.vicky7230.tasker2
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.core.common.theme.TaskerTheme
-import com.vicky7230.tasker.navigation.AppNavGraph
-import com.vicky7230.tasker.navigation.NavigationProvider
+import com.vicky7230.tasker2.navigation.AppNavGraph
+import com.vicky7230.tasker2.navigation.NavigationProvider
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 

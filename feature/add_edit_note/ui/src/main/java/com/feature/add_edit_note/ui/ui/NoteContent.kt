@@ -17,8 +17,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +43,6 @@ fun NoteContent(
     onDoneClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var noteContent by remember { mutableStateOf(state.note.content) }
     Column(modifier = modifier) {
         Row {
             Text(
@@ -78,7 +75,7 @@ fun NoteContent(
         }
 
         NoteInputField(
-            noteContent = noteContent,
+            noteContent = state.note.content,
             onNoteContentChange = onNoteContentChange,
             modifier = Modifier.fillMaxSize(),
         )
@@ -91,12 +88,10 @@ private fun NoteInputField(
     onNoteContentChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var noteContent1 = noteContent
     TextField(
         modifier = modifier,
-        value = noteContent1,
+        value = noteContent,
         onValueChange = {
-            noteContent1 = it
             onNoteContentChange(it)
         },
         colors =

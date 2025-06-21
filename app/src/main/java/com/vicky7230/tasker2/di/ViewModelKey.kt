@@ -1,4 +1,4 @@
-package com.vicky7230.tasker.di
+package com.vicky7230.tasker2.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

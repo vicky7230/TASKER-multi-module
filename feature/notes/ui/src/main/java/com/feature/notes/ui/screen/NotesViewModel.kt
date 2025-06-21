@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
@@ -28,26 +29,27 @@ class NotesViewModel
 
         init {
             viewModelScope.launch {
-                @Suppress("TooGenericExceptionCaught")
-                try {
-                    combine(
-                        getAllNotesWithTagUseCase().distinctUntilChanged(),
-                        getAllTagsWithNotesUseCase().distinctUntilChanged(),
-                    ) { notes, tags ->
-                        NotesUiState.NotesLoaded(
-                            notes.filter { TimeUtils.isTimestampToday(it.timestamp) },
-                            tags,
-                        )
-                    }.flowOn(Dispatchers.IO)
-                        .collect { newState ->
-                            _notesUiState.update { currentState ->
-                                newState
-                            }
+                combine(
+                    getAllNotesWithTagUseCase().distinctUntilChanged(),
+                    getAllTagsWithNotesUseCase().distinctUntilChanged(),
+                ) { notes, tags ->
+                    NotesUiState.NotesLoaded(
+                        notes.filter { TimeUtils.isTimestampToday(it.timestamp) },
+                        tags,
+                    )
+                }.flowOn(Dispatchers.IO)
+                    .catch { throwable: Throwable ->
+                        Log.e("NotesViewModel", "Error loading notes", throwable)
+                        _notesUiState.update {
+                            NotesUiState.Error(
+                                throwable.message ?: "Unknown error",
+                            )
                         }
-                } catch (e: Exception) {
-                    Log.e("NotesViewModel", "Error loading notes", e)
-                    _notesUiState.update { NotesUiState.Error(e.message ?: "Unknown error") }
-                }
+                    }.collect { newState ->
+                        _notesUiState.update { currentState ->
+                            newState
+                        }
+                    }
             }
         }
     }

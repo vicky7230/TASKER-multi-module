@@ -1,4 +1,4 @@
-package com.vicky7230.tasker.navigation
+package com.vicky7230.tasker2.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider

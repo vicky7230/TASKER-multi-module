@@ -1,4 +1,4 @@
-package com.vicky7230.tasker
+package com.vicky7230.tasker2
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

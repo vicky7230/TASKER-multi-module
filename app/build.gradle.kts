@@ -50,11 +50,11 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.vicky7230.tasker"
+    namespace = "com.vicky7230.tasker2"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.vicky7230.tasker"
+        applicationId = "com.vicky7230.tasker2"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
