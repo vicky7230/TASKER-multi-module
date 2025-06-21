@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.core.common.utils.TimeUtils
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import com.feature.notes.domain.usecase.GetAllTagsWithNotesUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,11 +37,12 @@ class NotesViewModel
                             notes.filter { TimeUtils.isTimestampToday(it.timestamp) },
                             tags,
                         )
-                    }.collect { newState ->
-                        _notesUiState.update { currentState ->
-                            newState
+                    }.flowOn(Dispatchers.IO)
+                        .collect { newState ->
+                            _notesUiState.update { currentState ->
+                                newState
+                            }
                         }
-                    }
                 } catch (e: Exception) {
                     _notesUiState.update { NotesUiState.Error(e.message ?: "Unknown error") }
                 }
