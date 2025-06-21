@@ -1,3 +1,5 @@
+[![Android CI](https://github.com/vicky7230/TASKER-multi-module/actions/workflows/android-ci.yml/badge.svg)](https://github.com/vicky7230/TASKER-multi-module/actions/workflows/android-ci.yml)
+
 # Tasker
 
 > 🚧 **This project is currently in active development. Features and structure may change frequently.**
