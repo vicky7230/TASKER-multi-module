@@ -1,5 +1,6 @@
 package com.feature.add_edit_note.ui.ui
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,18 +49,24 @@ class AddEditNoteViewModel
         }
 
         private fun getNoteById(noteId: Long) {
+            @Suppress("TooGenericExceptionCaught")
             viewModelScope.launch {
-                val note = getNoteWithTagByIdUseCase(id = noteId)
-                currentNote = note ?: NoteWithTag(
-                    content = "",
-                    timestamp = System.currentTimeMillis(),
-                    tagId = 1,
-                    done = false,
-                    tagName = "Work",
-                    tagColor = "#61DEA4",
-                )
-                currentNote?.let {
-                    _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
+                try {
+                    val note = getNoteWithTagByIdUseCase(id = noteId)
+                    currentNote = note ?: NoteWithTag(
+                        content = "",
+                        timestamp = System.currentTimeMillis(),
+                        tagId = 1,
+                        done = false,
+                        tagName = "Work",
+                        tagColor = "#61DEA4",
+                    )
+                    currentNote?.let {
+                        _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
+                    }
+                } catch (e: Exception) {
+                    Log.e("AddEditNoteViewModel", "Error loading note", e)
+                    _addEditeNoteUiState.value = AddEditNoteUiState.Error("Failed to load note")
                 }
             }
         }

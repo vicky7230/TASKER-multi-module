@@ -1,5 +1,6 @@
 package com.feature.notes.ui.screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.common.utils.TimeUtils
@@ -44,6 +45,7 @@ class NotesViewModel
                             }
                         }
                 } catch (e: Exception) {
+                    Log.e("NotesViewModel", "Error loading notes", e)
                     _notesUiState.update { NotesUiState.Error(e.message ?: "Unknown error") }
                 }
             }
