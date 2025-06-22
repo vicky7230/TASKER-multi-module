@@ -8,9 +8,9 @@ import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
+import com.core.domain.model.NoteWithTag
 import com.feature.notes.data.mapper.toDomain
 import com.feature.notes.data.mapper.toEntity
-import com.feature.notes.domain.model.NoteWithTag
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

@@ -4,7 +4,6 @@ plugins {
     kotlin("kapt")
     id("com.google.devtools.ksp")
     id("androidx.room")
-    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -41,8 +40,6 @@ android {
 }
 
 dependencies {
-    // ktlintRuleset(libs.ktlint)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -16,8 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +31,7 @@ import com.core.common.R
 import com.core.common.theme.Blue
 import com.core.common.theme.LightGray
 import com.core.common.theme.TaskerTheme
-import com.feature.notes.domain.model.NoteWithTag
+import com.core.domain.model.NoteWithTag
 
 @Composable
 fun NoteContent(

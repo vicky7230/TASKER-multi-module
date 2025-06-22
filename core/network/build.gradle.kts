@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     kotlin("plugin.serialization") version "2.0.21" // match the Kotlin version
-    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -36,7 +35,6 @@ android {
 }
 
 dependencies {
-    // ktlintRuleset(libs.ktlint)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

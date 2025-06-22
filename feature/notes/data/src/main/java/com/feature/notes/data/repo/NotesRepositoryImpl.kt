@@ -1,12 +1,12 @@
 package com.feature.notes.data.repo
 
 import com.core.database.NotesDb
+import com.core.domain.model.Note
+import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
+import com.core.domain.repo.NotesRepository
 import com.feature.notes.data.mapper.toDomain
 import com.feature.notes.data.mapper.toEntity
-import com.feature.notes.domain.model.Note
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.model.TagWithNotes
-import com.feature.notes.domain.repo.NotesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

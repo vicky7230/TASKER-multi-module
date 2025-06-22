@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.AddEditNoteScreen
+import com.core.domain.model.NoteWithTag
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
-import com.feature.notes.domain.model.NoteWithTag
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

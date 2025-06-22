@@ -1,7 +1,7 @@
 package com.feature.add_edit_note.domain.usecase
 
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.repo.NotesRepository
+import com.core.domain.model.NoteWithTag
+import com.core.domain.repo.NotesRepository
 import javax.inject.Inject
 
 class GetNoteWithTagByIdUseCase

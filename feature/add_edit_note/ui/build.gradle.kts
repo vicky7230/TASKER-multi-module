@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
-    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -51,9 +50,8 @@ android {
 }
 
 dependencies {
-    // ktlintRuleset(libs.ktlint)
-
     implementation(project(":core:common"))
+    implementation(project(":core:domain"))
     implementation(project(":core:feature_api"))
 
     implementation(project(":feature:notes:domain"))
@@ -90,8 +88,6 @@ dependencies {
     // mockito
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
-    // androidTestImplementation(libs.mockito.kotlin)
-    // androidTestImplementation(libs.mockito.android)
 
     // mockk
     androidTestImplementation(libs.mockk.android)

@@ -2,9 +2,9 @@ package com.feature.notes.ui.screen
 
 import android.util.Log
 import app.cash.turbine.test
-import com.feature.notes.domain.model.Note
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.model.TagWithNotes
+import com.core.domain.model.Note
+import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import com.feature.notes.domain.usecase.GetAllTagsWithNotesUseCase
 import io.mockk.every

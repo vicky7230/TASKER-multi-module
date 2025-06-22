@@ -1,8 +1,8 @@
 package com.feature.notes.ui.screen
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.model.TagWithNotes
+import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 
 class NotesPreviewParameterProvider : PreviewParameterProvider<NotesUiState> {
     override val values =

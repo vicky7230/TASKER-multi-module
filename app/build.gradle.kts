@@ -8,7 +8,6 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.serialization") version "2.0.21"
     id("com.google.devtools.ksp")
-    // id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -113,11 +112,10 @@ android {
 }
 
 dependencies {
-    // ktlintRuleset(libs.ktlint)
-
     implementation(project(":core:network"))
     implementation(project(":core:database"))
     implementation(project(":core:common"))
+    implementation(project(":core:domain"))
     implementation(project(":core:feature_api"))
 
     implementation(project(":feature:notes:data"))

@@ -1,6 +1,6 @@
 package com.feature.add_edit_note.ui.ui
 
-import com.feature.notes.domain.model.NoteWithTag
+import com.core.domain.model.NoteWithTag
 
 sealed class AddEditNoteUiState {
     object Idle : AddEditNoteUiState()

@@ -1,7 +1,7 @@
 package com.feature.notes.ui.screen
 
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.model.TagWithNotes
+import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 
 sealed class NotesUiState {
     object Idle : NotesUiState()

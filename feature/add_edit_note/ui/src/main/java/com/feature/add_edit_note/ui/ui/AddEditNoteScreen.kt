@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.TaskerTheme
-import com.feature.notes.domain.model.NoteWithTag
+import com.core.domain.model.NoteWithTag
 
 @Composable
 fun AddEditNoteScreen(

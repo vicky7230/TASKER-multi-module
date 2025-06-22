@@ -2,12 +2,12 @@ package com.feature.add_edit_note.ui
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.core.domain.model.NoteWithTag
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
 import com.feature.add_edit_note.ui.ui.AddEditNoteSideEffect
 import com.feature.add_edit_note.ui.ui.AddEditNoteUiState
 import com.feature.add_edit_note.ui.ui.AddEditNoteViewModel
-import com.feature.notes.domain.model.NoteWithTag
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify

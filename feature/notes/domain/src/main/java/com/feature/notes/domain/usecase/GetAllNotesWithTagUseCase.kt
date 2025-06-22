@@ -1,6 +1,6 @@
 package com.feature.notes.domain.usecase
 
-import com.feature.notes.domain.repo.NotesRepository
+import com.core.domain.repo.NotesRepository
 import javax.inject.Inject
 
 class GetAllNotesWithTagUseCase

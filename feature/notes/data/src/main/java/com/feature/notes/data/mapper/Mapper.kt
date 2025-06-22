@@ -3,9 +3,9 @@ package com.feature.notes.data.mapper
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
 import com.core.database.entity.TagWithNotesEntity
-import com.feature.notes.domain.model.Note
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.model.TagWithNotes
+import com.core.domain.model.Note
+import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 
 fun Note.toEntity(): NoteEntity =
     NoteEntity(

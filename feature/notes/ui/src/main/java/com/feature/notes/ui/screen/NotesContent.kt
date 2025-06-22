@@ -35,8 +35,8 @@ import com.core.common.theme.LightGray
 import com.core.common.theme.LightGray2
 import com.core.common.theme.TaskerTheme
 import com.core.common.utils.toColorSafely
-import com.feature.notes.domain.model.NoteWithTag
-import com.feature.notes.domain.model.TagWithNotes
+import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 
 @Composable
 fun NotesContent(
