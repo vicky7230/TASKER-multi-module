@@ -5,6 +5,7 @@ on:
 
 jobs:
   build_and_deploy:
+    name: Build AAB and Deploy
     runs-on: ubuntu-latest
     environment: Production # Optional: Link to an environment for stricter controls/approvals
 
@@ -25,7 +26,6 @@ jobs:
         # This step takes your Base64-encoded keystore from GitHub Secrets
         # and decodes it into a file on the runner.
         run: |
-          mkdir -p app # Ensures the 'app' directory exists if it somehow doesn't
           echo "${{ secrets.RELEASE_STORE_FILE_BASE64 }}" | base64 --decode > app/release.jks
           # Make sure the path 'app/release.jks' matches the 'storeFile = file(storeFilePath)'
           # line in your app/build.gradle.kts and where you expect the keystore.
@@ -49,12 +49,15 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
 
+      - name: Check if AAB exists
+        run: test -f app/build/outputs/bundle/release/app-release.aab
+
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_KEY }}
           packageName: com.vicky7230.tasker2 # <<-- IMPORTANT: Replace with your actual app's package name
-          releaseFile: app/build/outputs/bundle/release/app-release.aab # <<-- IMPORTANT: Verify this path for your AAB
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab # <<-- IMPORTANT: Verify this path for your AAB
           track: production # Options: 'production', 'beta', 'alpha', 'internal', 'internalsharing'
           status: completed # Options: 'completed', 'draft', 'inProgress', 'halted'
           # Optional parameters:

@@ -39,7 +39,7 @@ android {
                 keyPassword != null
             ) {
                 // Keystore path will be relative to the project root on the runner
-                storeFile = file(storeFilePath)
+                storeFile = rootProject.file(storeFilePath)
                 this.storePassword = storePassword
                 this.keyAlias = keyAlias
                 this.keyPassword = keyPassword
