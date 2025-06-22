@@ -8,6 +8,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+echo "🔄 Staging changes made by ktlint..."
+git add -u
+
 echo "🔍 Running Detekt static analysis..."
 ./gradlew detekt
 
