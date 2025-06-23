@@ -53,6 +53,8 @@ import kotlinx.coroutines.delay
 fun TagsList(
     tags: List<TagWithNotes>,
     expanded: Boolean,
+    selectedTagId: Long,
+    onTagClick: (TagWithNotes) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -61,6 +63,7 @@ fun TagsList(
                 .animateContentSize()
                 .then(
                     if (expanded) {
+                        // TODO set a height equal to half of the screen height
                         Modifier.wrapContentHeight()
                     } else {
                         Modifier.height(0.dp)
@@ -82,6 +85,8 @@ fun TagsList(
                                 bottom = if (index == tags.size - 1) 8.dp else 0.dp,
                             ),
                     tag = tag,
+                    selected = tag.id == selectedTagId,
+                    onTagClick = onTagClick,
                 )
             }
         }
@@ -95,7 +100,6 @@ private fun PreviewTagsList() {
     TaskerTheme {
         Box(modifier = Modifier.background(Color.White)) {
             TagsList(
-                expanded = true,
                 tags =
                     listOf(
                         TagWithNotes(
@@ -123,7 +127,10 @@ private fun PreviewTagsList() {
                             notes = emptyList(),
                         ),
                     ),
+                expanded = true,
                 modifier = Modifier.fillMaxWidth(),
+                selectedTagId = 1,
+                onTagClick = {},
             )
         }
     }
@@ -177,49 +184,54 @@ fun NoteOptions(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier.padding(start = 15.dp).size(24.dp),
+            modifier =
+                Modifier
+                    .padding(start = 15.dp, top = 20.dp, bottom = 20.dp)
+                    .size(24.dp),
             painter = painterResource(R.drawable.ic_calendar),
             contentDescription = null,
         )
 
         Icon(
-            modifier = Modifier.padding(start = 20.dp),
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = 20.dp),
             painter = painterResource(R.drawable.ic_alarm),
             contentDescription = null,
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            modifier =
-                Modifier
-                    .padding(top = 20.dp, bottom = 20.dp)
-                    .clickable { onTagClick() },
-            text = state.note.tagName,
-            style =
-                TextStyle(
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = LightGray3,
-                ),
-        )
-        Box(
-            modifier =
-                Modifier
-                    .padding(start = 8.dp, end = 15.dp)
-                    .size(12.dp)
-                    .background(
-                        color = state.note.tagColor.toColorSafely(),
-                        shape = CircleShape,
+        Row(
+            modifier = Modifier.clickable { onTagClick() },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 15.dp, end = 8.dp, top = 15.dp, bottom = 15.dp),
+                text = state.note.tagName,
+                style =
+                    TextStyle(
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = LightGray3,
                     ),
-        )
+            )
+            Box(
+                modifier =
+                    Modifier
+                        .padding(end = 15.dp)
+                        .size(12.dp)
+                        .background(
+                            color = state.note.tagColor.toColorSafely(),
+                            shape = CircleShape,
+                        ),
+            )
+        }
     }
 }
 
 @Composable
 fun NoteInputField(
-    noteContent: String,
-    onNoteContentChange: (String) -> Unit,
+    note: NoteWithTag,
+    onNoteChange: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -231,9 +243,9 @@ fun NoteInputField(
     }
     TextField(
         modifier = modifier.focusRequester(focusRequester),
-        value = noteContent,
+        value = note.content,
         onValueChange = {
-            onNoteContentChange(it)
+            onNoteChange(note.copy(content = it))
         },
         colors =
             TextFieldDefaults.colors(
@@ -299,7 +311,12 @@ private fun PreviewActionButtons() {
 @Composable
 private fun PreviewNoteOptions() {
     TaskerTheme {
-        Box(modifier = Modifier.background(color = Color.White).fillMaxWidth()) {
+        Box(
+            modifier =
+                Modifier
+                    .background(color = Color.White)
+                    .fillMaxWidth(),
+        ) {
             NoteOptions(
                 state =
                     AddEditNoteUiState.NoteAndTags(
@@ -329,8 +346,17 @@ private fun PreviewNoteInputField() {
     TaskerTheme {
         Box(modifier = Modifier.background(color = Color.White)) {
             NoteInputField(
-                noteContent = "This is a sample note content",
-                onNoteContentChange = {},
+                note =
+                    NoteWithTag(
+                        id = 1,
+                        content = "NoteWithTag",
+                        timestamp = 1L,
+                        done = false,
+                        tagId = 1,
+                        tagColor = "#FFFFFF",
+                        tagName = "Work",
+                    ),
+                onNoteChange = {},
                 modifier = Modifier.fillMaxWidth(),
             )
         }

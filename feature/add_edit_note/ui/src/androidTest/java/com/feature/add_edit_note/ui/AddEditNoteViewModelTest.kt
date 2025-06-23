@@ -185,7 +185,7 @@ class AddEditNoteViewModelTest {
 
             advanceUntilIdle()
             // Act
-            viewModel.onNoteContentChanged("Updated content")
+            viewModel.onNoteChange(testNote.copy(content = "Updated content"))
 
             // Assert
             viewModel.addEditeNoteUiState.test {

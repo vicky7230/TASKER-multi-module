@@ -20,11 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.core.common.theme.TaskerTheme
 import com.core.common.ui.ObserveKeyboardWithViewTree
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 
 @Composable
 fun NoteContent(
     state: AddEditNoteUiState.NoteAndTags,
-    onNoteContentChange: (String) -> Unit,
+    onNoteChange: (NoteWithTag) -> Unit,
     onCancelClick: () -> Unit,
     onDoneClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -51,8 +52,8 @@ fun NoteContent(
             ActionButtons(onCancelClick, onDoneClick)
 
             NoteInputField(
-                noteContent = state.note.content,
-                onNoteContentChange = onNoteContentChange,
+                note = state.note,
+                onNoteChange = onNoteChange,
                 modifier =
                     Modifier
                         .weight(1f)
@@ -63,7 +64,10 @@ fun NoteContent(
 
             NoteOptions(
                 state = state,
-                modifier = Modifier.imePadding().fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .imePadding()
+                        .fillMaxWidth(),
                 onTagClick = {
                     tagsExpanded = !tagsExpanded
                     if (tagsExpanded) {
@@ -72,7 +76,14 @@ fun NoteContent(
                 },
             )
 
-            TagsList(expanded = tagsExpanded, tags = state.tags)
+            TagsList(
+                tags = state.tags,
+                expanded = tagsExpanded,
+                selectedTagId = state.note.tagId,
+                onTagClick = { tag: TagWithNotes ->
+                    onNoteChange(state.note.copy(tagId = tag.id, tagName = tag.name, tagColor = tag.color))
+                },
+            )
         }
     }
 }
@@ -103,7 +114,7 @@ private fun NoteContentPreview() {
                     ),
                     tags = emptyList(),
                 ),
-            onNoteContentChange = { },
+            onNoteChange = { },
             onCancelClick = {},
             onDoneClick = {},
         )

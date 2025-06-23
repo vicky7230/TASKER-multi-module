@@ -90,6 +90,7 @@ fun NotesContent(
                         .fillMaxWidth()
                         .padding(start = 60.dp, end = 16.dp),
                 tag = it,
+                onTagClick = {},
             )
             Spacer(
                 modifier =

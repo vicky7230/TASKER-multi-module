@@ -20,7 +20,7 @@ import com.core.domain.model.NoteWithTag
 @Composable
 fun AddEditNoteScreen(
     addEditNoteUiState: AddEditNoteUiState,
-    onNoteContentChange: (String) -> Unit,
+    onNoteChange: (NoteWithTag) -> Unit,
     onCancelClick: () -> Unit,
     onDoneClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ fun AddEditNoteScreen(
                             .fillMaxSize()
                             .padding(padding),
                     state = state,
-                    onNoteContentChange = onNoteContentChange,
+                    onNoteChange = onNoteChange,
                     onCancelClick = onCancelClick,
                     onDoneClick = onDoneClick,
                 )
@@ -93,7 +93,7 @@ private fun NotesScreenPreview() {
                     ),
                     tags = emptyList(),
                 ),
-            onNoteContentChange = {},
+            onNoteChange = {},
             onCancelClick = {},
             onDoneClick = {},
         )

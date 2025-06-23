@@ -78,12 +78,12 @@ class AddEditNoteViewModel
             }
         }
 
-        fun onNoteContentChanged(content: String) {
-            currentNote = currentNote?.copy(content = content)
-            currentNote?.let {
+        fun onNoteChange(note: NoteWithTag) {
+            currentNote = note
+            currentNote?.let { note: NoteWithTag ->
                 _addEditeNoteUiState.update { currentState: AddEditNoteUiState ->
                     if (currentState is AddEditNoteUiState.NoteAndTags) {
-                        currentState.copy(note = it)
+                        currentState.copy(note = note)
                     } else {
                         currentState
                     }

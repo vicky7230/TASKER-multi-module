@@ -45,7 +45,7 @@ internal object InternalAddEditNoteApi : FeatureApi {
                 AddEditNoteScreen(
                     modifier = Modifier.fillMaxSize(),
                     addEditNoteUiState = state,
-                    onNoteContentChange = addEditNoteViewModel::onNoteContentChanged,
+                    onNoteChange = addEditNoteViewModel::onNoteChange,
                     onCancelClick = { navHostController.popBackStack() },
                     onDoneClick = addEditNoteViewModel::saveNote,
                 )
