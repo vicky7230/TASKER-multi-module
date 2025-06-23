@@ -2,7 +2,9 @@ package com.feature.add_edit_note.ui
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
@@ -12,12 +14,14 @@ import com.feature.add_edit_note.ui.ui.AddEditNoteViewModel
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -48,6 +52,27 @@ class AddEditNoteViewModelTest {
             tagName = "Work",
             tagColor = "#61DEA4",
         )
+    private val tags =
+        listOf(
+            TagWithNotes(
+                id = 1,
+                name = "Work",
+                color = "#61DEA4",
+                notes =
+                    listOf(
+                        Note(id = 1, content = "Original content", timestamp = 123456789, tagId = 1, done = false),
+                    ),
+            ),
+            TagWithNotes(
+                id = 2,
+                name = "Shopping",
+                color = "#F45E6D",
+                notes =
+                    listOf(
+                        Note(id = 2, content = "Original content 2", timestamp = 123456789, tagId = 2, done = false),
+                    ),
+            ),
+        )
 
     @Before
     fun setUp() {
@@ -58,15 +83,21 @@ class AddEditNoteViewModelTest {
     }
 
     @Test
-    fun should_emit_NoteData_state_when_note_is_found_by_id() =
+    fun should_emit_NoteAndTags_state_when_note_is_found_by_id() =
         runTest {
             // Arrange
-            coEvery { getNoteWithTagByIdUseCase(1L) } returns testNote
+            coEvery { getNoteWithTagByIdUseCase(any()) } returns testNote
+            every { getAllTagsWithNotesUseCase() } returns flowOf(tags)
             savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
 
             // Act
             viewModel =
-                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
+                AddEditNoteViewModel(
+                    savedStateHandle,
+                    getNoteWithTagByIdUseCase,
+                    upsertNotesUseCase,
+                    getAllTagsWithNotesUseCase,
+                )
 
             // Assert
             viewModel.addEditeNoteUiState.test {
@@ -74,30 +105,64 @@ class AddEditNoteViewModelTest {
                 val state = awaitItem()
                 val noteState = state as AddEditNoteUiState.NoteAndTags
                 assertEquals(testNote, noteState.note)
+                assertEquals(tags, noteState.tags)
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
     @Test
-    fun should_emit_NoteData_state_with_new_note_when_note_not_found() =
+    fun should_emit_NoteAndTags_state_with_new_note_when_note_not_found() =
         runTest {
             // Arrange
-            coEvery { getNoteWithTagByIdUseCase(2L) } returns (null)
-
-            savedStateHandle = SavedStateHandle(mapOf("noteId" to 2L))
+            coEvery { getNoteWithTagByIdUseCase(any()) } returns (null)
+            every { getAllTagsWithNotesUseCase() } returns flowOf(tags)
+            savedStateHandle = SavedStateHandle(mapOf("noteId" to 3L))
 
             // Act
             viewModel =
-                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
+                AddEditNoteViewModel(
+                    savedStateHandle,
+                    getNoteWithTagByIdUseCase,
+                    upsertNotesUseCase,
+                    getAllTagsWithNotesUseCase,
+                )
 
             // Assert
             viewModel.addEditeNoteUiState.test {
                 assertEquals(AddEditNoteUiState.Idle, awaitItem())
                 val state = awaitItem()
                 assertTrue(state is AddEditNoteUiState.NoteAndTags)
-                val note = (state as AddEditNoteUiState.NoteAndTags).note
-                assertEquals("", note.content)
-                assertEquals(1, note.tagId)
+                val noteState = state as AddEditNoteUiState.NoteAndTags
+                assertEquals("", noteState.note.content)
+                assertEquals(1, noteState.note.tagId)
+                assertEquals(tags, noteState.tags)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun should_emit_Error_state_when_exception_is_thrown() =
+        runTest {
+            // Arrange
+            coEvery { getNoteWithTagByIdUseCase(any()) } throws RuntimeException("DB failure")
+            every { getAllTagsWithNotesUseCase() } returns flowOf(tags)
+            savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
+
+            // Act
+            viewModel =
+                AddEditNoteViewModel(
+                    savedStateHandle,
+                    getNoteWithTagByIdUseCase,
+                    upsertNotesUseCase,
+                    getAllTagsWithNotesUseCase,
+                )
+
+            // Assert
+            viewModel.addEditeNoteUiState.test {
+                assertEquals(AddEditNoteUiState.Idle, awaitItem())
+                val errorState = awaitItem()
+                assertTrue(errorState is AddEditNoteUiState.Error)
+                assertEquals((errorState as AddEditNoteUiState.Error).message, "Failed to load note")
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -107,10 +172,16 @@ class AddEditNoteViewModelTest {
         runTest {
             // Arrange
             coEvery { getNoteWithTagByIdUseCase(1L) } returns testNote
+            every { getAllTagsWithNotesUseCase() } returns flowOf(tags)
             savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
 
             viewModel =
-                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
+                AddEditNoteViewModel(
+                    savedStateHandle,
+                    getNoteWithTagByIdUseCase,
+                    upsertNotesUseCase,
+                    getAllTagsWithNotesUseCase,
+                )
 
             advanceUntilIdle()
             // Act
@@ -132,7 +203,13 @@ class AddEditNoteViewModelTest {
             coEvery { upsertNotesUseCase(any()) } just Runs
 
             savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
-            viewModel = AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
+            viewModel =
+                AddEditNoteViewModel(
+                    savedStateHandle,
+                    getNoteWithTagByIdUseCase,
+                    upsertNotesUseCase,
+                    getAllTagsWithNotesUseCase,
+                )
             advanceUntilIdle()
 
             // Then
