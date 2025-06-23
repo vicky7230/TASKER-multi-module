@@ -2,9 +2,11 @@ package com.feature.notes.data.mapper
 
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
+import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.Tag
 import com.core.domain.model.TagWithNotes
 
 fun Note.toEntity(): NoteEntity =
@@ -51,4 +53,11 @@ fun TagWithNotesEntity.toDomain(): TagWithNotes =
         name = tag.name,
         color = tag.color,
         notes = notes.map { it.toDomain() },
+    )
+
+fun TagEntity.toDomain(): Tag =
+    Tag(
+        id = id,
+        name = name,
+        color = color,
     )

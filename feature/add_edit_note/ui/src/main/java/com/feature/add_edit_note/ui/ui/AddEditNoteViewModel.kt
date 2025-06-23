@@ -8,6 +8,8 @@ import androidx.navigation.toRoute
 import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.AddEditNoteScreen
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
+import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
 import dagger.assisted.Assisted
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddEditNoteViewModel
@@ -27,6 +30,7 @@ class AddEditNoteViewModel
         @Assisted private val savedStateHandle: SavedStateHandle,
         private val getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase,
         private val upsertNotesUseCase: UpsertNotesUseCase,
+        private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory : AssistedViewModelFactory<AddEditNoteViewModel> {
@@ -45,10 +49,10 @@ class AddEditNoteViewModel
 
         init {
             val addEditNoteScreen = savedStateHandle.toRoute<AddEditNoteScreen>()
-            getNoteById(addEditNoteScreen.noteId)
+            getNoteAndTags(addEditNoteScreen.noteId)
         }
 
-        private fun getNoteById(noteId: Long) {
+        private fun getNoteAndTags(noteId: Long) {
             @Suppress("TooGenericExceptionCaught")
             viewModelScope.launch {
                 try {
@@ -61,8 +65,11 @@ class AddEditNoteViewModel
                         tagName = "Work",
                         tagColor = "#61DEA4",
                     )
-                    currentNote?.let {
-                        _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
+                    getAllTagsWithNotesUseCase().collect { tags: List<TagWithNotes> ->
+                        currentNote?.let { noteWithTag: NoteWithTag ->
+                            _addEditeNoteUiState.value =
+                                AddEditNoteUiState.NoteAndTags(note = noteWithTag, tags = tags)
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e("AddEditNoteViewModel", "Error loading note", e)
@@ -74,7 +81,13 @@ class AddEditNoteViewModel
         fun onNoteContentChanged(content: String) {
             currentNote = currentNote?.copy(content = content)
             currentNote?.let {
-                _addEditeNoteUiState.value = AddEditNoteUiState.NoteData(it)
+                _addEditeNoteUiState.update { currentState: AddEditNoteUiState ->
+                    if (currentState is AddEditNoteUiState.NoteAndTags) {
+                        currentState.copy(note = it)
+                    } else {
+                        currentState
+                    }
+                }
             }
         }
 

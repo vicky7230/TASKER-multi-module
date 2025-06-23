@@ -2,6 +2,7 @@ package com.core.domain.repo
 
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.Tag
 import com.core.domain.model.TagWithNotes
 import kotlinx.coroutines.flow.Flow
 
@@ -17,4 +18,6 @@ interface NotesRepository {
     suspend fun getNoteWithTagById(id: Long): NoteWithTag?
 
     fun getAllTagsWithNotes(): Flow<List<TagWithNotes>>
+
+    fun getAllTags(): Flow<List<Tag>>
 }

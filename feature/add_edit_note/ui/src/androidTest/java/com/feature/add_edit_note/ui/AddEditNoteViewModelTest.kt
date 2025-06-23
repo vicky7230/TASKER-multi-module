@@ -3,6 +3,7 @@ package com.feature.add_edit_note.ui
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.core.domain.model.NoteWithTag
+import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
 import com.feature.add_edit_note.ui.ui.AddEditNoteSideEffect
@@ -31,7 +32,7 @@ class AddEditNoteViewModelTest {
     private lateinit var getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase
 
     private lateinit var upsertNotesUseCase: UpsertNotesUseCase
-
+    private lateinit var getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var viewModel: AddEditNoteViewModel
 
@@ -52,6 +53,7 @@ class AddEditNoteViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         getNoteWithTagByIdUseCase = mockk()
+        getAllTagsWithNotesUseCase = mockk()
         upsertNotesUseCase = mockk(relaxed = true) // allows empty behavior
     }
 
@@ -64,13 +66,13 @@ class AddEditNoteViewModelTest {
 
             // Act
             viewModel =
-                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase)
+                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
 
             // Assert
             viewModel.addEditeNoteUiState.test {
                 assertEquals(AddEditNoteUiState.Idle, awaitItem())
                 val state = awaitItem()
-                val noteState = state as AddEditNoteUiState.NoteData
+                val noteState = state as AddEditNoteUiState.NoteAndTags
                 assertEquals(testNote, noteState.note)
                 cancelAndIgnoreRemainingEvents()
             }
@@ -86,14 +88,14 @@ class AddEditNoteViewModelTest {
 
             // Act
             viewModel =
-                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase)
+                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
 
             // Assert
             viewModel.addEditeNoteUiState.test {
                 assertEquals(AddEditNoteUiState.Idle, awaitItem())
                 val state = awaitItem()
-                assertTrue(state is AddEditNoteUiState.NoteData)
-                val note = (state as AddEditNoteUiState.NoteData).note
+                assertTrue(state is AddEditNoteUiState.NoteAndTags)
+                val note = (state as AddEditNoteUiState.NoteAndTags).note
                 assertEquals("", note.content)
                 assertEquals(1, note.tagId)
                 cancelAndIgnoreRemainingEvents()
@@ -108,7 +110,7 @@ class AddEditNoteViewModelTest {
             savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
 
             viewModel =
-                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase)
+                AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
 
             advanceUntilIdle()
             // Act
@@ -116,7 +118,7 @@ class AddEditNoteViewModelTest {
 
             // Assert
             viewModel.addEditeNoteUiState.test {
-                val updated = awaitItem() as AddEditNoteUiState.NoteData
+                val updated = awaitItem() as AddEditNoteUiState.NoteAndTags
                 assertEquals("Updated content", updated.note.content)
                 cancelAndIgnoreRemainingEvents()
             }
@@ -130,7 +132,7 @@ class AddEditNoteViewModelTest {
             coEvery { upsertNotesUseCase(any()) } just Runs
 
             savedStateHandle = SavedStateHandle(mapOf("noteId" to 1L))
-            viewModel = AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase)
+            viewModel = AddEditNoteViewModel(savedStateHandle, getNoteWithTagByIdUseCase, upsertNotesUseCase, getAllTagsWithNotesUseCase)
             advanceUntilIdle()
 
             // Then

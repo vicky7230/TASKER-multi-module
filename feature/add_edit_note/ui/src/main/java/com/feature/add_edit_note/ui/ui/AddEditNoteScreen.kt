@@ -53,7 +53,7 @@ fun AddEditNoteScreen(
 
             AddEditNoteUiState.Idle -> {}
             AddEditNoteUiState.Loading -> {}
-            is AddEditNoteUiState.NoteData -> {
+            is AddEditNoteUiState.NoteAndTags -> {
                 NoteContent(
                     modifier =
                         Modifier
@@ -81,7 +81,7 @@ private fun NotesScreenPreview() {
         AddEditNoteScreen(
             modifier = Modifier.fillMaxSize(),
             addEditNoteUiState =
-                AddEditNoteUiState.NoteData(
+                AddEditNoteUiState.NoteAndTags(
                     NoteWithTag(
                         id = 5,
                         content = "",
@@ -91,6 +91,7 @@ private fun NotesScreenPreview() {
                         tagName = "Work",
                         tagColor = "#61DEA4",
                     ),
+                    tags = emptyList(),
                 ),
             onNoteContentChange = {},
             onCancelClick = {},

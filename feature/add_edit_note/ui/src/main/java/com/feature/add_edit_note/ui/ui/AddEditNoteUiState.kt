@@ -1,14 +1,16 @@
 package com.feature.add_edit_note.ui.ui
 
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 
 sealed class AddEditNoteUiState {
     object Idle : AddEditNoteUiState()
 
     object Loading : AddEditNoteUiState()
 
-    data class NoteData(
+    data class NoteAndTags(
         val note: NoteWithTag,
+        val tags: List<TagWithNotes>,
     ) : AddEditNoteUiState()
 
     data class Error(

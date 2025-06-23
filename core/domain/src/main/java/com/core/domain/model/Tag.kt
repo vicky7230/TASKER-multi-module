@@ -1,8 +1,7 @@
 package com.core.domain.model
 
-data class TagWithNotes(
+data class Tag(
     val id: Long = 0,
     val name: String,
     val color: String,
-    val notes: List<Note>,
 )

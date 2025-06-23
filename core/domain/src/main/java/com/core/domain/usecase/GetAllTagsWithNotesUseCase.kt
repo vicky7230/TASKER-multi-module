@@ -1,4 +1,4 @@
-package com.feature.notes.domain.usecase
+package com.core.domain.usecase
 
 import com.core.domain.repo.NotesRepository
 import javax.inject.Inject

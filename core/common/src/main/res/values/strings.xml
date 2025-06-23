@@ -3,4 +3,5 @@
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="today">Today</string>
+    <string name="task_count"> %1$d tasks</string>
 </resources>

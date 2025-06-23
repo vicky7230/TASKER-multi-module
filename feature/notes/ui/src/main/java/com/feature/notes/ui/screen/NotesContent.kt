@@ -3,7 +3,6 @@ package com.feature.notes.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,9 +32,9 @@ import com.core.common.R
 import com.core.common.theme.LightGray
 import com.core.common.theme.LightGray2
 import com.core.common.theme.TaskerTheme
+import com.core.common.ui.TagItem
 import com.core.common.utils.toColorSafely
 import com.core.domain.model.NoteWithTag
-import com.core.domain.model.TagWithNotes
 
 @Composable
 fun NotesContent(
@@ -146,35 +144,6 @@ fun NoteItem(
                     .padding(end = 16.dp)
                     .size(12.dp)
                     .background(color = note.tagColor.toColorSafely(), shape = CircleShape),
-        )
-    }
-}
-
-@Composable
-fun TagItem(
-    tag: TagWithNotes,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier =
-            modifier.background(
-                color = tag.color.toColorSafely(),
-                shape = RoundedCornerShape(10.dp),
-            ),
-    ) {
-        Text(
-            modifier = Modifier.padding(start = 16.dp, top = 12.dp),
-            text = tag.name,
-            color = Color.White,
-            fontSize = 19.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
-        Text(
-            modifier = Modifier.padding(start = 16.dp, bottom = 12.dp, top = 4.dp),
-            text = tag.notes.size.toString(),
-            color = LightGray,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
         )
     }
 }

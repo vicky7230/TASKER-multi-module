@@ -5,8 +5,8 @@ import app.cash.turbine.test
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
+import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
-import com.feature.notes.domain.usecase.GetAllTagsWithNotesUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

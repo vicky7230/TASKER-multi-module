@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.common.utils.TimeUtils
+import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
-import com.feature.notes.domain.usecase.GetAllTagsWithNotesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
