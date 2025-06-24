@@ -21,6 +21,7 @@ import com.core.common.theme.TaskerTheme
 import com.core.common.ui.ObserveKeyboardWithViewTree
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun NoteContent(
@@ -112,7 +113,7 @@ private fun NoteContentPreview() {
                         tagName = "Work",
                         tagColor = "#61DEA4",
                     ),
-                    tags = emptyList(),
+                    tags = persistentListOf(),
                 ),
             onNoteChange = { },
             onCancelClick = {},

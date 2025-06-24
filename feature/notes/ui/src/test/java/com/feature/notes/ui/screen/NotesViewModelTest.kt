@@ -12,6 +12,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.emptyFlow
@@ -65,7 +66,7 @@ class NotesViewModelTest {
                         name = "Tag 1",
                         color = "#FFFFFF",
                         notes =
-                            listOf(
+                            persistentListOf(
                                 Note(
                                     id = 1,
                                     content = "Note 1",
@@ -114,7 +115,7 @@ class NotesViewModelTest {
                 assertEquals(NotesUiState.Idle, awaitItem()) // initial state
                 val errorState = awaitItem()
                 assertTrue(errorState is NotesUiState.Error)
-                assertEquals("Some error", (errorState as NotesUiState.Error).message)
+                assertEquals("Error loading notes", (errorState as NotesUiState.Error).message)
                 cancelAndIgnoreRemainingEvents()
             }
         }

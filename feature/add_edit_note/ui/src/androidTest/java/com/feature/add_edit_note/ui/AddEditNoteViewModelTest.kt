@@ -19,6 +19,7 @@ import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -59,7 +60,7 @@ class AddEditNoteViewModelTest {
                 name = "Work",
                 color = "#61DEA4",
                 notes =
-                    listOf(
+                    persistentListOf(
                         Note(id = 1, content = "Original content", timestamp = 123456789, tagId = 1, done = false),
                     ),
             ),
@@ -68,7 +69,7 @@ class AddEditNoteViewModelTest {
                 name = "Shopping",
                 color = "#F45E6D",
                 notes =
-                    listOf(
+                    persistentListOf(
                         Note(id = 2, content = "Original content 2", timestamp = 123456789, tagId = 2, done = false),
                     ),
             ),

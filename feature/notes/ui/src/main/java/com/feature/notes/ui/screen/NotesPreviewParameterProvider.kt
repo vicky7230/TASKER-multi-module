@@ -3,6 +3,7 @@ package com.feature.notes.ui.screen
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
+import kotlinx.collections.immutable.persistentListOf
 
 class NotesPreviewParameterProvider : PreviewParameterProvider<NotesUiState> {
     override val values =
@@ -15,7 +16,7 @@ class NotesPreviewParameterProvider : PreviewParameterProvider<NotesUiState> {
 }
 
 val notes =
-    listOf(
+    persistentListOf(
         NoteWithTag(
             id = 1,
             content = "Welcome to your notes app! This is your first note.",
@@ -55,29 +56,29 @@ val notes =
     )
 
 val tags =
-    listOf(
+    persistentListOf(
         TagWithNotes(
             id = 1,
             name = "Work",
             color = "#61DEA4",
-            notes = emptyList(),
+            notes = persistentListOf(),
         ),
         TagWithNotes(
             id = 2,
             name = "Shopping",
             color = "#F45E6D",
-            notes = emptyList(),
+            notes = persistentListOf(),
         ),
         TagWithNotes(
             id = 3,
             name = "Personal",
             color = "#B678FF",
-            notes = emptyList(),
+            notes = persistentListOf(),
         ),
         TagWithNotes(
             id = 4,
             name = "Family",
             color = "#006CFF",
-            notes = emptyList(),
+            notes = persistentListOf(),
         ),
     )

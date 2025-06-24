@@ -8,6 +8,7 @@ import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.Tag
 import com.core.domain.model.TagWithNotes
+import kotlinx.collections.immutable.toPersistentList
 
 fun Note.toEntity(): NoteEntity =
     NoteEntity(
@@ -52,7 +53,7 @@ fun TagWithNotesEntity.toDomain(): TagWithNotes =
         id = tag.id,
         name = tag.name,
         color = tag.color,
-        notes = notes.map { it.toDomain() },
+        notes = notes.map { it.toDomain() }.toPersistentList(),
     )
 
 fun TagEntity.toDomain(): Tag =

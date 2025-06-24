@@ -13,9 +13,6 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="should_emit_NoteData_state_when_note_is_found_by_id()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="should_emit_Error_state_when_exception_is_thrown()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

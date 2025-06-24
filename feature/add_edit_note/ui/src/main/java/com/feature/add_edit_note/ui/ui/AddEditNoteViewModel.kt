@@ -15,6 +15,7 @@ import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -68,7 +69,7 @@ class AddEditNoteViewModel
                     getAllTagsWithNotesUseCase().collect { tags: List<TagWithNotes> ->
                         currentNote?.let { noteWithTag: NoteWithTag ->
                             _addEditeNoteUiState.value =
-                                AddEditNoteUiState.NoteAndTags(note = noteWithTag, tags = tags)
+                                AddEditNoteUiState.NoteAndTags(note = noteWithTag, tags = tags.toPersistentList())
                         }
                     }
                 } catch (e: Exception) {

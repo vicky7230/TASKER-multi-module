@@ -62,5 +62,9 @@ dependencies {
     // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
 
+    // Constraintlayout Compose
     implementation(libs.androidx.constraintlayout.compose)
+
+    // Immutable persistent collections for Kotlin
+    implementation(libs.kotlinx.collections.immutable)
 }

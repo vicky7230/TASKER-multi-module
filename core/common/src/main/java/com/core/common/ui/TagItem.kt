@@ -26,6 +26,7 @@ import com.core.common.theme.TaskerTheme
 import com.core.common.utils.toColorSafely
 import com.core.domain.model.Note
 import com.core.domain.model.TagWithNotes
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TagItem(
@@ -101,7 +102,7 @@ private fun PreviewTagItem() {
                         name = "Work",
                         color = "#61DEA4",
                         notes =
-                            listOf(
+                            persistentListOf(
                                 Note(1, "Note 1", 1L, tagId = 1, done = false),
                                 Note(2, "Note 2", 1L, tagId = 1, done = false),
                             ),

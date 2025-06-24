@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.TaskerTheme
 import com.core.domain.model.NoteWithTag
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun AddEditNoteScreen(
@@ -91,7 +92,7 @@ private fun NotesScreenPreview() {
                         tagName = "Work",
                         tagColor = "#61DEA4",
                     ),
-                    tags = emptyList(),
+                    tags = persistentListOf(),
                 ),
             onNoteChange = {},
             onCancelClick = {},

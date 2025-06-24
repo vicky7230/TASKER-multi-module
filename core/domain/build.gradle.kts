@@ -42,6 +42,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Immutable persistent collections for Kotlin
+    implementation(libs.kotlinx.collections.immutable)
+
     // dagger2
     implementation(libs.dagger)
     implementation(libs.dagger.android)

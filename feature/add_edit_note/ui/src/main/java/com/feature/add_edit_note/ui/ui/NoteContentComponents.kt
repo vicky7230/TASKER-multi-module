@@ -47,6 +47,7 @@ import com.core.common.ui.TagItem
 import com.core.common.utils.toColorSafely
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 
 @Composable
@@ -101,30 +102,30 @@ private fun PreviewTagsList() {
         Box(modifier = Modifier.background(Color.White)) {
             TagsList(
                 tags =
-                    listOf(
+                    persistentListOf(
                         TagWithNotes(
                             id = 1,
                             name = "Work",
                             color = "#61DEA4",
-                            notes = emptyList(),
+                            notes = persistentListOf(),
                         ),
                         TagWithNotes(
                             id = 2,
                             name = "Shopping",
                             color = "#F45E6D",
-                            notes = emptyList(),
+                            notes = persistentListOf(),
                         ),
                         TagWithNotes(
                             id = 3,
                             name = "Personal",
                             color = "#B678FF",
-                            notes = emptyList(),
+                            notes = persistentListOf(),
                         ),
                         TagWithNotes(
                             id = 4,
                             name = "Family",
                             color = "#006CFF",
-                            notes = emptyList(),
+                            notes = persistentListOf(),
                         ),
                     ),
                 expanded = true,
@@ -330,7 +331,7 @@ private fun PreviewNoteOptions() {
                                 tagName = "Work",
                                 tagColor = "#61DEA4",
                             ),
-                        tags = emptyList(),
+                        tags = persistentListOf(),
                     ),
                 onTagClick = {},
                 modifier = Modifier.fillMaxWidth(),

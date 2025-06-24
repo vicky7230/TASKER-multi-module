@@ -2,6 +2,7 @@ package com.feature.notes.ui.screen
 
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
+import kotlinx.collections.immutable.PersistentList
 
 sealed class NotesUiState {
     object Idle : NotesUiState()
@@ -9,8 +10,8 @@ sealed class NotesUiState {
     object Loading : NotesUiState()
 
     data class NotesLoaded(
-        val notes: List<NoteWithTag>,
-        val tags: List<TagWithNotes>,
+        val notes: PersistentList<NoteWithTag>,
+        val tags: PersistentList<TagWithNotes>,
     ) : NotesUiState()
 
     data class Error(

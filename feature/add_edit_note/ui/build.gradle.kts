@@ -101,4 +101,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    // Immutable persistent collections for Kotlin
+    implementation(libs.kotlinx.collections.immutable)
 }

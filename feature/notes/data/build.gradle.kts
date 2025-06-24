@@ -72,4 +72,7 @@ dependencies {
 
     // mockk
     testImplementation(libs.mockk.android)
+
+    // Immutable persistent collections for Kotlin
+    implementation(libs.kotlinx.collections.immutable)
 }
