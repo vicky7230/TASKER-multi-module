@@ -177,6 +177,8 @@ fun ActionButtons(
 @Composable
 fun NoteOptions(
     state: AddEditNoteUiState.NoteAndTags,
+    onCalendarClick: () -> Unit,
+    onAlarmClick: () -> Unit,
     onTagClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -187,14 +189,21 @@ fun NoteOptions(
         Icon(
             modifier =
                 Modifier
-                    .padding(start = 15.dp, top = 20.dp, bottom = 20.dp)
-                    .size(24.dp),
+                    // .padding(start = 15.dp, top = 20.dp, bottom = 20.dp)
+                    .size(48.dp)
+                    .clickable { onCalendarClick() }
+                    .padding(12.dp),
             painter = painterResource(R.drawable.ic_calendar),
             contentDescription = null,
         )
 
         Icon(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = 20.dp),
+            modifier =
+                Modifier
+                    // .padding(start = 20.dp, top = 20.dp, bottom = 20.dp)
+                    .size(48.dp)
+                    .clickable { onAlarmClick() }
+                    .padding(12.dp),
             painter = painterResource(R.drawable.ic_alarm),
             contentDescription = null,
         )
@@ -334,6 +343,8 @@ private fun PreviewNoteOptions() {
                         tags = persistentListOf(),
                     ),
                 onTagClick = {},
+                onCalendarClick = {},
+                onAlarmClick = {},
                 modifier = Modifier.fillMaxWidth(),
             )
         }

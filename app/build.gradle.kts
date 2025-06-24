@@ -99,6 +99,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -165,4 +166,7 @@ dependencies {
 
     // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
+
+    // desugar_jdk_libs
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 }

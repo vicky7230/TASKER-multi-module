@@ -33,11 +33,13 @@ fun NoteContent(
 ) {
     val scrollState = rememberScrollState()
     var tagsExpanded by remember { mutableStateOf(false) }
+    var calendarExpanded by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     ObserveKeyboardWithViewTree { isOpen ->
-        if (isOpen && tagsExpanded) {
+        if (isOpen && (tagsExpanded || calendarExpanded)) {
             tagsExpanded = false
+            calendarExpanded = false
         }
     }
 
@@ -69,9 +71,18 @@ fun NoteContent(
                     Modifier
                         .imePadding()
                         .fillMaxWidth(),
+                onAlarmClick = {},
+                onCalendarClick = {
+                    calendarExpanded = !calendarExpanded
+                    if (calendarExpanded) {
+                        keyboardController?.hide()
+                        tagsExpanded = false
+                    }
+                },
                 onTagClick = {
                     tagsExpanded = !tagsExpanded
                     if (tagsExpanded) {
+                        calendarExpanded = false
                         keyboardController?.hide()
                     }
                 },
@@ -84,6 +95,11 @@ fun NoteContent(
                 onTagClick = { tag: TagWithNotes ->
                     onNoteChange(state.note.copy(tagId = tag.id, tagName = tag.name, tagColor = tag.color))
                 },
+            )
+
+            HorizontalCalendarUi(
+                expanded = calendarExpanded,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -115,7 +131,7 @@ private fun NoteContentPreview() {
                     ),
                     tags = persistentListOf(),
                 ),
-            onNoteChange = { },
+            onNoteChange = {},
             onCancelClick = {},
             onDoneClick = {},
         )

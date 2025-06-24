@@ -104,4 +104,7 @@ dependencies {
 
     // Immutable persistent collections for Kotlin
     implementation(libs.kotlinx.collections.immutable)
+
+    // calendar view
+    implementation("com.kizitonwose.calendar:compose:2.7.0")
 }
