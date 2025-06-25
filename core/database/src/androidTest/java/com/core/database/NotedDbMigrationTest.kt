@@ -33,4 +33,17 @@ class NotedDbMigrationTest {
             true,
         )
     }
+
+    @Test
+    fun migrateFrom2To3_shouldMatchSchema() {
+        // Create the database as it existed in version 1
+        helper.createDatabase(notesDbTest, 2).close()
+
+        // Run the auto migration and validate against exported schema
+        helper.runMigrationsAndValidate(
+            notesDbTest,
+            3,
+            true,
+        )
+    }
 }

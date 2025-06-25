@@ -25,13 +25,17 @@ data class NoteEntity(
     val id: Long = 0,
     val content: String,
     @ColumnInfo(defaultValue = "0")
-    val timestamp: Long,
+    val timestamp: Long = System.currentTimeMillis(), // createdAt timestamp
     @ColumnInfo(defaultValue = "1")
     val tagId: Long,
     @ColumnInfo(defaultValue = "false")
     val done: Boolean,
     @ColumnInfo(defaultValue = "false")
     val isDeleted: Boolean = false,
+    @ColumnInfo(defaultValue = "'1970-01-01'")
+    val date: String,
+    @ColumnInfo(defaultValue = "'00:00:00'")
+    val time: String,
 )
 
 data class NoteWithTagEntity(

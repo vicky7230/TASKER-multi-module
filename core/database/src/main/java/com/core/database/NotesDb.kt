@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.core.database
 
 import androidx.room.AutoMigration
@@ -10,8 +12,11 @@ import com.core.database.entity.TagEntity
 
 @Database(
     entities = [NoteEntity::class, TagEntity::class],
-    autoMigrations = [AutoMigration(1, 2)],
-    version = 2,
+    autoMigrations = [
+        AutoMigration(1, 2),
+        AutoMigration(2, 3),
+    ],
+    version = 3,
     exportSchema = true,
 )
 abstract class NotesDb : RoomDatabase() {

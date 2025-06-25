@@ -1,5 +1,9 @@
+@file:SuppressLint("NewApi")
+
 package com.feature.add_edit_note.ui.ui
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +26,8 @@ import com.core.common.ui.ObserveKeyboardWithViewTree
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.persistentListOf
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun NoteContent(
@@ -93,12 +99,23 @@ fun NoteContent(
                 expanded = tagsExpanded,
                 selectedTagId = state.note.tagId,
                 onTagClick = { tag: TagWithNotes ->
-                    onNoteChange(state.note.copy(tagId = tag.id, tagName = tag.name, tagColor = tag.color))
+                    onNoteChange(
+                        state.note.copy(
+                            tagId = tag.id,
+                            tagName = tag.name,
+                            tagColor = tag.color,
+                        ),
+                    )
                 },
             )
 
             HorizontalCalendarUi(
                 expanded = calendarExpanded,
+                onDateSelect = { date: LocalDate ->
+                    val formattedDate = date.format(DateTimeFormatter.ISO_DATE)
+                    Log.d("NoteContent", "onDateSelect: $formattedDate")
+                    onNoteChange(state.note.copy(date = formattedDate))
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -128,6 +145,8 @@ private fun NoteContentPreview() {
                         done = false,
                         tagName = "Work",
                         tagColor = "#61DEA4",
+                        date = "2025-06-25",
+                        time = "00:00:00",
                     ),
                     tags = persistentListOf(),
                 ),

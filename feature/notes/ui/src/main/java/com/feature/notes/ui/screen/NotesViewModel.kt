@@ -1,11 +1,14 @@
 @file:Suppress("MagicNumber")
+@file:SuppressLint("NewApi")
 
 package com.feature.notes.ui.screen
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.common.utils.TimeUtils
+import com.core.domain.model.NoteWithTag
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import kotlinx.collections.immutable.toPersistentList
@@ -18,6 +21,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 class NotesViewModel
@@ -31,7 +36,15 @@ class NotesViewModel
                 getAllNotesWithTagUseCase().distinctUntilChanged(),
                 getAllTagsWithNotesUseCase().distinctUntilChanged(),
             ) { notes, tags ->
-                notes.filter { TimeUtils.isTimestampToday(it.timestamp) } to tags
+                notes.filter { noteWithTag: NoteWithTag ->
+                    TimeUtils.isTimestampToday(
+                        LocalDate
+                            .parse(noteWithTag.date)
+                            .atStartOfDay(ZoneId.systemDefault())
+                            .toInstant()
+                            .toEpochMilli(),
+                    )
+                } to tags
             }.map { (filteredNotes, tags) ->
                 NotesUiState.NotesLoaded(
                     notes = filteredNotes.toPersistentList(),

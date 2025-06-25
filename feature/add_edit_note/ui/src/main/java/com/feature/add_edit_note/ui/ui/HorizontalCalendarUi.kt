@@ -49,6 +49,7 @@ import java.util.Locale
 @Composable
 fun HorizontalCalendarUi(
     expanded: Boolean,
+    onDateSelect: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -86,6 +87,7 @@ fun HorizontalCalendarUi(
                     isSelected = selectedDate == day.date,
                     onClick = { day ->
                         selectedDate = day.date
+                        onDateSelect(day.date)
                     },
                     modifier = Modifier,
                 )
@@ -99,7 +101,7 @@ fun HorizontalCalendarUi(
                     DaysOfWeekTitle(
                         daysOfWeek = daysOfWeek,
                         modifier = Modifier.fillMaxWidth(),
-                    ) // Use the title as month header
+                    )
                 }
             },
         )
@@ -219,6 +221,7 @@ private fun PreviewHorizontalCalendarUi() {
     TaskerTheme {
         HorizontalCalendarUi(
             expanded = true,
+            onDateSelect = {},
             modifier = Modifier.fillMaxWidth(),
         )
     }

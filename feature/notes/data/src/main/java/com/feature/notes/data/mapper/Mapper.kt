@@ -17,6 +17,8 @@ fun Note.toEntity(): NoteEntity =
         timestamp = timestamp,
         tagId = tagId,
         done = done,
+        date = date,
+        time = time,
     )
 
 fun NoteEntity.toDomain(): Note =
@@ -26,6 +28,8 @@ fun NoteEntity.toDomain(): Note =
         timestamp = timestamp,
         tagId = tagId,
         done = done,
+        date = date,
+        time = time,
     )
 
 fun NoteWithTagEntity.toDomain(): NoteWithTag =
@@ -37,6 +41,8 @@ fun NoteWithTagEntity.toDomain(): NoteWithTag =
         done = note.done,
         tagColor = tag.color,
         tagName = tag.name,
+        date = note.date,
+        time = note.time,
     )
 
 fun NoteWithTag.toEntity(): NoteEntity =
@@ -46,6 +52,8 @@ fun NoteWithTag.toEntity(): NoteEntity =
         timestamp = timestamp,
         tagId = tagId,
         done = done,
+        date = date,
+        time = time,
     )
 
 fun TagWithNotesEntity.toDomain(): TagWithNotes =

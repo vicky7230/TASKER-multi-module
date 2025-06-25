@@ -25,6 +25,8 @@ val notes =
             done = false,
             tagName = "Work",
             tagColor = "#61DEA4",
+            date = "2025-06-25",
+            time = "00:00:00",
         ),
         NoteWithTag(
             id = 2,
@@ -34,6 +36,8 @@ val notes =
             done = false,
             tagName = "Shopping",
             tagColor = "#F45E6D",
+            date = "2025-06-25",
+            time = "00:00:00",
         ),
         NoteWithTag(
             id = 3,
@@ -43,6 +47,8 @@ val notes =
             done = false,
             tagName = "Personal",
             tagColor = "#B678FF",
+            date = "2025-06-25",
+            time = "00:00:00",
         ),
         NoteWithTag(
             id = 4,
@@ -52,6 +58,8 @@ val notes =
             done = false,
             tagName = "Family",
             tagColor = "#006CFF",
+            date = "2025-06-25",
+            time = "00:00:00",
         ),
     )
 

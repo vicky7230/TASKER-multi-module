@@ -46,6 +46,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             val note2 =
                 NoteEntity(
@@ -54,6 +56,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             notesDao.upsertNotes(listOf(note1, note2))
 
@@ -79,6 +83,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             val note2 =
                 NoteEntity(
@@ -87,6 +93,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             notesDao.upsertNotes(listOf(note1, note2))
 
@@ -111,6 +119,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             val note2 =
                 NoteEntity(
@@ -119,6 +129,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             notesDao.upsertNotes(listOf(note1, note2))
 
@@ -143,6 +155,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             val note2 =
                 NoteEntity(
@@ -151,6 +165,8 @@ class NotesDaoTest {
                     timestamp = 1633024800000L,
                     tagId = 1,
                     done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
                 )
             notesDao.upsertNotes(listOf(note1, note2))
 

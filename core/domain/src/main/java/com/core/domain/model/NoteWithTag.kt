@@ -5,6 +5,8 @@ data class NoteWithTag(
     val content: String,
     val timestamp: Long,
     val done: Boolean,
+    val date: String,
+    val time: String,
     val tagId: Long,
     val tagName: String,
     val tagColor: String,

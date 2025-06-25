@@ -103,8 +103,8 @@ private fun PreviewTagItem() {
                         color = "#61DEA4",
                         notes =
                             persistentListOf(
-                                Note(1, "Note 1", 1L, tagId = 1, done = false),
-                                Note(2, "Note 2", 1L, tagId = 1, done = false),
+                                Note(1, "Note 1", 1L, tagId = 1, done = false, date = "2025-06-25", time = "00:00:00"),
+                                Note(2, "Note 2", 1L, tagId = 1, done = false, date = "2025-06-25", time = "00:00:00"),
                             ),
                     ),
                 modifier =

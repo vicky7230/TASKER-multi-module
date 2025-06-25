@@ -6,4 +6,6 @@ data class Note(
     val timestamp: Long,
     val tagId: Long,
     val done: Boolean,
+    val date: String,
+    val time: String,
 )

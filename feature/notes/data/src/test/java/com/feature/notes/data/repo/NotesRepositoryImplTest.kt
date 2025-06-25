@@ -57,6 +57,8 @@ class NotesRepositoryImplTest {
                         tagName = "Tag",
                         tagColor = "#FF0000",
                         done = false,
+                        date = "2025-06-25",
+                        time = "00:00:00",
                     ),
                 )
             val expectedIds = listOf(1L)
@@ -77,8 +79,8 @@ class NotesRepositoryImplTest {
             // Arrange
             val notes =
                 listOf(
-                    NoteEntity(1, "Test 1", 1233L, 1, false),
-                    NoteEntity(2, "Test 2", 1233L, 1, false),
+                    NoteEntity(1, "Test 1", 1233L, 1, false, date = "2025-06-25", time = "00:00:00"),
+                    NoteEntity(2, "Test 2", 1233L, 1, false, date = "2025-06-25", time = "00:00:00"),
                 )
 
             val expectedResult = notes.map { it.toDomain() }
@@ -100,7 +102,7 @@ class NotesRepositoryImplTest {
             val notes =
                 listOf(
                     NoteWithTagEntity(
-                        note = NoteEntity(1, "Test 1", 1233L, 1, false),
+                        note = NoteEntity(1, "Test 1", 1233L, 1, false, date = "2025-06-25", time = "00:00:00"),
                         tag = TagEntity(1, "TestTag", "#FF0000"),
                     ),
                 )
@@ -119,7 +121,16 @@ class NotesRepositoryImplTest {
         runTest {
             // Arrange
             val noteId = 1L
-            val note = NoteEntity(noteId, "Test 1", 1233L, 1, false)
+            val note =
+                NoteEntity(
+                    noteId,
+                    "Test 1",
+                    1233L,
+                    1,
+                    false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
+                )
             val expectedResult = note.toDomain()
             coEvery { notesDao.getNoteById(noteId) } returns note
 
@@ -135,7 +146,7 @@ class NotesRepositoryImplTest {
             val noteId = 1L
             val note =
                 NoteWithTagEntity(
-                    note = NoteEntity(noteId, "Test 1", 1233L, 1, false),
+                    note = NoteEntity(noteId, "Test 1", 1233L, 1, false, date = "2025-06-25", time = "00:00:00"),
                     tag = TagEntity(1, "TestTag", "#FF0000"),
                 )
             val expectedResult = note.toDomain()
@@ -155,8 +166,8 @@ class NotesRepositoryImplTest {
                         tag = TagEntity(1, "TestTag1", "#FF0000"),
                         notes =
                             listOf(
-                                NoteEntity(1, "Test 1", 1233L, 1, false),
-                                NoteEntity(2, "Test 2", 1234L, 1, false),
+                                NoteEntity(1, "Test 1", 1233L, 1, false, date = "2025-06-25", time = "00:00:00"),
+                                NoteEntity(2, "Test 2", 1234L, 1, false, date = "2025-06-25", time = "00:00:00"),
                             ),
                     ),
                 )

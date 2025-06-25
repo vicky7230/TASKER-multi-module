@@ -1,20 +1,14 @@
 package com.feature.add_edit_note.ui.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.core.common.theme.TaskerTheme
+import com.core.common.ui.ErrorScreen
 import com.core.domain.model.NoteWithTag
 import kotlinx.collections.immutable.persistentListOf
 
@@ -33,23 +27,13 @@ fun AddEditNoteScreen(
     ) { padding ->
         when (state) {
             is AddEditNoteUiState.Error -> {
-                Box(
+                ErrorScreen(
+                    message = state.message,
                     modifier =
                         Modifier
                             .fillMaxSize()
                             .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = state.message,
-                        style =
-                            TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Red,
-                            ),
-                    )
-                }
+                )
             }
 
             AddEditNoteUiState.Idle -> {}
@@ -91,6 +75,8 @@ private fun NotesScreenPreview() {
                         done = false,
                         tagName = "Work",
                         tagColor = "#61DEA4",
+                        date = "2025-06-25",
+                        time = "00:00:00",
                     ),
                     tags = persistentListOf(),
                 ),

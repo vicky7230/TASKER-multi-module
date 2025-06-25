@@ -52,6 +52,8 @@ class AddEditNoteViewModelTest {
             done = false,
             tagName = "Work",
             tagColor = "#61DEA4",
+            date = "2025-06-25",
+            time = "00:00:00",
         )
     private val tags =
         listOf(
@@ -61,7 +63,15 @@ class AddEditNoteViewModelTest {
                 color = "#61DEA4",
                 notes =
                     persistentListOf(
-                        Note(id = 1, content = "Original content", timestamp = 123456789, tagId = 1, done = false),
+                        Note(
+                            id = 1,
+                            content = "Original content",
+                            timestamp = 123456789,
+                            tagId = 1,
+                            done = false,
+                            date = "2025-06-25",
+                            time = "00:00:00",
+                        ),
                     ),
             ),
             TagWithNotes(
@@ -70,7 +80,15 @@ class AddEditNoteViewModelTest {
                 color = "#F45E6D",
                 notes =
                     persistentListOf(
-                        Note(id = 2, content = "Original content 2", timestamp = 123456789, tagId = 2, done = false),
+                        Note(
+                            id = 2,
+                            content = "Original content 2",
+                            timestamp = 123456789,
+                            tagId = 2,
+                            done = false,
+                            date = "2025-06-25",
+                            time = "00:00:00",
+                        ),
                     ),
             ),
         )
@@ -163,7 +181,10 @@ class AddEditNoteViewModelTest {
                 assertEquals(AddEditNoteUiState.Idle, awaitItem())
                 val errorState = awaitItem()
                 assertTrue(errorState is AddEditNoteUiState.Error)
-                assertEquals((errorState as AddEditNoteUiState.Error).message, "Failed to load note")
+                assertEquals(
+                    (errorState as AddEditNoteUiState.Error).message,
+                    "Failed to load note",
+                )
                 cancelAndIgnoreRemainingEvents()
             }
         }

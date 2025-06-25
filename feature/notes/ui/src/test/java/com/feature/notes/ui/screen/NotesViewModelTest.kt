@@ -57,6 +57,8 @@ class NotesViewModelTest {
                         done = false,
                         tagName = "Tag 1",
                         tagColor = "#FFFFFF",
+                        date = "2025-06-25",
+                        time = "00:00:00",
                     ),
                 )
             val fakeTags =
@@ -73,6 +75,8 @@ class NotesViewModelTest {
                                     timestamp = timesStamp,
                                     tagId = 1,
                                     done = false,
+                                    date = "2025-06-25",
+                                    time = "00:00:00",
                                 ),
                             ),
                     ),
