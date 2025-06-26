@@ -65,8 +65,8 @@ class AddEditNoteViewModel
                         done = false,
                         tagName = "Work",
                         tagColor = "#61DEA4",
-                        date = "2025-06-25",
-                        time = "00:00:00",
+                        date = "2025-06-25", // TODO fix this
+                        time = "00:00:00", // TODO fix this
                     )
                     getAllTagsWithNotesUseCase().collect { tags: List<TagWithNotes> ->
                         currentNote?.let { noteWithTag: NoteWithTag ->

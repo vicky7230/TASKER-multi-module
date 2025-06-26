@@ -177,6 +177,9 @@ fun ActionButtons(
 @Composable
 fun NoteOptions(
     state: AddEditNoteUiState.NoteAndTags,
+    highlightTag: Boolean,
+    highlightDate: Boolean,
+    highlightAlarm: Boolean,
     onCalendarClick: () -> Unit,
     onAlarmClick: () -> Unit,
     onTagClick: () -> Unit,
@@ -189,23 +192,35 @@ fun NoteOptions(
         Icon(
             modifier =
                 Modifier
-                    // .padding(start = 15.dp, top = 20.dp, bottom = 20.dp)
                     .size(48.dp)
                     .clickable { onCalendarClick() }
                     .padding(12.dp),
-            painter = painterResource(R.drawable.ic_calendar),
+            painter =
+                if (highlightDate) {
+                    painterResource(R.drawable.ic_calendar_selected)
+                } else {
+                    painterResource(R.drawable.ic_calendar)
+                },
             contentDescription = null,
+            tint = Color.Unspecified,
         )
 
         Icon(
             modifier =
                 Modifier
-                    // .padding(start = 20.dp, top = 20.dp, bottom = 20.dp)
                     .size(48.dp)
                     .clickable { onAlarmClick() }
                     .padding(12.dp),
-            painter = painterResource(R.drawable.ic_alarm),
+            painter =
+                if (highlightAlarm) {
+                    painterResource(R.drawable.ic_alarm_selected)
+                } else {
+                    painterResource(
+                        R.drawable.ic_alarm,
+                    )
+                },
             contentDescription = null,
+            tint = Color.Unspecified,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -221,7 +236,7 @@ fun NoteOptions(
                     TextStyle(
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium,
-                        color = LightGray3,
+                        color = if (highlightTag) Blue else LightGray3,
                     ),
             )
             Box(
@@ -348,6 +363,9 @@ private fun PreviewNoteOptions() {
                 onCalendarClick = {},
                 onAlarmClick = {},
                 modifier = Modifier.fillMaxWidth(),
+                highlightTag = true,
+                highlightDate = true,
+                highlightAlarm = false,
             )
         }
     }
