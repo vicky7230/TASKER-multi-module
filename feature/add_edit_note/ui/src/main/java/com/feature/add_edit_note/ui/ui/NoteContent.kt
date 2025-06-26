@@ -1,4 +1,5 @@
 @file:SuppressLint("NewApi")
+@file:Suppress("MagicNumber")
 
 package com.feature.add_edit_note.ui.ui
 
@@ -13,22 +14,32 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.core.common.theme.TaskerTheme
 import com.core.common.ui.ObserveKeyboardWithViewTree
+import com.core.common.ui.rememberPickerState
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
+private const val TAG = "NoteContent" // Or whatever name matches your component
+
+@OptIn(FlowPreview::class)
 @Composable
 fun NoteContent(
     state: AddEditNoteUiState.NoteAndTags,
@@ -40,17 +51,38 @@ fun NoteContent(
     val scrollState = rememberScrollState()
     var tagsExpanded by remember { mutableStateOf(false) }
     var calendarExpanded by remember { mutableStateOf(false) }
+    var timePickerExpanded by remember { mutableStateOf(false) }
+    val hoursPickerState = rememberPickerState()
+    val minutesPickerState = rememberPickerState()
+
+    LaunchedEffect(hoursPickerState, minutesPickerState, onNoteChange) {
+        snapshotFlow {
+            String.format(
+                Locale.getDefault(),
+                "%02d:%02d:00",
+                hoursPickerState.selectedItem.toInt(),
+                minutesPickerState.selectedItem.toInt(),
+            )
+        }.debounce(300)
+            .distinctUntilChanged()
+            .collect { formattedTime: String ->
+                Log.d(TAG, "onTimeSelect: $formattedTime")
+                onNoteChange(state.note.copy(time = formattedTime))
+            }
+    }
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
     ObserveKeyboardWithViewTree { isOpen ->
-        if (isOpen && (tagsExpanded || calendarExpanded)) {
+        if (isOpen && (tagsExpanded || calendarExpanded || timePickerExpanded)) {
             tagsExpanded = false
             calendarExpanded = false
+            timePickerExpanded = false
         }
     }
 
     Box(
-        modifier = modifier.imePadding(), // Push content up when keyboard appears
+        modifier = modifier,
     ) {
         Column(
             modifier =
@@ -77,12 +109,20 @@ fun NoteContent(
                     Modifier
                         .imePadding()
                         .fillMaxWidth(),
-                onAlarmClick = {},
+                onAlarmClick = {
+                    timePickerExpanded = !timePickerExpanded
+                    if (timePickerExpanded) {
+                        keyboardController?.hide()
+                        tagsExpanded = false
+                        calendarExpanded = false
+                    }
+                },
                 onCalendarClick = {
                     calendarExpanded = !calendarExpanded
                     if (calendarExpanded) {
                         keyboardController?.hide()
                         tagsExpanded = false
+                        timePickerExpanded = false
                     }
                 },
                 onTagClick = {
@@ -90,8 +130,12 @@ fun NoteContent(
                     if (tagsExpanded) {
                         calendarExpanded = false
                         keyboardController?.hide()
+                        timePickerExpanded = false
                     }
                 },
+                highlightAlarm = timePickerExpanded,
+                highlightDate = calendarExpanded,
+                highlightTag = tagsExpanded,
             )
 
             TagsList(
@@ -113,10 +157,17 @@ fun NoteContent(
                 expanded = calendarExpanded,
                 onDateSelect = { date: LocalDate ->
                     val formattedDate = date.format(DateTimeFormatter.ISO_DATE)
-                    Log.d("NoteContent", "onDateSelect: $formattedDate")
+                    Log.d(TAG, "onDateSelect: $formattedDate")
                     onNoteChange(state.note.copy(date = formattedDate))
                 },
                 modifier = Modifier.fillMaxWidth(),
+            )
+
+            VerticalTimePicker(
+                expanded = timePickerExpanded,
+                modifier = Modifier.fillMaxWidth(),
+                hoursPickerState = hoursPickerState,
+                minutesPickerState = minutesPickerState,
             )
         }
     }
@@ -148,7 +199,33 @@ private fun NoteContentPreview() {
                         date = "2025-06-25",
                         time = "00:00:00",
                     ),
-                    tags = persistentListOf(),
+                    tags =
+                        persistentListOf(
+                            TagWithNotes(
+                                id = 1,
+                                name = "Work",
+                                color = "#61DEA4",
+                                notes = persistentListOf(),
+                            ),
+                            TagWithNotes(
+                                id = 2,
+                                name = "Shopping",
+                                color = "#F45E6D",
+                                notes = persistentListOf(),
+                            ),
+                            TagWithNotes(
+                                id = 3,
+                                name = "Personal",
+                                color = "#B678FF",
+                                notes = persistentListOf(),
+                            ),
+                            TagWithNotes(
+                                id = 4,
+                                name = "Family",
+                                color = "#006CFF",
+                                notes = persistentListOf(),
+                            ),
+                        ),
                 ),
             onNoteChange = {},
             onCancelClick = {},

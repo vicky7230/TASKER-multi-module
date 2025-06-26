@@ -25,6 +25,8 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesViewModelTest {
@@ -57,7 +59,7 @@ class NotesViewModelTest {
                         done = false,
                         tagName = "Tag 1",
                         tagColor = "#FFFFFF",
-                        date = "2025-06-25",
+                        date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
                         time = "00:00:00",
                     ),
                 )
@@ -75,7 +77,7 @@ class NotesViewModelTest {
                                     timestamp = timesStamp,
                                     tagId = 1,
                                     done = false,
-                                    date = "2025-06-25",
+                                    date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
                                     time = "00:00:00",
                                 ),
                             ),
