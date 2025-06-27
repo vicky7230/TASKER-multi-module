@@ -47,31 +47,34 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun rememberPickerState() = remember { PickerState() }
+fun rememberPickerState(itemToPick: String) = remember { PickerState(itemToPick) }
 
-class PickerState {
-    var selectedItem by mutableStateOf("00")
+data class PickerState(
+    private val itemToPick: String,
+) {
+    var selectedItem by mutableStateOf(itemToPick)
 }
 
 @Composable
 fun Picker(
     items: List<String>,
+    state: PickerState,
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
-    state: PickerState = rememberPickerState(),
-    startIndex: Int = 0,
     visibleItemsCount: Int = 3,
     textStyle: TextStyle = LocalTextStyle.current,
     dividerColor: Color = LightGray5,
     wheelAlignment: Alignment.Horizontal = Alignment.End,
 ) {
+    fun getItem(index: Int) = items[index % items.size]
+
+    val pickedNumberIndex = items.indexOf(state.selectedItem).coerceAtLeast(0)
+
     val visibleItemsMiddle = visibleItemsCount / 2
     val listScrollCount = Integer.MAX_VALUE
     val listScrollMiddle = listScrollCount / 2
     val listStartIndex =
-        listScrollMiddle - listScrollMiddle % items.size - visibleItemsMiddle + startIndex
-
-    fun getItem(index: Int) = items[index % items.size]
+        listScrollMiddle - listScrollMiddle % items.size - visibleItemsMiddle + pickedNumberIndex
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
@@ -159,7 +162,7 @@ private fun NumberPickerDemo() {
         modifier = Modifier.background(color = Color.White),
     ) {
         val values = remember { (1..99).map { it.toString() } }
-        val valuesPickerState = rememberPickerState()
+        val valuesPickerState = rememberPickerState("99")
 
         Picker(
             state = valuesPickerState,

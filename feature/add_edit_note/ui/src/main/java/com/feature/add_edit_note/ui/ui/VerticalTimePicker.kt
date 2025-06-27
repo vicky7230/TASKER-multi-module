@@ -83,13 +83,13 @@ fun VerticalTimePicker(
 @Composable
 private fun VerticalTimePickerPreview() {
     TaskerTheme {
-        val hoursPickerState = rememberPickerState()
-        val minutesPickerState = rememberPickerState()
+        val hoursPickerState = rememberPickerState("02")
+        val minutesPickerState = rememberPickerState("48")
         VerticalTimePicker(
             expanded = true,
-            modifier = Modifier.fillMaxWidth(),
             hoursPickerState = hoursPickerState,
             minutesPickerState = minutesPickerState,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

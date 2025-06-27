@@ -32,6 +32,7 @@ import com.core.common.theme.Blue
 import com.core.common.theme.LightGray
 import com.core.common.theme.LightGray4
 import com.core.common.theme.TaskerTheme
+import com.core.domain.model.NoteWithTag
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
@@ -46,6 +47,7 @@ import java.util.Locale
 
 @Composable
 fun HorizontalCalendarUi(
+    note: NoteWithTag,
     expanded: Boolean,
     onDateSelect: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
@@ -63,11 +65,11 @@ fun HorizontalCalendarUi(
                 ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val currentMonth = remember { YearMonth.now() }
+        val currentMonth = remember { YearMonth.from(LocalDate.parse(note.date)) }
         val startMonth = remember { currentMonth.minusMonths(100) } // Adjust as needed
         val endMonth = remember { currentMonth.plusMonths(100) } // Adjust as needed
         val daysOfWeek = remember { daysOfWeek(firstDayOfWeek = DayOfWeek.MONDAY) }
-        var selectedDate: LocalDate? by remember { mutableStateOf(LocalDate.now()) }
+        var selectedDate by remember { mutableStateOf(LocalDate.parse(note.date)) }
 
         val state =
             rememberCalendarState(
@@ -83,9 +85,9 @@ fun HorizontalCalendarUi(
                 Day(
                     day = day,
                     isSelected = selectedDate == day.date,
-                    onClick = { day ->
-                        selectedDate = day.date
-                        onDateSelect(day.date)
+                    onClick = { calendarDay: CalendarDay ->
+                        selectedDate = calendarDay.date
+                        onDateSelect(calendarDay.date)
                     },
                     modifier = Modifier,
                 )
@@ -221,6 +223,18 @@ private fun PreviewHorizontalCalendarUi() {
             expanded = true,
             onDateSelect = {},
             modifier = Modifier.fillMaxWidth(),
+            note =
+                NoteWithTag(
+                    id = 1,
+                    content = "Welcome to your notes app! This is your first note.",
+                    timestamp = 0,
+                    tagId = 1,
+                    done = false,
+                    tagName = "Work",
+                    tagColor = "#61DEA4",
+                    date = "2025-06-25",
+                    time = "00:00:00",
+                ),
         )
     }
 }

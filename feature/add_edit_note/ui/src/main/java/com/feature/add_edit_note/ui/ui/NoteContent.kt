@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -37,7 +38,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-private const val TAG = "NoteContent" // Or whatever name matches your component
+private const val TAG = "NoteContent"
 
 @OptIn(FlowPreview::class)
 @Composable
@@ -52,10 +53,12 @@ fun NoteContent(
     var tagsExpanded by remember { mutableStateOf(false) }
     var calendarExpanded by remember { mutableStateOf(false) }
     var timePickerExpanded by remember { mutableStateOf(false) }
-    val hoursPickerState = rememberPickerState()
-    val minutesPickerState = rememberPickerState()
+    val hoursPickerState = rememberPickerState(state.note.time.split(":")[0])
+    val minutesPickerState = rememberPickerState(state.note.time.split(":")[1])
 
-    LaunchedEffect(hoursPickerState, minutesPickerState, onNoteChange) {
+    val currentState by rememberUpdatedState(state)
+
+    LaunchedEffect(onNoteChange) {
         snapshotFlow {
             String.format(
                 Locale.getDefault(),
@@ -67,7 +70,8 @@ fun NoteContent(
             .distinctUntilChanged()
             .collect { formattedTime: String ->
                 Log.d(TAG, "onTimeSelect: $formattedTime")
-                onNoteChange(state.note.copy(time = formattedTime))
+                Log.d(TAG, "note: ${state.note}")
+                onNoteChange(currentState.note.copy(time = formattedTime))
             }
     }
 
@@ -154,6 +158,7 @@ fun NoteContent(
             )
 
             HorizontalCalendarUi(
+                note = state.note,
                 expanded = calendarExpanded,
                 onDateSelect = { date: LocalDate ->
                     val formattedDate = date.format(DateTimeFormatter.ISO_DATE)

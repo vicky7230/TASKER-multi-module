@@ -1,5 +1,8 @@
+@file:SuppressLint("NewApi")
+
 package com.feature.add_edit_note.ui.ui
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -8,7 +11,6 @@ import androidx.navigation.toRoute
 import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.AddEditNoteScreen
 import com.core.domain.model.NoteWithTag
-import com.core.domain.model.TagWithNotes
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
@@ -22,8 +24,13 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+private const val TAG = "NoteContent"
 
 class AddEditNoteViewModel
     @AssistedInject
@@ -57,35 +64,47 @@ class AddEditNoteViewModel
             @Suppress("TooGenericExceptionCaught")
             viewModelScope.launch {
                 try {
-                    val note = getNoteWithTagByIdUseCase(id = noteId)
-                    currentNote = note ?: NoteWithTag(
-                        content = "",
-                        timestamp = System.currentTimeMillis(),
-                        tagId = 1,
-                        done = false,
-                        tagName = "Work",
-                        tagColor = "#61DEA4",
-                        date = "2025-06-25", // TODO fix this
-                        time = "00:00:00", // TODO fix this
-                    )
-                    getAllTagsWithNotesUseCase().collect { tags: List<TagWithNotes> ->
+                    val tags = getAllTagsWithNotesUseCase().first()
+
+                    if (tags.isNotEmpty()) {
+                        val note = getNoteWithTagByIdUseCase(id = noteId)
+                        currentNote = note ?: NoteWithTag(
+                            content = "",
+                            timestamp = System.currentTimeMillis(),
+                            tagId = 1,
+                            done = false,
+                            tagName = tags[0].name,
+                            tagColor = tags[0].color,
+                            date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                            time =
+                                LocalDate
+                                    .now()
+                                    .atStartOfDay()
+                                    .toLocalTime()
+                                    .format(DateTimeFormatter.ofPattern("HH:mm:ss")),
+                        )
+
                         currentNote?.let { noteWithTag: NoteWithTag ->
                             _addEditeNoteUiState.value =
-                                AddEditNoteUiState.NoteAndTags(note = noteWithTag, tags = tags.toPersistentList())
+                                AddEditNoteUiState.NoteAndTags(
+                                    note = noteWithTag,
+                                    tags = tags.toPersistentList(),
+                                )
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e("AddEditNoteViewModel", "Error loading note", e)
-                    _addEditeNoteUiState.value = AddEditNoteUiState.Error("Failed to load note")
+                    Log.e("AddEditNoteViewModel", "Error loading note and tags", e)
+                    _addEditeNoteUiState.value = AddEditNoteUiState.Error("Failed to load note and tags")
                 }
             }
         }
 
-        fun onNoteChange(note: NoteWithTag) {
-            currentNote = note
+        fun onNoteChange(noteWithTag: NoteWithTag) {
+            currentNote = noteWithTag
             currentNote?.let { note: NoteWithTag ->
                 _addEditeNoteUiState.update { currentState: AddEditNoteUiState ->
                     if (currentState is AddEditNoteUiState.NoteAndTags) {
+                        Log.d(TAG, "onNoteChange: $note")
                         currentState.copy(note = note)
                     } else {
                         currentState

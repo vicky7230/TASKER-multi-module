@@ -1,5 +1,8 @@
+@file:SuppressLint("NewApi")
+
 package com.core.database.entity
 
+import android.annotation.SuppressLint
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -7,6 +10,8 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Entity(
     tableName = "notes",
@@ -29,13 +34,13 @@ data class NoteEntity(
     @ColumnInfo(defaultValue = "1")
     val tagId: Long,
     @ColumnInfo(defaultValue = "false")
-    val done: Boolean,
+    val done: Boolean = false,
     @ColumnInfo(defaultValue = "false")
     val isDeleted: Boolean = false,
     @ColumnInfo(defaultValue = "'1970-01-01'")
-    val date: String,
+    val date: String = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
     @ColumnInfo(defaultValue = "'00:00:00'")
-    val time: String,
+    val time: String = LocalDate.now().format(DateTimeFormatter.ofPattern("HH:mm:00")),
 )
 
 data class NoteWithTagEntity(
