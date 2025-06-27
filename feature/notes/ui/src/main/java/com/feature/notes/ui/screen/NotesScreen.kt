@@ -56,7 +56,7 @@ fun NotesScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(padding),
-                    options =
+                    fabMenuItems =
                         listOf(
                             FabOption(
                                 label = "Task",
