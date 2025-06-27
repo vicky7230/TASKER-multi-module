@@ -46,7 +46,7 @@ import com.feature.notes.ui.screen.composables.NotesOverview
 @Composable
 fun NotesContent(
     notesUiState: NotesUiState.NotesLoaded,
-    options: List<FabOption>,
+    fabMenuItems: List<FabOption>,
     onNoteClick: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -82,7 +82,7 @@ fun NotesContent(
                     .zIndex(4f),
         ) {
             FabMenu(
-                options = options,
+                items = fabMenuItems,
                 modifier =
                     Modifier
                         .padding(bottom = 90.dp, end = 16.dp)
@@ -133,7 +133,7 @@ private fun NotesContentPreview() {
     TaskerTheme {
         NotesContent(
             notesUiState = NotesUiState.NotesLoaded(notes, tags),
-            options =
+            fabMenuItems =
                 listOf(
                     FabOption(
                         label = "Task",

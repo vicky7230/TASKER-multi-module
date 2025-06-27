@@ -2,6 +2,7 @@ package com.feature.notes.ui.screen.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.LightGray
@@ -21,6 +23,8 @@ import com.core.common.theme.LightGray2
 import com.core.common.ui.TagItem
 import com.core.domain.model.NoteWithTag
 import com.feature.notes.ui.screen.NotesUiState
+import com.feature.notes.ui.screen.notes
+import com.feature.notes.ui.screen.tags
 
 @Composable
 fun NotesOverview(
@@ -87,4 +91,15 @@ fun NotesOverview(
             )
         }
     }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun NotesOverviewPreview() {
+    NotesOverview(
+        modifier = Modifier.fillMaxSize(),
+        notesUiState = NotesUiState.NotesLoaded(notes, tags),
+        onNoteClick = {},
+    )
 }

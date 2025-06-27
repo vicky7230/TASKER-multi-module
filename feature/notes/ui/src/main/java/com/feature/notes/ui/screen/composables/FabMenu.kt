@@ -26,19 +26,19 @@ import com.core.common.theme.TaskerTheme
 
 @Composable
 fun FabMenu(
-    options: List<FabOption>,
+    items: List<FabOption>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        options.forEachIndexed { index, option ->
+        items.forEachIndexed { index, option ->
             FabMenuItem(
                 modifier = Modifier.fillMaxWidth(0.65f),
-                label = option.label,
-                icon = option.icon,
-                color = option.color,
-                onClick = option.onClick,
+                itemText = option.label,
+                itemIcon = option.icon,
+                itemTextColor = option.color,
+                onItemClick = option.onClick,
             )
-            if (index < options.size - 1) {
+            if (index < items.size - 1) {
                 HorizontalDivider(modifier = Modifier.fillMaxWidth(0.65f))
             }
         }
@@ -62,7 +62,7 @@ private fun FabMenuPreview() {
                         ).background(color = Color.White, shape = RoundedCornerShape(8.dp))
                         .clip(RoundedCornerShape(8.dp))
                         .align(Alignment.BottomEnd),
-                options =
+                items =
                     listOf(
                         FabOption(
                             label = "Task",

@@ -24,30 +24,30 @@ import com.core.common.theme.TaskerTheme
 
 @Composable
 fun FabMenuItem(
-    label: String,
-    icon: ImageVector,
-    color: Color,
-    onClick: () -> Unit,
+    itemText: String,
+    itemTextColor: Color,
+    itemIcon: ImageVector,
+    onItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.clickable { onClick() }.padding(18.dp),
+        modifier = modifier.clickable { onItemClick() }.padding(18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = icon,
-            contentDescription = label,
+            imageVector = itemIcon,
+            contentDescription = itemText,
             tint = Color.Unspecified,
         )
         Text(
-            text = label,
+            text = itemText,
             style =
                 TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = color,
+                    color = itemTextColor,
                 ),
         )
     }
@@ -60,10 +60,10 @@ private fun PopupItemPreview() {
     TaskerTheme {
         FabMenuItem(
             modifier = Modifier.fillMaxWidth(),
-            label = "Add Task",
-            icon = ImageVector.vectorResource(R.drawable.ic_create_task),
-            color = Color.Blue,
-            onClick = {},
+            itemText = "Add Task",
+            itemIcon = ImageVector.vectorResource(R.drawable.ic_create_task),
+            itemTextColor = Color.Blue,
+            onItemClick = {},
         )
     }
 }
