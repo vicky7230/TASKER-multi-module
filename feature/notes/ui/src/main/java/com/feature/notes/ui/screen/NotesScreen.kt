@@ -2,23 +2,21 @@ package com.feature.notes.ui.screen
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.core.common.R
 import com.core.common.theme.Blue
 import com.core.common.theme.TaskerTheme
 import com.core.common.ui.ErrorScreen
 import com.core.common.ui.LoadingScreen
 import com.core.domain.model.NoteWithTag
+import com.feature.notes.ui.screen.composables.FabOption
 
 @Composable
 fun NotesScreen(
@@ -30,21 +28,6 @@ fun NotesScreen(
     val state = notesUiState
     Scaffold(
         modifier = modifier,
-        topBar = {},
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAddNoteClick() },
-                containerColor = Color.White,
-                contentColor = Blue,
-                shape = CircleShape,
-                // elevation = FloatingActionButtonDefaults.elevation(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Note",
-                )
-            }
-        },
     ) { padding ->
         when (state) {
             is NotesUiState.Error -> {
@@ -73,6 +56,23 @@ fun NotesScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(padding),
+                    options =
+                        listOf(
+                            FabOption(
+                                label = "Task",
+                                icon = ImageVector.vectorResource(R.drawable.ic_create_task),
+                                color = Blue,
+                                onClick = onAddNoteClick,
+                            ),
+                            FabOption(
+                                label = "List",
+                                icon = ImageVector.vectorResource(R.drawable.ic_create_list),
+                                color = Blue,
+                                onClick = {
+                                    // TODO
+                                },
+                            ),
+                        ),
                     notesUiState = state,
                     onNoteClick = onNoteClick,
                 )
