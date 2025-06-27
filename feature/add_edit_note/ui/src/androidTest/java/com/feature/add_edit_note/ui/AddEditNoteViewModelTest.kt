@@ -183,7 +183,7 @@ class AddEditNoteViewModelTest {
                 assertTrue(errorState is AddEditNoteUiState.Error)
                 assertEquals(
                     (errorState as AddEditNoteUiState.Error).message,
-                    "Failed to load note",
+                    "Failed to load note and tags",
                 )
                 cancelAndIgnoreRemainingEvents()
             }
@@ -221,6 +221,7 @@ class AddEditNoteViewModelTest {
     fun saveNote_should_call_upsert_and_emit_side_effect() =
         runTest {
             // Given
+            coEvery { getAllTagsWithNotesUseCase() } returns flowOf(tags)
             coEvery { getNoteWithTagByIdUseCase(1L) } returns testNote
             coEvery { upsertNotesUseCase(any()) } just Runs
 

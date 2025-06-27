@@ -3,4 +3,6 @@
     <exclude domain="database" path="NotesDb.db" />
     <exclude domain="database" path="NotesDb.db-shm" />
     <exclude domain="database" path="NotesDb.db-wal" />
+    <exclude domain="database" path="NotesDb.db-journal" />
+    <exclude domain="database" />
 </full-backup-content>

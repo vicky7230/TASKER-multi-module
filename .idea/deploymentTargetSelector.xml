@@ -25,6 +25,9 @@
       <SelectionState runConfigName="TagsDaoTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="saveNote_should_call_upsert_and_emit_side_effect()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
