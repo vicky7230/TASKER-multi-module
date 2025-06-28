@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
 import java.time.ZoneId
@@ -31,6 +32,10 @@ class NotesViewModel
         private val getAllNotesWithTagUseCase: GetAllNotesWithTagUseCase,
         private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
     ) : ViewModel() {
+        companion object {
+            private const val TAG = "NotesViewModel"
+        }
+
         val notesUiState: StateFlow<NotesUiState> =
             combine(
                 getAllNotesWithTagUseCase().distinctUntilChanged(),
@@ -50,9 +55,11 @@ class NotesViewModel
                     notes = filteredNotes.toPersistentList(),
                     tags = tags.toPersistentList(),
                 ) as NotesUiState
+            }.onStart {
+                emit(NotesUiState.Loading)
             }.flowOn(Dispatchers.IO)
                 .catch { throwable: Throwable ->
-                    Log.e("NotesViewModel", "Error loading notes", throwable)
+                    Log.e(TAG, "Error loading notes", throwable)
                     emit(NotesUiState.Error("Error loading notes"))
                 }.stateIn(
                     scope = viewModelScope,

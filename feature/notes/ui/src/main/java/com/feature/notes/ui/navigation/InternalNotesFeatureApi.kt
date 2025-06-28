@@ -13,6 +13,7 @@ import androidx.navigation.navigation
 import com.core.common.navigation.AddEditNoteScreen
 import com.core.common.navigation.NotesGraph
 import com.core.common.navigation.NotesScreen
+import com.core.common.navigation.TagScreen
 import com.core.feature_api.FeatureApi
 import com.feature.notes.ui.screen.NotesScreen
 import com.feature.notes.ui.screen.NotesViewModel
@@ -38,6 +39,9 @@ internal object InternalNotesFeatureApi : FeatureApi {
                     notesUiState = state,
                     onNoteClick = { note ->
                         navHostController.navigate(AddEditNoteScreen(noteId = note.id))
+                    },
+                    onTagClick = { tag ->
+                        navHostController.navigate(TagScreen(tagId = tag.id))
                     },
                     onAddNoteClick = {
                         navHostController.navigate(AddEditNoteScreen(noteId = 0L))

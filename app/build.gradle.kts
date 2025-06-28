@@ -126,6 +126,10 @@ dependencies {
     implementation(project(":feature:add_edit_note:domain"))
     implementation(project(":feature:add_edit_note:ui"))
 
+    implementation(project(":feature:tags:ui"))
+    implementation(project(":feature:tags:data"))
+    implementation(project(":feature:tags:domain"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

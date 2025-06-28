@@ -7,6 +7,8 @@ import com.core.network.di.NetworkModule
 import com.feature.add_edit_note.ui.di.AddEditNoteUiModule
 import com.feature.notes.data.di.NotesDataModule
 import com.feature.notes.ui.di.NotesUiModule
+import com.feature.tags.data.di.TagsDataModule
+import com.feature.tags.ui.di.TagsUiModule
 import com.vicky7230.tasker2.BaseApplication
 import com.vicky7230.tasker2.di.module.ActivityBindingModule
 import com.vicky7230.tasker2.di.module.AppModule
@@ -25,6 +27,8 @@ import javax.inject.Singleton
         NotesDataModule::class,
         NotesUiModule::class,
         AddEditNoteUiModule::class,
+        TagsUiModule::class,
+        TagsDataModule::class,
         AppModule::class,
         ViewModelModule::class,
         ActivityBindingModule::class,

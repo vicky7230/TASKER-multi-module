@@ -16,12 +16,14 @@ import com.core.common.theme.TaskerTheme
 import com.core.common.ui.ErrorScreen
 import com.core.common.ui.LoadingScreen
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 import com.feature.notes.ui.screen.composables.FabOption
 
 @Composable
 fun NotesScreen(
     notesUiState: NotesUiState,
     onNoteClick: (NoteWithTag) -> Unit,
+    onTagClick: (TagWithNotes) -> Unit,
     onAddNoteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -75,6 +77,7 @@ fun NotesScreen(
                         ),
                     notesUiState = state,
                     onNoteClick = onNoteClick,
+                    onTagClick = onTagClick,
                 )
         }
     }
@@ -96,6 +99,7 @@ private fun NotesScreenPreview(
             notesUiState = notesUiState,
             onAddNoteClick = {},
             onNoteClick = {},
+            onTagClick = {},
         )
     }
 }

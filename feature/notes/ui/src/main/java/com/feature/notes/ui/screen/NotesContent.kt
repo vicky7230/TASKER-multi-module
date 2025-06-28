@@ -39,6 +39,7 @@ import com.core.common.R
 import com.core.common.theme.Blue
 import com.core.common.theme.TaskerTheme
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 import com.feature.notes.ui.screen.composables.FabMenu
 import com.feature.notes.ui.screen.composables.FabOption
 import com.feature.notes.ui.screen.composables.NotesOverview
@@ -48,6 +49,7 @@ fun NotesContent(
     notesUiState: NotesUiState.NotesLoaded,
     fabMenuItems: List<FabOption>,
     onNoteClick: (NoteWithTag) -> Unit,
+    onTagClick: (TagWithNotes) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var fabExpanded by remember { mutableStateOf(false) }
@@ -60,6 +62,7 @@ fun NotesContent(
             modifier = Modifier.fillMaxSize(),
             notesUiState = notesUiState,
             onNoteClick = onNoteClick,
+            onTagClick = onTagClick,
         )
 
         // Scrim overlay layer - positioned between content and FAB
@@ -149,6 +152,7 @@ private fun NotesContentPreview() {
                     ),
                 ),
             onNoteClick = {},
+            onTagClick = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
