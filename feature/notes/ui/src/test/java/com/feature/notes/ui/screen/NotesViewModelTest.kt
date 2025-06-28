@@ -92,6 +92,7 @@ class NotesViewModelTest {
             // Assert
             viewModel.notesUiState.test {
                 assertEquals(NotesUiState.Idle, awaitItem())
+                assertEquals(NotesUiState.Loading, awaitItem())
                 val loadedState = awaitItem()
                 assertTrue(loadedState is NotesUiState.NotesLoaded)
                 val notesLoadedState = loadedState as NotesUiState.NotesLoaded
@@ -119,6 +120,7 @@ class NotesViewModelTest {
             // Assert
             viewModel.notesUiState.test {
                 assertEquals(NotesUiState.Idle, awaitItem()) // initial state
+                assertEquals(NotesUiState.Loading, awaitItem()) // initial state
                 val errorState = awaitItem()
                 assertTrue(errorState is NotesUiState.Error)
                 assertEquals("Error loading notes", (errorState as NotesUiState.Error).message)

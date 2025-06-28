@@ -22,6 +22,7 @@ import com.core.common.theme.LightGray
 import com.core.common.theme.LightGray2
 import com.core.common.ui.TagItem
 import com.core.domain.model.NoteWithTag
+import com.core.domain.model.TagWithNotes
 import com.feature.notes.ui.screen.NotesUiState
 import com.feature.notes.ui.screen.notes
 import com.feature.notes.ui.screen.tags
@@ -30,6 +31,7 @@ import com.feature.notes.ui.screen.tags
 fun NotesOverview(
     notesUiState: NotesUiState.NotesLoaded,
     onNoteClick: (NoteWithTag) -> Unit,
+    onTagClick: (TagWithNotes) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -80,7 +82,7 @@ fun NotesOverview(
                         .fillMaxWidth()
                         .padding(start = 60.dp, end = 16.dp),
                 tag = it,
-                onTagClick = {},
+                onTagClick = onTagClick,
             )
             Spacer(
                 modifier =
@@ -101,5 +103,6 @@ private fun NotesOverviewPreview() {
         modifier = Modifier.fillMaxSize(),
         notesUiState = NotesUiState.NotesLoaded(notes, tags),
         onNoteClick = {},
+        onTagClick = {},
     )
 }

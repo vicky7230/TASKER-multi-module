@@ -26,6 +26,10 @@
             <option value="$PROJECT_DIR$/feature/notes/data" />
             <option value="$PROJECT_DIR$/feature/notes/domain" />
             <option value="$PROJECT_DIR$/feature/notes/ui" />
+            <option value="$PROJECT_DIR$/feature/tags" />
+            <option value="$PROJECT_DIR$/feature/tags/data" />
+            <option value="$PROJECT_DIR$/feature/tags/domain" />
+            <option value="$PROJECT_DIR$/feature/tags/ui" />
           </set>
         </option>
       </GradleProjectSettings>

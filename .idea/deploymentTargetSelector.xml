@@ -19,12 +19,6 @@
       <SelectionState runConfigName="NotedDbMigrationTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="NotesDaoTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="TagsDaoTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="saveNote_should_call_upsert_and_emit_side_effect()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

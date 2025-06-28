@@ -22,4 +22,8 @@ interface TagsDao {
     @Transaction
     @Query("SELECT * from tags")
     fun getAllTagsWithNotes(): Flow<List<TagWithNotesEntity>>
+
+    @Transaction
+    @Query("SELECT * from tags where id = :tagId")
+    fun getTagWithNotes(tagId: Long): Flow<TagWithNotesEntity>
 }
