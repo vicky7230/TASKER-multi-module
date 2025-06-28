@@ -15,3 +15,11 @@ object AddEditNoteGraph
 data class AddEditNoteScreen(
     val noteId: Long,
 )
+
+@Serializable
+object TagGraph
+
+@Serializable
+data class TagScreen(
+    val tagId: Long,
+)

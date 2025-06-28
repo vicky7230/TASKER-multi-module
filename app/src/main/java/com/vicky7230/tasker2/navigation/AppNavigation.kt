@@ -13,7 +13,20 @@ fun AppNavGraph(
     viewModelFactory: ViewModelProvider.Factory,
 ) {
     NavHost(navController = navController, startDestination = NotesGraph) {
-        navigationProvider.notesApi.registerGraph(navController, this, viewModelFactory)
-        navigationProvider.addEditNoteApi.registerGraph(navController, this, viewModelFactory)
+        navigationProvider.notesApi.registerGraph(
+            navHostController = navController,
+            navGraphBuilder = this,
+            viewModelFactory = viewModelFactory,
+        )
+        navigationProvider.addEditNoteApi.registerGraph(
+            navHostController = navController,
+            navGraphBuilder = this,
+            viewModelFactory = viewModelFactory,
+        )
+        navigationProvider.tagsApi.registerGraph(
+            navHostController = navController,
+            navGraphBuilder = this,
+            viewModelFactory = viewModelFactory,
+        )
     }
 }

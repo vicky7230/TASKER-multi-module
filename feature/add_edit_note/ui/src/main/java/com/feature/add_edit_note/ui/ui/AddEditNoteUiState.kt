@@ -5,9 +5,9 @@ import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.PersistentList
 
 sealed class AddEditNoteUiState {
-    object Idle : AddEditNoteUiState()
+    data object Idle : AddEditNoteUiState()
 
-    object Loading : AddEditNoteUiState()
+    data object Loading : AddEditNoteUiState()
 
     data class NoteAndTags(
         val note: NoteWithTag,

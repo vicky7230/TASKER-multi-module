@@ -28,7 +28,7 @@ internal object InternalAddEditNoteApi : FeatureApi {
         navGraphBuilder.navigation<AddEditNoteGraph>(startDestination = AddEditNoteScreen(noteId = 0L)) {
             composable<AddEditNoteScreen> { navBackStackEntry ->
                 val noteId = navBackStackEntry.arguments?.getLong("noteId") ?: 0L
-                Log.d("Note id", noteId.toString())
+                Log.d("Note Id: ", noteId.toString())
                 val addEditNoteViewModel =
                     viewModel<AddEditNoteViewModel>(
                         viewModelStoreOwner = navBackStackEntry,

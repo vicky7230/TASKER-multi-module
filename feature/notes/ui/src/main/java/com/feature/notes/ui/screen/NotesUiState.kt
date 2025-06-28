@@ -5,9 +5,9 @@ import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.PersistentList
 
 sealed class NotesUiState {
-    object Idle : NotesUiState()
+    data object Idle : NotesUiState()
 
-    object Loading : NotesUiState()
+    data object Loading : NotesUiState()
 
     data class NotesLoaded(
         val notes: PersistentList<NoteWithTag>,
