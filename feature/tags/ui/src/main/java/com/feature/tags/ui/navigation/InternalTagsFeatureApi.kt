@@ -40,9 +40,6 @@ object InternalTagsFeatureApi : FeatureApi {
                 TagScreenUi(
                     modifier = Modifier.fillMaxSize(),
                     tagsUiState = state,
-                    onSheetHide = {
-                        navHostController.popBackStack()
-                    },
                     onNoteClick = { note ->
                         navHostController.navigate(AddEditNoteScreen(noteId = note.id))
                     },
