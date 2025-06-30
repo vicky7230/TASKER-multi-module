@@ -10,4 +10,9 @@ interface TagsRepository {
     fun getAllTagsWithNotes(): Flow<List<TagWithNotes>>
 
     fun getAllTags(): Flow<List<Tag>>
+
+    suspend fun updateTagName(
+        tagId: Long,
+        newName: String,
+    ): Int
 }

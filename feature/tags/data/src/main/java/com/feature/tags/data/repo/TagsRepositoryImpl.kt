@@ -3,6 +3,7 @@ package com.feature.tags.data.repo
 import com.core.database.NotesDb
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
+import com.core.database.entity.UpdateTagName
 import com.core.domain.model.Tag
 import com.core.domain.model.TagWithNotes
 import com.core.domain.repo.TagsRepository
@@ -33,4 +34,11 @@ class TagsRepositoryImpl
                 .getTagsDao()
                 .getAllTags()
                 .map { it.map { tagEntity: TagEntity -> tagEntity.toDomain() } }
+
+        override suspend fun updateTagName(
+            tagId: Long,
+            newName: String,
+        ) = notesDb
+            .getTagsDao()
+            .updateTagName(UpdateTagName(tagId, newName))
     }

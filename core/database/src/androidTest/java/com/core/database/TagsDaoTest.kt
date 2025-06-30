@@ -7,6 +7,7 @@ import com.core.database.di.BaseApplicationTest
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
+import com.core.database.entity.UpdateTagName
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -48,10 +49,10 @@ class TagsDaoTest {
             val result = tagsDao.getAllTags().first()
 
             // Assert
-            assertEquals(result.size, 3)
-            assertEquals(result[0], tags[0])
-            assertEquals(result[1], tags[1])
-            assertEquals(result[2], tags[2])
+            assertEquals(3, result.size)
+            assertEquals(tags[0], result[0])
+            assertEquals(tags[1], result[1])
+            assertEquals(tags[2], result[2])
         }
 
     @Test
@@ -65,8 +66,8 @@ class TagsDaoTest {
             val result = tagsDao.getAllTags().first()
 
             // Assert
-            assertEquals(result.size, 1)
-            assertEquals(result[0], tag)
+            assertEquals(1, result.size)
+            assertEquals(tag, result[0])
         }
 
     @Test
@@ -105,7 +106,48 @@ class TagsDaoTest {
 
             // Assert
             assertEquals(result.size, 2)
-            assertEquals(result[0], TagWithNotesEntity(tag = tags[0], notes = listOf(note1)))
-            assertEquals(result[1], TagWithNotesEntity(tag = tags[1], notes = listOf(note2)))
+            assertEquals(TagWithNotesEntity(tag = tags[0], notes = listOf(note1)), result[0])
+            assertEquals(TagWithNotesEntity(tag = tags[1], notes = listOf(note2)), result[1])
+        }
+
+    @Test
+    fun insertTag_getTagWithNotes() =
+        runTest {
+            // Arrange
+            val tag = TagEntity(1, "tag1", "#ffffff")
+            tagsDao.insertTag(tag)
+            val note =
+                NoteEntity(
+                    id = 1,
+                    content = "Test note",
+                    timestamp = 1633024800000L,
+                    tagId = 1,
+                    done = false,
+                    time = "00:00:00",
+                    date = "2025-06-25",
+                )
+            notesDao.upsertNotes(listOf(note))
+
+            // Act
+            val result = tagsDao.getTagWithNotes(1).first()
+
+            // Assert
+            assertEquals(TagWithNotesEntity(tag = tag, notes = listOf(note)), result)
+        }
+
+    @Test
+    fun updateTagName_getUpdatedTag() =
+        runTest {
+            // Arrange
+            val tag = TagEntity(1, "tag1", "#ffffff")
+            tagsDao.insertTag(tag)
+
+            // Act
+            tagsDao.updateTagName(UpdateTagName(1, "tag2"))
+            val result = tagsDao.getAllTags().first()
+
+            // Assert
+            assertEquals(1, result.size)
+            assertEquals("tag2", result[0].name)
         }
 }

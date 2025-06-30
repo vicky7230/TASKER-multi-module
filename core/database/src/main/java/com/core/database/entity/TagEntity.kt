@@ -21,3 +21,8 @@ data class TagWithNotesEntity(
     )
     val notes: List<NoteEntity>,
 )
+
+data class UpdateTagName(
+    val id: Long,
+    val name: String,
+)
