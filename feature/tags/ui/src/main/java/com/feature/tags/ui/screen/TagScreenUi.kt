@@ -37,7 +37,6 @@ fun TagScreenUi(
     val sheetState =
         rememberStandardBottomSheetState(
             initialValue = SheetValue.Hidden,
-            // confirmValueChange = { it != SheetValue.PartiallyExpanded },
             skipHiddenState = false,
         )
 
