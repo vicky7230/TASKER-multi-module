@@ -189,28 +189,4 @@ class NotesRepositoryImplTest {
             val result = notesRepository.getNoteWithTagById(noteId)
             assertEquals(expectedResult, result)
         }
-
-    /*@Test
-    fun `getAllTagsWithNotes should return all tags with notes`() =
-        runTest {
-            // Arrange
-            val tagsWithNotes =
-                listOf(
-                    TagWithNotesEntity(
-                        tag = TagEntity(1, "TestTag1", "#FF0000"),
-                        notes =
-                            listOf(
-                                NoteEntity(1, "Test 1", 1233L, 1, false, date = "2025-06-25", time = "00:00:00"),
-                                NoteEntity(2, "Test 2", 1234L, 1, false, date = "2025-06-25", time = "00:00:00"),
-                            ),
-                    ),
-                )
-            coEvery { tagsDao.getAllTagsWithNotes() } returns flowOf(tagsWithNotes)
-            // Act & Assert
-            notesRepository.getAllTagsWithNotes().test {
-                val result = awaitItem()
-                assertEquals(tagsWithNotes.map { it.toDomain() }, result)
-                awaitComplete()
-            }
-        }*/
 }

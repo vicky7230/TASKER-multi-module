@@ -63,4 +63,15 @@ dependencies {
 
     // Immutable persistent collections for Kotlin
     implementation(libs.kotlinx.collections.immutable)
+
+    // mockk
+    testImplementation(libs.mockk.android)
+
+    // coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    // turbine
+    testImplementation(libs.turbine)
 }

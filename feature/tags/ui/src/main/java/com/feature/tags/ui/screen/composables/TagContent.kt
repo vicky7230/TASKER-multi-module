@@ -94,10 +94,8 @@ fun TagContent(
                     onNoteClick = onNoteClick,
                 )
                 HorizontalDivider(
-                    modifier =
-                        Modifier
-                            .padding(start = 60.dp)
-                            .background(Color.White),
+                    modifier = Modifier.padding(start = 60.dp),
+                    color = Color.White,
                 )
             }
         }
