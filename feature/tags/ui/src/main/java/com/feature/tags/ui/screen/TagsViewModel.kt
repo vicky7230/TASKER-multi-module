@@ -10,6 +10,7 @@ import androidx.navigation.toRoute
 import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.TagScreen
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
+import com.feature.tags.domain.usecase.UpdateTagNameUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -19,12 +20,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class TagsViewModel
     @AssistedInject
     constructor(
         @Assisted private val savedStateHandle: SavedStateHandle,
         private val getTagWithNotesUseCase: GetTagWithNotesUseCase,
+        private val updateTagNameUseCase: UpdateTagNameUseCase,
     ) : ViewModel() {
         companion object {
             private val TAG = TagsViewModel::class.simpleName
@@ -52,5 +55,19 @@ class TagsViewModel
                         initialValue = TagsUiState.Idle,
                         started = SharingStarted.WhileSubscribed(5000),
                     )
+        }
+
+        fun updateTagName(
+            tagId: Long,
+            newName: String,
+        ) {
+            @Suppress("TooGenericExceptionCaught")
+            viewModelScope.launch {
+                try {
+                    updateTagNameUseCase(tagId = tagId, newName = newName)
+                } catch (ex: Exception) {
+                    Log.e(TAG, "Error updating tag name: ${ex.message}", ex)
+                }
+            }
         }
     }
