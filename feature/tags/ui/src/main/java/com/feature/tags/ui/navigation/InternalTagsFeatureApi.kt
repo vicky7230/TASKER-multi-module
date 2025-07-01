@@ -15,8 +15,10 @@ import androidx.navigation.navigation
 import com.core.common.navigation.AddEditNoteScreen
 import com.core.common.navigation.TagGraph
 import com.core.common.navigation.TagScreen
+import com.core.domain.model.TagWithNotes
 import com.core.feature_api.FeatureApi
 import com.feature.tags.ui.screen.TagScreenUi
+import com.feature.tags.ui.screen.TagsUiBottomSheet
 import com.feature.tags.ui.screen.TagsViewModel
 
 object InternalTagsFeatureApi : FeatureApi {
@@ -40,6 +42,19 @@ object InternalTagsFeatureApi : FeatureApi {
                 TagScreenUi(
                     modifier = Modifier.fillMaxSize(),
                     tagsUiState = state,
+                    onEditTagClick = { tagWithNotes: TagWithNotes ->
+                        tagsViewModel.showRenameTagBottomSheet(
+                            TagsUiBottomSheet.RenameTagBottomSheet(
+                                tagId = tagWithNotes.id,
+                                tagName = tagWithNotes.name,
+                                tagColor = tagWithNotes.color,
+                            ),
+                        )
+                    },
+                    hideEditTagBottomSheet = {
+                        tagsViewModel.showRenameTagBottomSheet(TagsUiBottomSheet.None)
+                    },
+                    onSaveTagNameClick = tagsViewModel::updateTagName,
                     onNoteClick = { note ->
                         navHostController.navigate(AddEditNoteScreen(noteId = note.id))
                     },

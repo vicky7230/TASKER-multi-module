@@ -39,7 +39,7 @@ fun AddEditNoteScreen(
             AddEditNoteUiState.Idle -> {}
             AddEditNoteUiState.Loading -> {}
             is AddEditNoteUiState.NoteAndTags -> {
-                NoteContent(
+                AddEditNoteContent(
                     modifier =
                         Modifier
                             .fillMaxSize()

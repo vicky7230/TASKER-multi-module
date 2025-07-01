@@ -9,9 +9,20 @@ sealed class TagsUiState {
 
     data class TagLoaded(
         val tag: TagWithNotes,
+        val tagsUiBottomSheet: TagsUiBottomSheet = TagsUiBottomSheet.None,
     ) : TagsUiState()
 
     data class Error(
         val message: String,
     ) : TagsUiState()
+}
+
+sealed class TagsUiBottomSheet {
+    data object None : TagsUiBottomSheet()
+
+    data class RenameTagBottomSheet(
+        val tagId: Long,
+        val tagName: String,
+        val tagColor: String,
+    ) : TagsUiBottomSheet()
 }

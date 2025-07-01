@@ -15,8 +15,8 @@ class TagScreenPreviewParameterProvider : PreviewParameterProvider<TagsUiState> 
         sequenceOf(
             TagsUiState.Idle,
             TagsUiState.Loading,
-            TagsUiState.TagLoaded(tagWithNotes),
             TagsUiState.Error("An error occurred"),
+            TagsUiState.TagLoaded(tag = tagWithNotes, tagsUiBottomSheet = TagsUiBottomSheet.None),
         )
 }
 
