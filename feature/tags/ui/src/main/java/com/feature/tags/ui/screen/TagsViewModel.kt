@@ -14,12 +14,10 @@ import com.feature.tags.domain.usecase.UpdateTagNameUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TagsViewModel
@@ -38,23 +36,24 @@ class TagsViewModel
             override fun create(savedStateHandle: SavedStateHandle): TagsViewModel
         }
 
-        val tagsUiState: StateFlow<TagsUiState>
+        private val _tagsUiState: MutableStateFlow<TagsUiState> = MutableStateFlow(TagsUiState.Idle)
+        val tagsUiState: StateFlow<TagsUiState> = _tagsUiState.asStateFlow()
 
         init {
             val tagsScreen = savedStateHandle.toRoute<TagScreen>()
-            tagsUiState =
-                getTagWithNotesUseCase(tagId = tagsScreen.tagId)
-                    .map { tags -> TagsUiState.TagLoaded(tags) as TagsUiState }
-                    .onStart {
-                        emit(TagsUiState.Loading)
-                    }.catch { throwable: Throwable ->
-                        Log.e(TAG, "Error fetching tags: ${throwable.message}", throwable)
-                        emit(TagsUiState.Error("Error fetching tags"))
-                    }.stateIn(
-                        scope = viewModelScope,
-                        initialValue = TagsUiState.Idle,
-                        started = SharingStarted.WhileSubscribed(5000),
-                    )
+            viewModelScope.launch {
+                _tagsUiState.value = TagsUiState.Loading
+                @Suppress("TooGenericExceptionCaught")
+                try {
+                    getTagWithNotesUseCase(tagId = tagsScreen.tagId)
+                        .collect {
+                            _tagsUiState.value = TagsUiState.TagLoaded(it)
+                        }
+                } catch (ex: Exception) {
+                    Log.e(TAG, "Error fetching tags: ${ex.message}", ex)
+                    _tagsUiState.value = TagsUiState.Error("Error fetching tags")
+                }
+            }
         }
 
         fun updateTagName(
@@ -67,6 +66,16 @@ class TagsViewModel
                     updateTagNameUseCase(tagId = tagId, newName = newName)
                 } catch (ex: Exception) {
                     Log.e(TAG, "Error updating tag name: ${ex.message}", ex)
+                }
+            }
+        }
+
+        fun showRenameTagBottomSheet(tagsUiBottomSheet: TagsUiBottomSheet) {
+            _tagsUiState.update {
+                if (it is TagsUiState.TagLoaded) {
+                    it.copy(tagsUiBottomSheet = tagsUiBottomSheet)
+                } else {
+                    it
                 }
             }
         }

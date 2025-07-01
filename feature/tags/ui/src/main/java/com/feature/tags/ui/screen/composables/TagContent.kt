@@ -1,6 +1,8 @@
 package com.feature.tags.ui.screen.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,76 +29,82 @@ import com.core.common.theme.TaskerTheme
 import com.core.common.utils.toColorSafely
 import com.core.domain.model.Note
 import com.core.domain.model.TagWithNotes
+import com.feature.tags.ui.screen.TagsUiBottomSheet
+import com.feature.tags.ui.screen.TagsUiState
 import com.feature.tags.ui.screen.tagWithNotes
 
 @Composable
 fun TagContent(
-    tag: TagWithNotes,
+    tagsUiState: TagsUiState.TagLoaded,
     onNoteClick: (Note) -> Unit,
+    onEditTagClick: (TagWithNotes) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.background(color = tag.color.toColorSafely()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Row(
-            modifier = Modifier.padding(top = 22.dp),
-            verticalAlignment = Alignment.CenterVertically,
+    Box(modifier = modifier) {
+        Column(
+            modifier = Modifier.background(color = tagsUiState.tag.color.toColorSafely()),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Row(
+                modifier = Modifier.padding(top = 22.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(start = 60.dp),
+                    text = tagsUiState.tag.name,
+                    style =
+                        TextStyle(
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                        ),
+                )
+                Icon(
+                    modifier =
+                        Modifier
+                            .padding(end = 12.dp)
+                            .size(24.dp)
+                            .clickable { onEditTagClick(tagsUiState.tag) },
+                    painter = painterResource(id = com.core.common.R.drawable.ic_edit),
+                    tint = Color.Unspecified,
+                    contentDescription = "Tag edit icon",
+                )
+            }
+
             Text(
                 modifier =
                     Modifier
-                        .weight(1f)
-                        .padding(start = 60.dp),
-                text = tag.name,
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, start = 60.dp),
+                text = "${tagsUiState.tag.notes.size} task",
                 style =
                     TextStyle(
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = LightGray,
                     ),
             )
-            Icon(
+
+            LazyColumn(
                 modifier =
                     Modifier
-                        .padding(end = 12.dp)
-                        .size(24.dp),
-                painter = painterResource(id = com.core.common.R.drawable.ic_edit),
-                tint = Color.Unspecified,
-                contentDescription = "Tag edit icon",
-            )
-        }
-
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, start = 60.dp),
-            text = "${tag.notes.size} task",
-            style =
-                TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = LightGray,
-                ),
-        )
-
-        LazyColumn(
-            modifier =
-                Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxSize(),
-        ) {
-            items(tag.notes, key = { it.id }) { note ->
-                TagNoteItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    note = note,
-                    onNoteClick = onNoteClick,
-                )
-                HorizontalDivider(
-                    modifier = Modifier.padding(start = 60.dp),
-                    color = Color.White,
-                )
+                        .padding(top = 16.dp)
+                        .fillMaxSize(),
+            ) {
+                items(tagsUiState.tag.notes, key = { it.id }) { note ->
+                    TagNoteItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        note = note,
+                        onNoteClick = onNoteClick,
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(start = 60.dp),
+                        color = Color.White,
+                    )
+                }
             }
         }
     }
@@ -109,7 +117,8 @@ private fun TagContentPreview() {
     TaskerTheme {
         TagContent(
             modifier = Modifier.fillMaxSize(),
-            tag = tagWithNotes,
+            tagsUiState = TagsUiState.TagLoaded(tag = tagWithNotes, tagsUiBottomSheet = TagsUiBottomSheet.None),
+            onEditTagClick = {},
             onNoteClick = {},
         )
     }

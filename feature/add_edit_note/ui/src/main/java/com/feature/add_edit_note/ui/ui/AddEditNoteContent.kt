@@ -42,7 +42,7 @@ private const val TAG = "NoteContent"
 
 @OptIn(FlowPreview::class)
 @Composable
-fun NoteContent(
+fun AddEditNoteContent(
     state: AddEditNoteUiState.NoteAndTags,
     onNoteChange: (NoteWithTag) -> Unit,
     onCancelClick: () -> Unit,
@@ -187,7 +187,7 @@ fun NoteContent(
 @Composable
 private fun NoteContentPreview() {
     TaskerTheme {
-        NoteContent(
+        AddEditNoteContent(
             modifier =
                 Modifier
                     .fillMaxSize(),
