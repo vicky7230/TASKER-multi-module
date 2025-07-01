@@ -67,7 +67,7 @@ fun TagScreenUi(
                             bottomSheet = state.tagsUiBottomSheet,
                             hideEditTagBottomSheet = hideEditTagBottomSheet,
                             onSaveTagNameClick = onSaveTagNameClick,
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp),
                         )
                     }
                 }
