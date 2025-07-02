@@ -7,7 +7,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.TagScreen
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
 import com.feature.tags.domain.usecase.UpdateTagNameUseCase
@@ -32,8 +31,8 @@ class TagsViewModel
         }
 
         @AssistedFactory
-        interface Factory : AssistedViewModelFactory<TagsViewModel> {
-            override fun create(savedStateHandle: SavedStateHandle): TagsViewModel
+        interface Factory {
+            fun create(savedStateHandle: SavedStateHandle): TagsViewModel
         }
 
         private val _tagsUiState: MutableStateFlow<TagsUiState> = MutableStateFlow(TagsUiState.Idle)

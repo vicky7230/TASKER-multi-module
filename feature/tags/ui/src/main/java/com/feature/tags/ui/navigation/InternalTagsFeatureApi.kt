@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -20,46 +23,60 @@ import com.core.feature_api.FeatureApi
 import com.feature.tags.ui.screen.TagScreenUi
 import com.feature.tags.ui.screen.TagsUiBottomSheet
 import com.feature.tags.ui.screen.TagsViewModel
+import javax.inject.Inject
 
-object InternalTagsFeatureApi : FeatureApi {
-    override fun registerGraph(
-        navHostController: NavHostController,
-        navGraphBuilder: NavGraphBuilder,
-        viewModelFactory: ViewModelProvider.Factory,
-    ) {
-        navGraphBuilder.navigation<TagGraph>(
-            startDestination = TagScreen(tagId = 0),
+internal class InternalTagsFeatureApi
+    @Inject
+    constructor(
+        private val tagsViewModelFactory: TagsViewModel.Factory,
+    ) : FeatureApi {
+        override fun registerGraph(
+            navHostController: NavHostController,
+            navGraphBuilder: NavGraphBuilder,
+            viewModelFactory: ViewModelProvider.Factory,
         ) {
-            composable<TagScreen> { navBackStackEntry: NavBackStackEntry ->
-                val noteId = navBackStackEntry.arguments?.getLong("tagId") ?: 0L
-                Log.d("Tag Id: ", noteId.toString())
-                val tagsViewModel =
-                    viewModel<TagsViewModel>(
-                        viewModelStoreOwner = navBackStackEntry,
-                        factory = viewModelFactory,
-                    )
-                val state by tagsViewModel.tagsUiState.collectAsStateWithLifecycle()
-                TagScreenUi(
-                    modifier = Modifier.fillMaxSize(),
-                    tagsUiState = state,
-                    onEditTagClick = { tagWithNotes: TagWithNotes ->
-                        tagsViewModel.showRenameTagBottomSheet(
-                            TagsUiBottomSheet.RenameTagBottomSheet(
-                                tagId = tagWithNotes.id,
-                                tagName = tagWithNotes.name,
-                                tagColor = tagWithNotes.color,
-                            ),
+            navGraphBuilder.navigation<TagGraph>(
+                startDestination = TagScreen(tagId = 0),
+            ) {
+                composable<TagScreen> { navBackStackEntry: NavBackStackEntry ->
+                    val noteId = navBackStackEntry.arguments?.getLong("tagId") ?: 0L
+                    Log.d("Tag Id: ", noteId.toString())
+                    val tagsViewModel =
+                        viewModel<TagsViewModel>(
+                            viewModelStoreOwner = navBackStackEntry,
+                            factory =
+                                object : ViewModelProvider.Factory {
+                                    override fun <T : ViewModel> create(
+                                        modelClass: Class<T>,
+                                        extras: CreationExtras,
+                                    ): T {
+                                        @Suppress("UNCHECKED_CAST")
+                                        return tagsViewModelFactory.create(extras.createSavedStateHandle()) as T
+                                    }
+                                },
                         )
-                    },
-                    hideEditTagBottomSheet = {
-                        tagsViewModel.showRenameTagBottomSheet(TagsUiBottomSheet.None)
-                    },
-                    onSaveTagNameClick = tagsViewModel::updateTagName,
-                    onNoteClick = { note ->
-                        navHostController.navigate(AddEditNoteScreen(noteId = note.id))
-                    },
-                )
+                    val state by tagsViewModel.tagsUiState.collectAsStateWithLifecycle()
+                    TagScreenUi(
+                        modifier = Modifier.fillMaxSize(),
+                        tagsUiState = state,
+                        onEditTagClick = { tagWithNotes: TagWithNotes ->
+                            tagsViewModel.showRenameTagBottomSheet(
+                                TagsUiBottomSheet.RenameTagBottomSheet(
+                                    tagId = tagWithNotes.id,
+                                    tagName = tagWithNotes.name,
+                                    tagColor = tagWithNotes.color,
+                                ),
+                            )
+                        },
+                        hideEditTagBottomSheet = {
+                            tagsViewModel.showRenameTagBottomSheet(TagsUiBottomSheet.None)
+                        },
+                        onSaveTagNameClick = tagsViewModel::updateTagName,
+                        onNoteClick = { note ->
+                            navHostController.navigate(AddEditNoteScreen(noteId = note.id))
+                        },
+                    )
+                }
             }
         }
     }
-}
