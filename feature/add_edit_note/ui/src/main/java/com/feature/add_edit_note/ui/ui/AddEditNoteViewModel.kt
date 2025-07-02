@@ -8,7 +8,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.core.common.di.AssistedViewModelFactory
 import com.core.common.navigation.AddEditNoteScreen
 import com.core.domain.model.NoteWithTag
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
@@ -41,8 +40,8 @@ class AddEditNoteViewModel
         private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
     ) : ViewModel() {
         @AssistedFactory
-        interface Factory : AssistedViewModelFactory<AddEditNoteViewModel> {
-            override fun create(savedStateHandle: SavedStateHandle): AddEditNoteViewModel
+        interface Factory {
+            fun create(savedStateHandle: SavedStateHandle): AddEditNoteViewModel
         }
 
         private val _addEditeNoteUiState: MutableStateFlow<AddEditNoteUiState> =

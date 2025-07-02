@@ -10,12 +10,18 @@ interface AddEditNoteApi : FeatureApi
 
 class AddEditNoteApiImpl
     @Inject
-    constructor() : AddEditNoteApi {
+    internal constructor(
+        private val internalAddEditNoteApi: InternalAddEditNoteApi,
+    ) : AddEditNoteApi {
         override fun registerGraph(
             navHostController: NavHostController,
             navGraphBuilder: NavGraphBuilder,
             viewModelFactory: ViewModelProvider.Factory,
         ) {
-            InternalAddEditNoteApi.registerGraph(navHostController, navGraphBuilder, viewModelFactory)
+            internalAddEditNoteApi.registerGraph(
+                navHostController,
+                navGraphBuilder,
+                viewModelFactory,
+            )
         }
     }
