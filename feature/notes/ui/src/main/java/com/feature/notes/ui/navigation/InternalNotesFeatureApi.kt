@@ -16,6 +16,7 @@ import com.core.common.navigation.NotesScreen
 import com.core.common.navigation.TagScreen
 import com.core.feature_api.FeatureApi
 import com.feature.notes.ui.screen.NotesScreen
+import com.feature.notes.ui.screen.NotesUiBottomSheet
 import com.feature.notes.ui.screen.NotesViewModel
 
 internal object InternalNotesFeatureApi : FeatureApi {
@@ -46,6 +47,13 @@ internal object InternalNotesFeatureApi : FeatureApi {
                     onAddNoteClick = {
                         navHostController.navigate(AddEditNoteScreen(noteId = 0L))
                     },
+                    onAddTagClick = {
+                        notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet)
+                    },
+                    hideCreateTagBottomSheet = {
+                        notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.None)
+                    },
+                    onSaveTagNameClick = notesViewModel::createTag,
                 )
             }
         }

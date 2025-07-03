@@ -1,4 +1,4 @@
-package com.feature.tags.ui.screen.composables
+package com.feature.notes.ui.screen.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,23 +30,21 @@ import com.core.common.theme.LightGray3
 import com.core.common.theme.TaskerTheme
 import com.core.common.ui.PrimaryButton
 import com.core.common.ui.RoundedTextField
-import com.feature.tags.ui.screen.TagsUiBottomSheet
 import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun EditTagBottomSheet(
-    bottomSheet: TagsUiBottomSheet.RenameTagBottomSheet,
-    hideEditTagBottomSheet: () -> Unit,
-    onSaveTagNameClick: (Long, String) -> Unit,
+fun CreateTagBottomSheet(
+    hideCreateTagBottomSheet: () -> Unit,
+    onSaveTagNameClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val sheetState = rememberModalBottomSheetState()
-    var tagName by remember { mutableStateOf(bottomSheet.tagName) }
+    var tagName by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     ModalBottomSheet(
         onDismissRequest = {
-            hideEditTagBottomSheet()
+            hideCreateTagBottomSheet()
         },
         sheetState = sheetState,
     ) {
@@ -56,7 +54,7 @@ fun EditTagBottomSheet(
         ) {
             Text(
                 modifier = Modifier.padding(top = 12.dp),
-                text = "Rename Tag",
+                text = "Create Tag",
                 style =
                     TextStyle(
                         fontSize = 20.sp,
@@ -66,7 +64,7 @@ fun EditTagBottomSheet(
 
             Text(
                 modifier = Modifier.padding(bottom = 20.dp, top = 4.dp),
-                text = "Enter a new name for the tag",
+                text = "Enter name for the tag",
                 style =
                     TextStyle(
                         fontSize = 16.sp,
@@ -77,7 +75,7 @@ fun EditTagBottomSheet(
 
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = "Tag Name",
+                text = "Create Tag",
                 style =
                     TextStyle(
                         fontSize = 16.sp,
@@ -100,7 +98,7 @@ fun EditTagBottomSheet(
                     onButtonClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                hideEditTagBottomSheet()
+                                hideCreateTagBottomSheet()
                             }
                         }
                     },
@@ -114,10 +112,12 @@ fun EditTagBottomSheet(
                     buttonText = "Save",
                     modifier = Modifier.weight(1f),
                     onButtonClick = {
-                        scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
-                                onSaveTagNameClick(bottomSheet.tagId, tagName.trim())
-                                hideEditTagBottomSheet()
+                        if (tagName.isNotEmpty()) {
+                            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                                if (!sheetState.isVisible) {
+                                    onSaveTagNameClick(tagName.trim())
+                                    hideCreateTagBottomSheet()
+                                }
                             }
                         }
                     },
@@ -131,21 +131,15 @@ fun EditTagBottomSheet(
 @Suppress("UnusedPrivateMember")
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun EditTagBottomSheetPreview() {
+private fun CreateTagBottomSheetPreview() {
     TaskerTheme {
-        EditTagBottomSheet(
+        CreateTagBottomSheet(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
-            bottomSheet =
-                TagsUiBottomSheet.RenameTagBottomSheet(
-                    tagId = 1,
-                    tagName = "Tag",
-                    tagColor = "#000000",
-                ),
-            hideEditTagBottomSheet = { },
-            onSaveTagNameClick = { _, _ -> },
+            hideCreateTagBottomSheet = { },
+            onSaveTagNameClick = { _ -> },
         )
     }
 }
