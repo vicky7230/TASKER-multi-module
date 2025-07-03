@@ -24,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import com.core.common.theme.TaskerTheme
 import com.vicky7230.tasker2.navigation.AppNavGraph
 import com.vicky7230.tasker2.navigation.NavigationProvider
-import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +34,7 @@ class MainActivity : ComponentActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+        (application as BaseApplication).applicationComponent.inject(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
