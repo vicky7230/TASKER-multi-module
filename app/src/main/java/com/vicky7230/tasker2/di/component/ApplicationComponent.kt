@@ -9,19 +9,16 @@ import com.feature.notes.data.di.NotesDataModule
 import com.feature.notes.ui.di.NotesUiModule
 import com.feature.tags.data.di.TagsDataModule
 import com.feature.tags.ui.di.TagsUiModule
-import com.vicky7230.tasker2.BaseApplication
-import com.vicky7230.tasker2.di.module.ActivityBindingModule
+import com.vicky7230.tasker2.MainActivity
 import com.vicky7230.tasker2.di.module.AppModule
 import com.vicky7230.tasker2.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
-        AndroidSupportInjectionModule::class,
         NetworkModule::class,
         DatabaseModule::class,
         NotesDataModule::class,
@@ -31,7 +28,6 @@ import javax.inject.Singleton
         TagsDataModule::class,
         AppModule::class,
         ViewModelModule::class,
-        ActivityBindingModule::class,
     ],
 )
 interface ApplicationComponent {
@@ -45,5 +41,5 @@ interface ApplicationComponent {
 
     fun viewModelFactory(): ViewModelProvider.Factory
 
-    fun inject(baseApplication: BaseApplication)
+    fun inject(mainActivity: MainActivity)
 }

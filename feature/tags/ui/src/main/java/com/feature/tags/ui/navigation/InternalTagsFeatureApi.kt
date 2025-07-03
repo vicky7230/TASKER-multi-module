@@ -39,8 +39,8 @@ internal class InternalTagsFeatureApi
                 startDestination = TagScreen(tagId = 0),
             ) {
                 composable<TagScreen> { navBackStackEntry: NavBackStackEntry ->
-                    val noteId = navBackStackEntry.arguments?.getLong("tagId") ?: 0L
-                    Log.d("Tag Id: ", noteId.toString())
+                    val tagId = navBackStackEntry.arguments?.getLong("tagId") ?: 0L
+                    Log.d("Tag Id: ", tagId.toString())
                     val tagsViewModel =
                         viewModel<TagsViewModel>(
                             viewModelStoreOwner = navBackStackEntry,
