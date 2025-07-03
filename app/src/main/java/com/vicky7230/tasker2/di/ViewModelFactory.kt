@@ -19,13 +19,16 @@ class ViewModelFactory
         ): T {
             val creator =
                 viewModelProviders[modelClass]
-                    ?: viewModelProviders
-                        .asIterable()
-                        .firstOrNull { modelClass.isAssignableFrom(it.key) }
-                        ?.value
+                    ?: viewModelProviders.entries.firstOrNull { modelClass.isAssignableFrom(it.key) }?.value
                     ?: throw IllegalArgumentException("Unknown ViewModel class: $modelClass")
 
             @Suppress("UNCHECKED_CAST")
             return creator.get() as T
         }
+
+        @Deprecated(
+            "Use create(modelClass: Class<T>, extras: CreationExtras) instead",
+            ReplaceWith("create(modelClass, CreationExtras.Empty)"),
+        )
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = create(modelClass, CreationExtras.Empty)
     }
