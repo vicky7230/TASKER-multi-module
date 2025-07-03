@@ -8,6 +8,7 @@ import com.core.domain.model.Tag
 import com.core.domain.model.TagWithNotes
 import com.core.domain.repo.TagsRepository
 import com.feature.tags.data.mapper.toDomain
+import com.feature.tags.data.mapper.toEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -41,4 +42,9 @@ class TagsRepositoryImpl
         ) = notesDb
             .getTagsDao()
             .updateTagName(UpdateTagName(tagId, newName))
+
+        override suspend fun insertTag(note: Tag): Long =
+            notesDb
+                .getTagsDao()
+                .insertTag(note.toEntity())
     }

@@ -6,6 +6,7 @@ import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
+import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import io.mockk.every
 import io.mockk.mockk
@@ -32,6 +33,7 @@ import java.time.format.DateTimeFormatter
 class NotesViewModelTest {
     private lateinit var getAllNotesWithTagUseCase: GetAllNotesWithTagUseCase
     private lateinit var getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase
+    private lateinit var createTagUseCase: CreateTagUseCase
     private lateinit var viewModel: NotesViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -41,6 +43,7 @@ class NotesViewModelTest {
         every { Log.e(any(), any(), any()) } returns 0 // Mock Log.e to avoid actual logging
         getAllNotesWithTagUseCase = mockk()
         getAllTagsWithNotesUseCase = mockk()
+        createTagUseCase = mockk()
         Dispatchers.setMain(testDispatcher)
     }
 
@@ -87,11 +90,15 @@ class NotesViewModelTest {
             every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
             every { getAllTagsWithNotesUseCase() } returns (flowOf(fakeTags))
             // Act
-            viewModel = NotesViewModel(getAllNotesWithTagUseCase, getAllTagsWithNotesUseCase)
+            viewModel =
+                NotesViewModel(
+                    getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
+                    getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
+                )
 
             // Assert
             viewModel.notesUiState.test {
-                assertEquals(NotesUiState.Idle, awaitItem())
                 assertEquals(NotesUiState.Loading, awaitItem())
                 val loadedState = awaitItem()
                 assertTrue(loadedState is NotesUiState.NotesLoaded)
@@ -115,11 +122,11 @@ class NotesViewModelTest {
                 NotesViewModel(
                     getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
                 )
 
             // Assert
             viewModel.notesUiState.test {
-                assertEquals(NotesUiState.Idle, awaitItem()) // initial state
                 assertEquals(NotesUiState.Loading, awaitItem()) // initial state
                 val errorState = awaitItem()
                 assertTrue(errorState is NotesUiState.Error)

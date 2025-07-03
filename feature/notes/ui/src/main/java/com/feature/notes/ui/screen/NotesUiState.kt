@@ -12,9 +12,16 @@ sealed class NotesUiState {
     data class NotesLoaded(
         val notes: PersistentList<NoteWithTag>,
         val tags: PersistentList<TagWithNotes>,
+        val bottomSheet: NotesUiBottomSheet = NotesUiBottomSheet.None,
     ) : NotesUiState()
 
     data class Error(
         val message: String,
     ) : NotesUiState()
+}
+
+sealed class NotesUiBottomSheet {
+    data object None : NotesUiBottomSheet()
+
+    data object CreateTagBottomSheet : NotesUiBottomSheet()
 }
