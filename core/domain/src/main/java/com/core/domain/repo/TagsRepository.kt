@@ -16,5 +16,5 @@ interface TagsRepository {
         newName: String,
     ): Int
 
-    suspend fun insertTag(note: Tag): Long
+    suspend fun insertTag(tag: Tag): Long
 }

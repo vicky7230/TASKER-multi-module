@@ -103,5 +103,5 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     // calendar view
-    implementation("com.kizitonwose.calendar:compose:2.7.0")
+    implementation(libs.kizitonwose.calendar.compose)
 }

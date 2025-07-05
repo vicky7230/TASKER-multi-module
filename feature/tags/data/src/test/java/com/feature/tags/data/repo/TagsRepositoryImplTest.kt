@@ -6,8 +6,12 @@ import com.core.database.dao.TagsDao
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
+import com.core.database.entity.UpdateTagName
+import com.core.domain.model.Tag
 import com.core.domain.repo.TagsRepository
 import com.feature.tags.data.mapper.toDomain
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
@@ -165,5 +169,34 @@ class TagsRepositoryImplTest {
                 assertEquals(tagsList.map { it.toDomain() }, result)
                 awaitComplete()
             }
+        }
+
+    @Test
+    fun `updateTagName should update tag name`() =
+        runTest {
+            // Arrange
+            val tagId = 1L
+            val newName = "Tag2"
+            coEvery { tagsDao.updateTagName(any()) } returns 1
+            // Act
+            val result = tagsRepository.updateTagName(tagId = tagId, newName = newName)
+            // Assert
+            assertEquals(1, result)
+            coVerify { tagsDao.updateTagName(UpdateTagName(tagId, newName)) }
+        }
+
+    @Test
+    fun `insertTag should insert new tag`() =
+        runTest {
+            // Arrange
+            val tagName = "Tag1"
+            val tagId = 1L
+            val tagColor = "#FFFFFF"
+            coEvery { tagsDao.insertTag(any()) } returns tagId
+            // Act
+            val result = tagsRepository.insertTag(Tag(id = tagId, name = tagName, color = "#FFFFFF"))
+            // Assert
+            assertEquals(tagId, result)
+            coVerify { tagsDao.insertTag(TagEntity(tagId, tagName, tagColor)) }
         }
 }
