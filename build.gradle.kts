@@ -109,12 +109,6 @@ subprojects {
             exceptionFormat = TestExceptionFormat.FULL
             showStandardStreams = true
         }
-
-        // ✅ FIXED: Only finalize with jacocoTestReport if it exists
-        // report is always generated after tests run
-        tasks.findByName("jacocoTestReport")?.let { jacocoTask ->
-            finalizedBy(jacocoTask)
-        }
     }
 
     // ✅ FIXED: Create jacocoTestReport task for modules that have tests
