@@ -111,6 +111,7 @@ subprojects {
         }
 
         // ✅ FIXED: Only finalize with jacocoTestReport if it exists
+        // report is always generated after tests run
         tasks.findByName("jacocoTestReport")?.let { jacocoTask ->
             finalizedBy(jacocoTask)
         }
@@ -118,16 +119,28 @@ subprojects {
 
     // ✅ FIXED: Create jacocoTestReport task for modules that have tests
     afterEvaluate {
-        val hasTests =
+        val hasUnitTests =
             file("$projectDir/src/test").exists() &&
                 file("$projectDir/src/test").listFiles()?.isNotEmpty() == true
 
-        if (hasTests) {
-            tasks.register<JacocoReport>("jacocoTestReport") {
-                dependsOn(tasks.withType<Test>())
+        val hasAndroidTests =
+            file("$projectDir/src/androidTest").exists() &&
+                file("$projectDir/src/androidTest").listFiles()?.isNotEmpty() == true
 
+        if (hasUnitTests || hasAndroidTests) {
+            tasks.register<JacocoReport>("jacocoTestReport") {
                 group = "Reporting"
                 description = "Generate JaCoCo coverage reports for ${project.name}"
+
+                // Depend on appropriate test tasks based on what tests exist
+                if (hasUnitTests) {
+                    dependsOn(tasks.withType<Test>())
+                }
+                if (hasAndroidTests) {
+                    // For Android modules, also depend on instrumented test tasks
+                    tasks.findByName("createDebugCoverageReport")?.let { dependsOn(it) }
+                    tasks.findByName("connectedDebugAndroidTest")?.let { dependsOn(it) }
+                }
 
                 reports {
                     xml.required.set(true)
@@ -170,6 +183,14 @@ subprojects {
                     classDirectories.setFrom(debugTree)
                 }
 
+                pluginManager.withPlugin("com.android.application") {
+                    val debugTree =
+                        fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+                            exclude(fileFilter)
+                        }
+                    classDirectories.setFrom(debugTree)
+                }
+
                 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
                     val mainTree =
                         fileTree("${layout.buildDirectory.get()}/classes/kotlin/main") {
@@ -178,7 +199,33 @@ subprojects {
                     classDirectories.setFrom(mainTree)
                 }
 
-                executionData.setFrom(fileTree(layout.buildDirectory.get()).include("jacoco/*.exec"))
+                // ✅ FIXED: Include execution data from both unit tests and Android tests
+                val executionDataFiles = mutableListOf<String>()
+
+                if (hasUnitTests) {
+                    executionDataFiles.addAll(
+                        listOf(
+                            "jacoco/testDebugUnitTest.exec",
+                            "jacoco/test.exec",
+                            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                        ),
+                    )
+                }
+
+                if (hasAndroidTests) {
+                    executionDataFiles.addAll(
+                        listOf(
+                            "outputs/code_coverage/debugAndroidTest/connected/**/*.ec",
+                            "jacoco/createDebugCoverageReport.exec",
+                        ),
+                    )
+                }
+
+                executionData.setFrom(
+                    fileTree(layout.buildDirectory.get()).matching {
+                        include(executionDataFiles)
+                    },
+                )
             }
         }
     }
@@ -246,6 +293,7 @@ tasks.register<JacocoReport>("jacocoFullCoverageReportAllModules") {
     val kotlinClasses = mutableListOf<FileTree>()
     val javaSrc = mutableListOf<String>()
     val kotlinSrc = mutableListOf<String>()
+    val testSourceDirs = mutableListOf<String>()
     val execution = mutableListOf<FileTree>()
 
     rootProject.subprojects.forEach { proj ->
@@ -263,6 +311,7 @@ tasks.register<JacocoReport>("jacocoFullCoverageReportAllModules") {
         }
         if (hasAndroidTests) {
             proj.tasks.findByName("createDebugCoverageReport")?.let { dependsOn(it) }
+            proj.tasks.findByName("connectedDebugAndroidTest")?.let { dependsOn(it) }
         }
 
         // ✅ Improved: Better class file detection
@@ -288,12 +337,20 @@ tasks.register<JacocoReport>("jacocoFullCoverageReportAllModules") {
         // Only add source directories if they exist
         val javaMainSrc = "${proj.projectDir}/src/main/java"
         val kotlinMainSrc = "${proj.projectDir}/src/main/kotlin"
+        val javaTestSrc = "$projectDir/src/test/java"
+        val kotlinTestSrc = "$projectDir/src/test/kotlin"
 
         if (file(javaMainSrc).exists()) {
             javaSrc.add(javaMainSrc)
         }
         if (file(kotlinMainSrc).exists()) {
             kotlinSrc.add(kotlinMainSrc)
+        }
+        if (file(javaTestSrc).exists()) {
+            testSourceDirs.add(javaTestSrc)
+        }
+        if (file(kotlinTestSrc).exists()) {
+            testSourceDirs.add(kotlinTestSrc)
         }
 
         // ✅ Fixed: More comprehensive execution data collection
@@ -309,7 +366,7 @@ tasks.register<JacocoReport>("jacocoFullCoverageReportAllModules") {
         )
     }
 
-    sourceDirectories.setFrom(files(javaSrc + kotlinSrc))
+    sourceDirectories.setFrom(files(javaSrc + kotlinSrc + testSourceDirs))
     classDirectories.setFrom(files(javaClasses + kotlinClasses))
     executionData.setFrom(files(execution))
 
@@ -349,6 +406,9 @@ tasks.register("runAllCoverageAndReport") {
             }
         }
         if (hasAndroidTests) {
+            proj.tasks.matching { it.name == "connectedDebugAndroidTest" }.forEach {
+                testTaskPaths.add(it.path)
+            }
             proj.tasks.matching { it.name == "createDebugCoverageReport" }.forEach {
                 testTaskPaths.add(it.path)
             }

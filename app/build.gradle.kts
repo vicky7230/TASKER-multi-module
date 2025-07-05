@@ -96,8 +96,6 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             // Uses default debug keystore
-            enableAndroidTestCoverage = true
-            enableUnitTestCoverage = true
         }
     }
     compileOptions {
