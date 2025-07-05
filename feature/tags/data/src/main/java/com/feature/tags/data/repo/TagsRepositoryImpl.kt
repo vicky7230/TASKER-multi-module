@@ -43,8 +43,8 @@ class TagsRepositoryImpl
             .getTagsDao()
             .updateTagName(UpdateTagName(tagId, newName))
 
-        override suspend fun insertTag(note: Tag): Long =
+        override suspend fun insertTag(tag: Tag): Long =
             notesDb
                 .getTagsDao()
-                .insertTag(note.toEntity())
+                .insertTag(tag.toEntity())
     }

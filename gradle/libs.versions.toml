@@ -28,6 +28,7 @@ converterKotlinxSerialization = "2.11.0"
 dagger = "2.56.2"
 roomRuntime = "2.7.2"
 turbine = "1.2.0"
+calendar = "2.7.0"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
@@ -67,6 +68,7 @@ converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-k
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+kizitonwose-calendar-compose = {module = "com.kizitonwose.calendar:compose", version.ref = "calendar"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

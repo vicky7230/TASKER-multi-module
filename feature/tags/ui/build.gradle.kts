@@ -35,6 +35,18 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources {
+            excludes +=
+                setOf(
+                    "META-INF/LICENSE.md",
+                    "META-INF/LICENSE-notice.md",
+                    "META-INF/DEPENDENCIES",
+                    "META-INF/AL2.0",
+                    "META-INF/LGPL2.1",
+                )
+        }
+    }
 }
 
 dependencies {
@@ -76,9 +88,11 @@ dependencies {
 
     // mockk
     testImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.android)
 
     // turbine
     testImplementation(libs.turbine)
+    androidTestImplementation(libs.turbine)
 
     // coroutines
     implementation(libs.kotlinx.coroutines.core)

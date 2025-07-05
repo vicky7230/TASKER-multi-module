@@ -37,6 +37,42 @@ class NotesViewModelTest {
     private lateinit var viewModel: NotesViewModel
     private val testDispatcher = StandardTestDispatcher()
 
+    val timesStamp = System.currentTimeMillis()
+    val fakeNotes =
+        listOf(
+            NoteWithTag(
+                id = 1,
+                content = "Note 1",
+                timestamp = timesStamp,
+                tagId = 1,
+                done = false,
+                tagName = "Tag 1",
+                tagColor = "#FFFFFF",
+                date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                time = "00:00:00",
+            ),
+        )
+    val fakeTags =
+        listOf(
+            TagWithNotes(
+                id = 1,
+                name = "Tag 1",
+                color = "#FFFFFF",
+                notes =
+                    persistentListOf(
+                        Note(
+                            id = 1,
+                            content = "Note 1",
+                            timestamp = timesStamp,
+                            tagId = 1,
+                            done = false,
+                            date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                            time = "00:00:00",
+                        ),
+                    ),
+            ),
+        )
+
     @Before
     fun setUp() {
         mockkStatic(Log::class)
@@ -50,45 +86,9 @@ class NotesViewModelTest {
     @Test
     fun `uiState should emit NotesLoaded when use cases return data`() =
         runTest {
-            val timesStamp = System.currentTimeMillis()
             // Arrange
-            val fakeNotes =
-                listOf(
-                    NoteWithTag(
-                        id = 1,
-                        content = "Note 1",
-                        timestamp = timesStamp,
-                        tagId = 1,
-                        done = false,
-                        tagName = "Tag 1",
-                        tagColor = "#FFFFFF",
-                        date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
-                        time = "00:00:00",
-                    ),
-                )
-            val fakeTags =
-                listOf(
-                    TagWithNotes(
-                        id = 1,
-                        name = "Tag 1",
-                        color = "#FFFFFF",
-                        notes =
-                            persistentListOf(
-                                Note(
-                                    id = 1,
-                                    content = "Note 1",
-                                    timestamp = timesStamp,
-                                    tagId = 1,
-                                    done = false,
-                                    date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
-                                    time = "00:00:00",
-                                ),
-                            ),
-                    ),
-                )
-
             every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
-            every { getAllTagsWithNotesUseCase() } returns (flowOf(fakeTags))
+            every { getAllTagsWithNotesUseCase() } returns flowOf(fakeTags)
             // Act
             viewModel =
                 NotesViewModel(
@@ -131,6 +131,36 @@ class NotesViewModelTest {
                 val errorState = awaitItem()
                 assertTrue(errorState is NotesUiState.Error)
                 assertEquals("Error loading notes", (errorState as NotesUiState.Error).message)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `showCreateTagBottomSheet should update uiState to ShowCreateTagBottomSheet`() =
+        runTest {
+            // Arrange
+            every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
+            every { getAllTagsWithNotesUseCase() } returns flowOf(fakeTags)
+
+            viewModel =
+                NotesViewModel(
+                    getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
+                    getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
+                )
+
+            // // Act & Assert
+            viewModel.notesUiState.test {
+                assertEquals(NotesUiState.Loading, awaitItem())
+                val loadedState = awaitItem()
+                assertTrue(loadedState is NotesUiState.NotesLoaded)
+                viewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet)
+                val state = awaitItem()
+                assertTrue(state is NotesUiState.NotesLoaded)
+                assertEquals(
+                    (state as NotesUiState.NotesLoaded).bottomSheet,
+                    NotesUiBottomSheet.CreateTagBottomSheet,
+                )
                 cancelAndIgnoreRemainingEvents()
             }
         }
