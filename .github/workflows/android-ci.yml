@@ -94,4 +94,11 @@ jobs:
           force-avd-creation: true
           emulator-options: -no-snapshot -noaudio -no-boot-anim -no-window -gpu swiftshader_indirect
           disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest
+          script: |
+            adb wait-for-device
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
+            ./gradlew assembleDebug assembleDebugAndroidTest
+            ./gradlew connectedDebugAndroidTest --stacktrace
