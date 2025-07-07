@@ -16,10 +16,16 @@ fun String.toColorSafely(): Color =
         Color.Black
     }
 
-fun Color.toHexString(): String {
-    val alpha = (alpha * 255).toInt().toString(16).padStart(2, '0')
-    val red = (red * 255).toInt().toString(16).padStart(2, '0')
-    val green = (green * 255).toInt().toString(16).padStart(2, '0')
-    val blue = (blue * 255).toInt().toString(16).padStart(2, '0')
-    return "#$alpha$red$green$blue"
+@Suppress("ImplicitDefaultLocale")
+fun Color.toHexString(includeAlpha: Boolean = true): String {
+    val a = (alpha * 255).toInt()
+    val r = (red * 255).toInt()
+    val g = (green * 255).toInt()
+    val b = (blue * 255).toInt()
+
+    return if (includeAlpha) {
+        String.format("#%02X%02X%02X%02X", a, r, g, b)
+    } else {
+        String.format("#%02X%02X%02X", r, g, b)
+    }
 }
