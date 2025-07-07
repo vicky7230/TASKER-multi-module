@@ -1,6 +1,5 @@
 package com.feature.notes.ui.screen
 
-import androidx.compose.ui.graphics.Color
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.PersistentList
@@ -26,6 +25,6 @@ sealed class NotesUiBottomSheet {
     data object None : NotesUiBottomSheet()
 
     data class CreateTagBottomSheet(
-        val selectedColor: Color,
+        val selectedColor: String = "#00000000",
     ) : NotesUiBottomSheet()
 }

@@ -1,8 +1,11 @@
+@file:Suppress("MagicNumber")
+
 package com.feature.notes.ui.screen.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -29,16 +32,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.LightGray
 import com.core.common.theme.LightGray3
 import com.core.common.theme.TaskerTheme
+import com.core.common.theme.tagColors
 import com.core.common.ui.PrimaryButton
 import com.core.common.ui.RoundedTextField
+import com.core.common.utils.toColorSafely
 import com.core.common.utils.toHexString
 import com.feature.notes.ui.screen.NotesUiBottomSheet
 import kotlinx.coroutines.launch
@@ -49,10 +57,13 @@ fun CreateTagBottomSheet(
     bottomSheet: NotesUiBottomSheet.CreateTagBottomSheet,
     hideCreateTagBottomSheet: () -> Unit,
     onSaveTagNameClick: (String, String) -> Unit,
-    onBottomSheetColorItemClick: (Color) -> Unit,
+    onBottomSheetColorItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState =
+        rememberModalBottomSheetState(
+            skipPartiallyExpanded = true,
+        )
     var tagName by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     ModalBottomSheet(
@@ -94,6 +105,43 @@ fun CreateTagBottomSheet(
                 },
             )
 
+            Text(
+                modifier = Modifier.padding(bottom = 12.dp, top = 4.dp),
+                text = "Choose color",
+                style =
+                    TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = LightGray3,
+                    ),
+            )
+
+            val windowInfo = LocalWindowInfo.current
+            val density = LocalDensity.current
+            val spacing = 8.dp
+            val itemWidth =
+                remember {
+                    val screenWidthDp = with(density) { windowInfo.containerSize.width.toDp() }
+                    val totalSpacing = spacing * 5 // 5 gaps between 6 items
+                    val itemWidth: Dp = (screenWidthDp - totalSpacing - 50.dp) / 6
+                    return@remember itemWidth
+                }
+
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(spacing),
+                verticalArrangement = Arrangement.spacedBy(spacing),
+            ) {
+                tagColors.forEach { color ->
+                    ColorItem(
+                        color = color,
+                        selected = color == bottomSheet.selectedColor.toColorSafely(),
+                        itemWidth = itemWidth,
+                        onItemClick = { onBottomSheetColorItemClick(it.toHexString()) },
+                    )
+                }
+            }
+
             Row(modifier = Modifier.padding(vertical = 20.dp)) {
                 PrimaryButton(
                     buttonText = "Cancel",
@@ -115,12 +163,12 @@ fun CreateTagBottomSheet(
                     buttonText = "Save",
                     modifier = Modifier.weight(1f),
                     onButtonClick = {
-                        if (tagName.isNotEmpty()) {
+                        if (tagName.isNotEmpty() && bottomSheet.selectedColor != "#00000000") {
                             scope.launch { sheetState.hide() }.invokeOnCompletion {
                                 if (!sheetState.isVisible) {
                                     onSaveTagNameClick(
                                         tagName.trim(),
-                                        bottomSheet.selectedColor.toHexString(),
+                                        bottomSheet.selectedColor,
                                     )
                                     hideCreateTagBottomSheet()
                                 }
@@ -130,27 +178,6 @@ fun CreateTagBottomSheet(
                     buttonTextColor = Color.White,
                 )
             }
-
-            Text(
-                modifier = Modifier.padding(bottom = 12.dp, top = 4.dp),
-                text = "Choose color",
-                style =
-                    TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = LightGray3,
-                    ),
-            )
-
-            FlowRow {
-                arrayOf(Color.Black, Color.Red, Color.Green, Color.Blue).forEach { color ->
-                    ColorItem(
-                        color = color,
-                        selected = color == bottomSheet.selectedColor,
-                        onItemClick = { onBottomSheetColorItemClick(it) },
-                    )
-                }
-            }
         }
     }
 }
@@ -159,6 +186,7 @@ fun CreateTagBottomSheet(
 fun ColorItem(
     color: Color,
     selected: Boolean,
+    itemWidth: Dp,
     onItemClick: (Color) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -171,8 +199,7 @@ fun ColorItem(
     Box(
         modifier =
             modifier
-                .size(50.dp)
-                .padding(4.dp)
+                .size(itemWidth)
                 .then(borderModifier)
                 .padding(2.5.dp)
                 .clip(CircleShape)
@@ -187,7 +214,7 @@ fun ColorItem(
 private fun CreateTagBottomSheetPreview() {
     TaskerTheme {
         CreateTagBottomSheet(
-            bottomSheet = NotesUiBottomSheet.CreateTagBottomSheet(selectedColor = Color.Black),
+            bottomSheet = NotesUiBottomSheet.CreateTagBottomSheet(selectedColor = "#FF000000"),
             modifier =
                 Modifier
                     .fillMaxWidth()
