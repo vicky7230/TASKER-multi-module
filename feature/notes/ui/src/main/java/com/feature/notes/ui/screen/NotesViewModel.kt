@@ -79,9 +79,22 @@ class NotesViewModel
             }
         }
 
-        fun createTag(tagName: String) {
+        fun onFabClick() {
+            _notesUiState.update {
+                if (it is NotesUiState.NotesLoaded) {
+                    it.copy(fabExpanded = !it.fabExpanded)
+                } else {
+                    it
+                }
+            }
+        }
+
+        fun createTag(
+            tagName: String,
+            tagColor: String,
+        ) {
             viewModelScope.launch {
-                createTagUseCase(tagName = tagName, tagColor = "#2A3333")
+                createTagUseCase(tagName = tagName, tagColor = tagColor)
             }
         }
     }

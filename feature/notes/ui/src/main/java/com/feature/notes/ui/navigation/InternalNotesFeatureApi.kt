@@ -3,6 +3,7 @@ package com.feature.notes.ui.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,10 +46,16 @@ internal object InternalNotesFeatureApi : FeatureApi {
                         navHostController.navigate(TagScreen(tagId = tag.id))
                     },
                     onAddNoteClick = {
+                        notesViewModel.onFabClick()
                         navHostController.navigate(AddEditNoteScreen(noteId = 0L))
                     },
                     onAddTagClick = {
-                        notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet)
+                        notesViewModel.onFabClick()
+                        notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet(selectedColor = Color.Unspecified))
+                    },
+                    onFabClick = notesViewModel::onFabClick,
+                    onBottomSheetColorItemClick = { color ->
+                        notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet(selectedColor = color))
                     },
                     hideCreateTagBottomSheet = {
                         notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.None)
