@@ -3,6 +3,7 @@ package com.feature.notes.ui.screen
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
+import com.core.common.utils.toHexString
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
@@ -155,12 +156,12 @@ class NotesViewModelTest {
                 assertEquals(NotesUiState.Loading, awaitItem())
                 val loadedState = awaitItem()
                 assertTrue(loadedState is NotesUiState.NotesLoaded)
-                viewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified))
+                viewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified.toHexString()))
                 val state = awaitItem()
                 assertTrue(state is NotesUiState.NotesLoaded)
                 assertEquals(
                     (state as NotesUiState.NotesLoaded).bottomSheet,
-                    NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified),
+                    NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified.toHexString()),
                 )
                 cancelAndIgnoreRemainingEvents()
             }
