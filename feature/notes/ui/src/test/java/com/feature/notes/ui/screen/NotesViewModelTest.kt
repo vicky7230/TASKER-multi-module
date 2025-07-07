@@ -1,6 +1,7 @@
 package com.feature.notes.ui.screen
 
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
@@ -154,12 +155,12 @@ class NotesViewModelTest {
                 assertEquals(NotesUiState.Loading, awaitItem())
                 val loadedState = awaitItem()
                 assertTrue(loadedState is NotesUiState.NotesLoaded)
-                viewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet)
+                viewModel.showCreateTagBottomSheet(NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified))
                 val state = awaitItem()
                 assertTrue(state is NotesUiState.NotesLoaded)
                 assertEquals(
                     (state as NotesUiState.NotesLoaded).bottomSheet,
-                    NotesUiBottomSheet.CreateTagBottomSheet,
+                    NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified),
                 )
                 cancelAndIgnoreRemainingEvents()
             }
