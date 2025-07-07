@@ -29,7 +29,17 @@ fun FabMenu(
     items: List<FabOption>,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier =
+            modifier
+                .padding(bottom = 90.dp, end = 16.dp)
+                .shadow(
+                    elevation = 8.dp,
+                    shape = RoundedCornerShape(8.dp),
+                    clip = false,
+                ).background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(8.dp)),
+    ) {
         items.forEachIndexed { index, option ->
             FabMenuItem(
                 modifier = Modifier.fillMaxWidth(0.65f),
@@ -52,16 +62,7 @@ private fun FabMenuPreview() {
     TaskerTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             FabMenu(
-                modifier =
-                    Modifier
-                        .padding(bottom = 90.dp, end = 16.dp)
-                        .shadow(
-                            elevation = 8.dp,
-                            shape = RoundedCornerShape(8.dp),
-                            clip = false,
-                        ).background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                        .clip(RoundedCornerShape(8.dp))
-                        .align(Alignment.BottomEnd),
+                modifier = Modifier.align(Alignment.BottomEnd),
                 items =
                     listOf(
                         FabOption(

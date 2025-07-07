@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -29,8 +30,10 @@ fun NotesScreen(
     onTagClick: (TagWithNotes) -> Unit,
     onAddNoteClick: () -> Unit,
     onAddTagClick: () -> Unit,
+    onFabClick: () -> Unit,
+    onBottomSheetColorItemClick: (Color) -> Unit,
     hideCreateTagBottomSheet: () -> Unit,
-    onSaveTagNameClick: (String) -> Unit,
+    onSaveTagNameClick: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state = notesUiState
@@ -82,6 +85,7 @@ fun NotesScreen(
                     notesUiState = state,
                     onNoteClick = onNoteClick,
                     onTagClick = onTagClick,
+                    onFabClick = onFabClick,
                 )
 
                 if (state.bottomSheet is NotesUiBottomSheet.CreateTagBottomSheet) {
@@ -92,6 +96,8 @@ fun NotesScreen(
                                 .padding(horizontal = 25.dp),
                         hideCreateTagBottomSheet = hideCreateTagBottomSheet,
                         onSaveTagNameClick = onSaveTagNameClick,
+                        bottomSheet = state.bottomSheet,
+                        onBottomSheetColorItemClick = onBottomSheetColorItemClick,
                     )
                 }
             }
@@ -116,9 +122,11 @@ private fun NotesScreenPreview(
             onAddNoteClick = {},
             onNoteClick = {},
             onTagClick = {},
-            onSaveTagNameClick = {},
+            onSaveTagNameClick = { _, _ -> },
+            onFabClick = {},
             hideCreateTagBottomSheet = {},
             onAddTagClick = {},
+            onBottomSheetColorItemClick = {},
         )
     }
 }

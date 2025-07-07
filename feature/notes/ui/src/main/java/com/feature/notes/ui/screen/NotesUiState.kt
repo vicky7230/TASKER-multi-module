@@ -1,5 +1,6 @@
 package com.feature.notes.ui.screen
 
+import androidx.compose.ui.graphics.Color
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.PersistentList
@@ -12,6 +13,7 @@ sealed class NotesUiState {
     data class NotesLoaded(
         val notes: PersistentList<NoteWithTag>,
         val tags: PersistentList<TagWithNotes>,
+        val fabExpanded: Boolean = false,
         val bottomSheet: NotesUiBottomSheet = NotesUiBottomSheet.None,
     ) : NotesUiState()
 
@@ -23,5 +25,7 @@ sealed class NotesUiState {
 sealed class NotesUiBottomSheet {
     data object None : NotesUiBottomSheet()
 
-    data object CreateTagBottomSheet : NotesUiBottomSheet()
+    data class CreateTagBottomSheet(
+        val selectedColor: Color,
+    ) : NotesUiBottomSheet()
 }
