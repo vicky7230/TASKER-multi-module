@@ -119,20 +119,18 @@ fun CreateTagBottomSheet(
             val windowInfo = LocalWindowInfo.current
             val density = LocalDensity.current
             val spacing = 8.dp
+            val screenWidthDp = with(density) { windowInfo.containerSize.width.toDp() }
             val itemWidth =
-                remember {
-                    val screenWidthDp = with(density) { windowInfo.containerSize.width.toDp() }
+                remember(screenWidthDp) {
                     val totalSpacing = spacing * 5 // 5 gaps between 6 items
-                    val itemWidth: Dp = (screenWidthDp - totalSpacing - 50.dp) / 6
-                    return@remember itemWidth
+                    (((screenWidthDp - totalSpacing - 50.dp) / 6).value.toInt()).dp
                 }
-
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(spacing),
                 verticalArrangement = Arrangement.spacedBy(spacing),
             ) {
-                tagColors.forEach { color ->
+                tagColors.forEachIndexed { index, color ->
                     ColorItem(
                         color = color,
                         selected = color == bottomSheet.selectedColor.toColorSafely(),
