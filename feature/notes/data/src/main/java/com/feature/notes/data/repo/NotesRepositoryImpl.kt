@@ -3,6 +3,7 @@ package com.feature.notes.data.repo
 import com.core.database.NotesDb
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
+import com.core.database.entity.UpdateNoteDone
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.repo.NotesRepository
@@ -34,4 +35,9 @@ class NotesRepositoryImpl
         override suspend fun getNoteById(id: Long): Note? = notesDb.getNotesDao().getNoteById(id)?.toDomain()
 
         override suspend fun getNoteWithTagById(id: Long): NoteWithTag? = notesDb.getNotesDao().getNoteWithTagById(id)?.toDomain()
+
+        override suspend fun updateNoteDone(
+            id: Long,
+            done: Boolean,
+        ) = notesDb.getNotesDao().updateNoteDone(UpdateNoteDone(id, done))
     }

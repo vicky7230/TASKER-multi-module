@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.core.common.navigation.TagScreen
+import com.core.domain.model.Note
+import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
 import com.feature.tags.domain.usecase.UpdateTagNameUseCase
 import dagger.assisted.Assisted
@@ -25,6 +27,7 @@ class TagsViewModel
         @Assisted private val savedStateHandle: SavedStateHandle,
         private val getTagWithNotesUseCase: GetTagWithNotesUseCase,
         private val updateTagNameUseCase: UpdateTagNameUseCase,
+        private val updateNoteDoneUseCase: UpdateNoteDoneUseCase,
     ) : ViewModel() {
         companion object {
             private val TAG = TagsViewModel::class.simpleName
@@ -76,6 +79,12 @@ class TagsViewModel
                 } else {
                     it
                 }
+            }
+        }
+
+        fun markNoteAsDone(note: Note) {
+            viewModelScope.launch {
+                updateNoteDoneUseCase(id = note.id, done = true)
             }
         }
     }

@@ -8,6 +8,7 @@ import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
+import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import io.mockk.every
@@ -36,6 +37,7 @@ class NotesViewModelTest {
     private lateinit var getAllNotesWithTagUseCase: GetAllNotesWithTagUseCase
     private lateinit var getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase
     private lateinit var createTagUseCase: CreateTagUseCase
+    private lateinit var updateNoteDoneUseCase: UpdateNoteDoneUseCase
     private lateinit var viewModel: NotesViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -81,6 +83,7 @@ class NotesViewModelTest {
         every { Log.e(any(), any(), any()) } returns 0 // Mock Log.e to avoid actual logging
         getAllNotesWithTagUseCase = mockk()
         getAllTagsWithNotesUseCase = mockk()
+        updateNoteDoneUseCase = mockk()
         createTagUseCase = mockk()
         Dispatchers.setMain(testDispatcher)
     }
@@ -97,6 +100,7 @@ class NotesViewModelTest {
                     getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
                     createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
                 )
 
             // Assert
@@ -125,6 +129,7 @@ class NotesViewModelTest {
                     getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
                     createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
                 )
 
             // Assert
@@ -149,6 +154,7 @@ class NotesViewModelTest {
                     getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
                     createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
                 )
 
             // // Act & Assert

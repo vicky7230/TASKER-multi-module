@@ -3,9 +3,11 @@ package com.core.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
+import com.core.database.entity.UpdateNoteDone
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,4 +28,7 @@ interface NotesDao {
     @Transaction
     @Query("SELECT * FROM notes")
     fun getAllNotesWithTag(): Flow<List<NoteWithTagEntity>>
+
+    @Update(entity = NoteEntity::class)
+    suspend fun updateNoteDone(updateNoteDone: UpdateNoteDone): Int
 }

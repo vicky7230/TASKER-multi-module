@@ -75,6 +75,7 @@ internal class InternalTagsFeatureApi
                         onNoteClick = { note ->
                             navHostController.navigate(AddEditNoteScreen(noteId = note.id))
                         },
+                        onNoteDoneClick = tagsViewModel::markNoteAsDone,
                     )
                 }
             }

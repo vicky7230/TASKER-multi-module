@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.core.domain.model.Note
 import com.core.domain.model.TagWithNotes
+import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
 import com.feature.tags.domain.usecase.UpdateTagNameUseCase
 import io.mockk.coEvery
@@ -31,6 +32,7 @@ class TagsViewModelTest {
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var getTagWithNotesUseCase: GetTagWithNotesUseCase
     private lateinit var updateTagNameUseCase: UpdateTagNameUseCase
+    private lateinit var updateNoteDoneUseCase: UpdateNoteDoneUseCase
     private lateinit var tagsViewModel: TagsViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -67,6 +69,7 @@ class TagsViewModelTest {
         Dispatchers.setMain(testDispatcher)
         getTagWithNotesUseCase = mockk()
         updateTagNameUseCase = mockk()
+        updateNoteDoneUseCase = mockk()
     }
 
     @Test
@@ -78,7 +81,12 @@ class TagsViewModelTest {
 
             // Act
             tagsViewModel =
-                TagsViewModel(savedStateHandle, getTagWithNotesUseCase, updateTagNameUseCase)
+                TagsViewModel(
+                    savedStateHandle = savedStateHandle,
+                    getTagWithNotesUseCase = getTagWithNotesUseCase,
+                    updateTagNameUseCase = updateTagNameUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                )
 
             // Assert
             tagsViewModel.tagsUiState.test {
@@ -98,7 +106,12 @@ class TagsViewModelTest {
 
             // Act
             tagsViewModel =
-                TagsViewModel(savedStateHandle, getTagWithNotesUseCase, updateTagNameUseCase)
+                TagsViewModel(
+                    savedStateHandle = savedStateHandle,
+                    getTagWithNotesUseCase = getTagWithNotesUseCase,
+                    updateTagNameUseCase = updateTagNameUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                )
 
             // Assert
             tagsViewModel.tagsUiState.test {
@@ -117,7 +130,12 @@ class TagsViewModelTest {
             coEvery { updateTagNameUseCase(any(), any()) } returns 1
             savedStateHandle = SavedStateHandle(mapOf("tagId" to 1L))
             tagsViewModel =
-                TagsViewModel(savedStateHandle, getTagWithNotesUseCase, updateTagNameUseCase)
+                TagsViewModel(
+                    savedStateHandle = savedStateHandle,
+                    getTagWithNotesUseCase = getTagWithNotesUseCase,
+                    updateTagNameUseCase = updateTagNameUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                )
 
             // Act & Assert
             tagsViewModel.tagsUiState.test {
@@ -140,14 +158,25 @@ class TagsViewModelTest {
 
             // Act
             tagsViewModel =
-                TagsViewModel(savedStateHandle, getTagWithNotesUseCase, updateTagNameUseCase)
+                TagsViewModel(
+                    savedStateHandle = savedStateHandle,
+                    getTagWithNotesUseCase = getTagWithNotesUseCase,
+                    updateTagNameUseCase = updateTagNameUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                )
 
             // Assert
             tagsViewModel.tagsUiState.test {
                 assertEquals(TagsUiState.Idle, awaitItem())
                 assertEquals(TagsUiState.Loading, awaitItem())
                 assertEquals(TagsUiState.TagLoaded(tagWithNotes), awaitItem())
-                tagsViewModel.showRenameTagBottomSheet(TagsUiBottomSheet.RenameTagBottomSheet(tagId = 1L, tagName = "Work", tagColor = "#FFFFFF"))
+                tagsViewModel.showRenameTagBottomSheet(
+                    TagsUiBottomSheet.RenameTagBottomSheet(
+                        tagId = 1L,
+                        tagName = "Work",
+                        tagColor = "#FFFFFF",
+                    ),
+                )
                 val result = awaitItem()
                 assertTrue(result is TagsUiState.TagLoaded)
                 assertTrue((result as TagsUiState.TagLoaded).tagsUiBottomSheet is TagsUiBottomSheet.RenameTagBottomSheet)

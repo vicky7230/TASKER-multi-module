@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.core.common.utils.TimeUtils
 import com.core.domain.model.NoteWithTag
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
+import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
 import kotlinx.collections.immutable.toPersistentList
@@ -30,6 +31,7 @@ class NotesViewModel
         private val getAllNotesWithTagUseCase: GetAllNotesWithTagUseCase,
         private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
         private val createTagUseCase: CreateTagUseCase,
+        private val updateNoteDoneUseCase: UpdateNoteDoneUseCase,
     ) : ViewModel() {
         companion object {
             private const val TAG = "NotesViewModel"
@@ -95,6 +97,12 @@ class NotesViewModel
         ) {
             viewModelScope.launch {
                 createTagUseCase(tagName = tagName, tagColor = tagColor)
+            }
+        }
+
+        fun markNoteAsDone(noteWithTag: NoteWithTag) {
+            viewModelScope.launch {
+                updateNoteDoneUseCase(id = noteWithTag.id, done = true)
             }
         }
     }

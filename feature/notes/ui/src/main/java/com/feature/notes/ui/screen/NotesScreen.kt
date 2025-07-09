@@ -33,6 +33,7 @@ fun NotesScreen(
     onBottomSheetColorItemClick: (String) -> Unit,
     hideCreateTagBottomSheet: () -> Unit,
     onSaveTagNameClick: (String, String) -> Unit,
+    onNoteDoneClick: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state = notesUiState
@@ -85,6 +86,7 @@ fun NotesScreen(
                     onNoteClick = onNoteClick,
                     onTagClick = onTagClick,
                     onFabClick = onFabClick,
+                    onNoteDoneClick = onNoteDoneClick,
                 )
 
                 if (state.bottomSheet is NotesUiBottomSheet.CreateTagBottomSheet) {
@@ -126,6 +128,7 @@ private fun NotesScreenPreview(
             hideCreateTagBottomSheet = {},
             onAddTagClick = {},
             onBottomSheetColorItemClick = {},
+            onNoteDoneClick = {},
         )
     }
 }
