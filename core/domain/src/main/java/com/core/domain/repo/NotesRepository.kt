@@ -14,4 +14,9 @@ interface NotesRepository {
     suspend fun getNoteById(id: Long): Note?
 
     suspend fun getNoteWithTagById(id: Long): NoteWithTag?
+
+    suspend fun updateNoteDone(
+        id: Long,
+        done: Boolean,
+    ): Int
 }

@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter
 fun TagNoteItem(
     note: Note,
     onNoteClick: (Note) -> Unit,
+    onNoteDoneClick: (Note) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -40,9 +41,19 @@ fun TagNoteItem(
         Icon(
             modifier =
                 Modifier
-                    .padding(start = 16.dp, end = 16.dp)
-                    .size(28.dp),
-            painter = painterResource(com.core.common.R.drawable.ic_ring_white),
+                    .padding(start = 6.dp, end = 6.dp)
+                    .size(48.dp)
+                    .clickable {
+                        if (note.done.not()) {
+                            onNoteDoneClick(note)
+                        }
+                    }.padding(10.dp),
+            painter =
+                if (note.done) {
+                    painterResource(com.core.common.R.drawable.ic_marked)
+                } else {
+                    painterResource(com.core.common.R.drawable.ic_ring_gray)
+                },
             contentDescription = null,
             tint = Color.Unspecified,
         )
@@ -86,5 +97,6 @@ private fun TagNoteItemPreview() {
                         .format(DateTimeFormatter.ofPattern("HH:mm:ss")),
             ),
         onNoteClick = {},
+        onNoteDoneClick = {},
     )
 }

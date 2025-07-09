@@ -7,6 +7,7 @@ import com.core.database.di.BaseApplicationTest
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
 import com.core.database.entity.TagEntity
+import com.core.database.entity.UpdateNoteDone
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.flow.first
@@ -177,5 +178,31 @@ class NotesDaoTest {
             assertEquals(result.size, 2)
             assertEquals(result[0], NoteWithTagEntity(note1, tag))
             assertEquals(result[1], NoteWithTagEntity(note2, tag))
+        }
+
+    @Test
+    fun updateNoteDone_getNoteById() =
+        runTest {
+            // Arrange
+            val tag = TagEntity(id = 1, name = "Test Tag", color = "#FFFFFF")
+            tagsDao.insertTag(tag)
+            val note =
+                NoteEntity(
+                    id = 1,
+                    content = "Test note",
+                    timestamp = 1633024800000L,
+                    tagId = 1,
+                    done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
+                )
+            notesDao.upsertNotes(listOf(note))
+
+            // Act
+            notesDao.updateNoteDone(UpdateNoteDone(note.id, true))
+
+            // Assert
+            val result = notesDao.getNoteById(note.id)
+            assertEquals(true, result?.done)
         }
 }

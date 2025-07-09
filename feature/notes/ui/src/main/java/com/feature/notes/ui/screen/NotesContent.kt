@@ -46,6 +46,7 @@ fun NotesContent(
     onNoteClick: (NoteWithTag) -> Unit,
     onTagClick: (TagWithNotes) -> Unit,
     onFabClick: () -> Unit,
+    onNoteDoneClick: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val rotation by animateFloatAsState(
@@ -58,6 +59,7 @@ fun NotesContent(
             notesUiState = notesUiState,
             onNoteClick = onNoteClick,
             onTagClick = onTagClick,
+            onNoteDoneClick = onNoteDoneClick,
         )
 
         // Scrim overlay layer - positioned between content and FAB
@@ -141,6 +143,7 @@ private fun NotesContentPreview() {
             onTagClick = {},
             onFabClick = {},
             modifier = Modifier.fillMaxSize(),
+            onNoteDoneClick = {},
         )
     }
 }

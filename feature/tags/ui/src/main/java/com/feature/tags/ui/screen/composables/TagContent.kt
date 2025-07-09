@@ -38,6 +38,7 @@ fun TagContent(
     tagsUiState: TagsUiState.TagLoaded,
     onNoteClick: (Note) -> Unit,
     onEditTagClick: (TagWithNotes) -> Unit,
+    onNoteDoneClick: (Note) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -99,6 +100,7 @@ fun TagContent(
                         modifier = Modifier.fillMaxWidth(),
                         note = note,
                         onNoteClick = onNoteClick,
+                        onNoteDoneClick = onNoteDoneClick,
                     )
                     HorizontalDivider(
                         modifier = Modifier.padding(start = 60.dp),
@@ -120,6 +122,7 @@ private fun TagContentPreview() {
             tagsUiState = TagsUiState.TagLoaded(tag = tagWithNotes, tagsUiBottomSheet = TagsUiBottomSheet.None),
             onEditTagClick = {},
             onNoteClick = {},
+            onNoteDoneClick = {},
         )
     }
 }

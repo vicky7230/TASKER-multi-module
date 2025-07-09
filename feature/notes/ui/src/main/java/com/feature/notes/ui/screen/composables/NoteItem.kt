@@ -29,6 +29,7 @@ import com.feature.notes.ui.screen.notes
 fun NoteItem(
     note: NoteWithTag,
     onNoteClick: (NoteWithTag) -> Unit,
+    onNoteDoneClick: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -40,9 +41,19 @@ fun NoteItem(
         Icon(
             modifier =
                 Modifier
-                    .padding(start = 16.dp, end = 16.dp)
-                    .size(28.dp),
-            painter = painterResource(com.core.common.R.drawable.ic_ring_gray),
+                    .padding(start = 6.dp, end = 6.dp)
+                    .size(48.dp)
+                    .clickable {
+                        if (note.done.not()) {
+                            onNoteDoneClick(note)
+                        }
+                    }.padding(10.dp),
+            painter =
+                if (note.done) {
+                    painterResource(com.core.common.R.drawable.ic_marked)
+                } else {
+                    painterResource(com.core.common.R.drawable.ic_ring_gray)
+                },
             contentDescription = null,
             tint = Color.Unspecified,
         )
@@ -78,6 +89,20 @@ private fun NoteItemPreview() {
     TaskerTheme {
         NoteItem(
             note = notes[0],
+            onNoteDoneClick = {},
+            onNoteClick = {},
+        )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun NoteItemDonePreview() {
+    TaskerTheme {
+        NoteItem(
+            note = notes[0].copy(done = true),
+            onNoteDoneClick = {},
             onNoteClick = {},
         )
     }

@@ -60,6 +60,7 @@ internal object InternalNotesFeatureApi : FeatureApi {
                         notesViewModel.showCreateTagBottomSheet(NotesUiBottomSheet.None)
                     },
                     onSaveTagNameClick = notesViewModel::createTag,
+                    onNoteDoneClick = notesViewModel::markNoteAsDone,
                 )
             }
         }

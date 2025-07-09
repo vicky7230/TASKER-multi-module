@@ -32,6 +32,7 @@ fun NotesOverview(
     notesUiState: NotesUiState.NotesLoaded,
     onNoteClick: (NoteWithTag) -> Unit,
     onTagClick: (TagWithNotes) -> Unit,
+    onNoteDoneClick: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -54,6 +55,7 @@ fun NotesOverview(
                 modifier = Modifier.fillMaxWidth(),
                 note = it,
                 onNoteClick = onNoteClick,
+                onNoteDoneClick = onNoteDoneClick,
             )
             Spacer(
                 modifier =
@@ -104,5 +106,6 @@ private fun NotesOverviewPreview() {
         notesUiState = NotesUiState.NotesLoaded(notes, tags),
         onNoteClick = {},
         onTagClick = {},
+        onNoteDoneClick = {},
     )
 }

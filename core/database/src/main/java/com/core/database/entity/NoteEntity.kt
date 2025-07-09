@@ -51,3 +51,8 @@ data class NoteWithTagEntity(
     )
     val tag: TagEntity,
 )
+
+data class UpdateNoteDone(
+    val id: Long,
+    val done: Boolean,
+)
