@@ -1,2 +1,4 @@
+[config]
+model="qwen/qwen-2.5-coder-32b-instruct:free"
 [github_action_config]
 pr_actions = ['opened', 'reopened', 'ready_for_review', 'review_requested', 'synchronize']

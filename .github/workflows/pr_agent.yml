@@ -21,8 +21,5 @@ jobs:
         id: pragent
         uses: qodo-ai/pr-agent@main
         env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          OPENAI_KEY: ${{ secrets.OPENROUTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_AGENT_LLM_PROVIDER: "openai"
-          PR_AGENT_MODEL: "gpt-3.5-turbo"
-          PR_REVIEW_EVENT_TRIGGER: "pull_request"
