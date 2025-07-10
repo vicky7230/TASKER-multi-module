@@ -1,0 +1,2 @@
+[github_action_config]
+pr_actions = ['opened', 'reopened', 'ready_for_review', 'review_requested', 'synchronize']
