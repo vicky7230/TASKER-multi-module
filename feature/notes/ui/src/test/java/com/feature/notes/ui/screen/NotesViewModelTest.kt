@@ -163,7 +163,7 @@ class NotesViewModelTest {
                     updateNoteDeletedUseCase = updateNoteDeletedUseCase,
                 )
 
-            // // Act & Assert
+            // Act & Assert
             viewModel.notesUiState.test {
                 assertEquals(NotesUiState.Loading, awaitItem())
                 val loadedState = awaitItem()
@@ -174,6 +174,38 @@ class NotesViewModelTest {
                 assertEquals(
                     (state as NotesUiState.NotesLoaded).bottomSheet,
                     NotesUiBottomSheet.CreateTagBottomSheet(Color.Unspecified.toHexString()),
+                )
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `onFabClick should update uiState fabExpanded`() =
+        runTest {
+            // Arrange
+            every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
+            every { getAllTagsWithNotesUseCase() } returns flowOf(fakeTags)
+
+            viewModel =
+                NotesViewModel(
+                    getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
+                    getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
+                )
+
+            // Act & Assert
+            viewModel.notesUiState.test {
+                assertEquals(NotesUiState.Loading, awaitItem())
+                val loadedState = awaitItem()
+                assertTrue(loadedState is NotesUiState.NotesLoaded)
+                viewModel.onFabClick()
+                val state = awaitItem()
+                assertTrue(state is NotesUiState.NotesLoaded)
+                assertEquals(
+                    true,
+                    (state as NotesUiState.NotesLoaded).fabExpanded,
                 )
                 cancelAndIgnoreRemainingEvents()
             }
