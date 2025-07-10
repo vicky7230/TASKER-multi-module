@@ -61,6 +61,7 @@ internal object InternalNotesFeatureApi : FeatureApi {
                     },
                     onSaveTagNameClick = notesViewModel::createTag,
                     onNoteDoneClick = notesViewModel::markNoteAsDone,
+                    onNoteDeleteClick = notesViewModel::markNoteAsDeleted,
                 )
             }
         }

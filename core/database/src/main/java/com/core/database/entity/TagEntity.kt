@@ -18,8 +18,9 @@ data class TagWithNotesEntity(
     @Relation(
         parentColumn = "id",
         entityColumn = "tagId",
+        entity = ActiveNoteEntity::class,
     )
-    val notes: List<NoteEntity>,
+    val notes: List<ActiveNoteEntity>,
 )
 
 data class UpdateTagName(

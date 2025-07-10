@@ -3,7 +3,7 @@ package com.feature.tags.data.repo
 import app.cash.turbine.test
 import com.core.database.NotesDb
 import com.core.database.dao.TagsDao
-import com.core.database.entity.NoteEntity
+import com.core.database.entity.ActiveNoteEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
 import com.core.database.entity.UpdateTagName
@@ -45,7 +45,7 @@ class TagsRepositoryImplTest {
             tag = TagEntity(1, "TestTag1", "#FF0000"),
             notes =
                 listOf(
-                    NoteEntity(
+                    ActiveNoteEntity(
                         1,
                         "Test 1",
                         1233L,
@@ -53,8 +53,9 @@ class TagsRepositoryImplTest {
                         false,
                         date = "2025-06-25",
                         time = "00:00:00",
+                        isDeleted = false,
                     ),
-                    NoteEntity(
+                    ActiveNoteEntity(
                         2,
                         "Test 2",
                         1234L,
@@ -62,6 +63,7 @@ class TagsRepositoryImplTest {
                         false,
                         date = "2025-06-25",
                         time = "00:00:00",
+                        isDeleted = false,
                     ),
                 ),
         )
@@ -72,7 +74,7 @@ class TagsRepositoryImplTest {
                 tag = TagEntity(1, "TestTag1", "#FF0000"),
                 notes =
                     listOf(
-                        NoteEntity(
+                        ActiveNoteEntity(
                             1,
                             "Test 1",
                             1233L,
@@ -80,8 +82,9 @@ class TagsRepositoryImplTest {
                             false,
                             date = "2025-06-25",
                             time = "00:00:00",
+                            isDeleted = false,
                         ),
-                        NoteEntity(
+                        ActiveNoteEntity(
                             2,
                             "Test 2",
                             1234L,
@@ -89,6 +92,7 @@ class TagsRepositoryImplTest {
                             false,
                             date = "2025-06-25",
                             time = "00:00:00",
+                            isDeleted = false,
                         ),
                     ),
             ),
@@ -96,7 +100,7 @@ class TagsRepositoryImplTest {
                 tag = TagEntity(2, "TestTag2", "#006CFF"),
                 notes =
                     listOf(
-                        NoteEntity(
+                        ActiveNoteEntity(
                             3,
                             "Test 3",
                             1233L,
@@ -104,8 +108,9 @@ class TagsRepositoryImplTest {
                             false,
                             date = "2025-06-25",
                             time = "00:00:00",
+                            isDeleted = false,
                         ),
-                        NoteEntity(
+                        ActiveNoteEntity(
                             4,
                             "Test 4",
                             1234L,
@@ -113,6 +118,7 @@ class TagsRepositoryImplTest {
                             false,
                             date = "2025-06-25",
                             time = "00:00:00",
+                            isDeleted = false,
                         ),
                     ),
             ),

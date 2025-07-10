@@ -34,6 +34,7 @@ fun NotesScreen(
     hideCreateTagBottomSheet: () -> Unit,
     onSaveTagNameClick: (String, String) -> Unit,
     onNoteDoneClick: (NoteWithTag) -> Unit,
+    onNoteDeleteClick: (NoteWithTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state = notesUiState
@@ -87,6 +88,7 @@ fun NotesScreen(
                     onTagClick = onTagClick,
                     onFabClick = onFabClick,
                     onNoteDoneClick = onNoteDoneClick,
+                    onNoteDeleteClick = onNoteDeleteClick,
                 )
 
                 if (state.bottomSheet is NotesUiBottomSheet.CreateTagBottomSheet) {
@@ -118,17 +120,18 @@ private fun NotesScreenPreview(
 ) {
     TaskerTheme {
         NotesScreen(
-            modifier = Modifier.fillMaxSize(),
             notesUiState = notesUiState,
-            onAddNoteClick = {},
             onNoteClick = {},
             onTagClick = {},
-            onSaveTagNameClick = { _, _ -> },
-            onFabClick = {},
-            hideCreateTagBottomSheet = {},
+            onAddNoteClick = {},
             onAddTagClick = {},
+            onFabClick = {},
             onBottomSheetColorItemClick = {},
+            hideCreateTagBottomSheet = {},
+            onSaveTagNameClick = { _, _ -> },
             onNoteDoneClick = {},
+            modifier = Modifier.fillMaxSize(),
+            onNoteDeleteClick = {},
         )
     }
 }

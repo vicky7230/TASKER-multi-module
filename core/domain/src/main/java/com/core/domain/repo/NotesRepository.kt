@@ -19,4 +19,9 @@ interface NotesRepository {
         id: Long,
         done: Boolean,
     ): Int
+
+    suspend fun updateNoteDeleted(
+        id: Long,
+        deleted: Boolean,
+    ): Int
 }

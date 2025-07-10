@@ -8,6 +8,7 @@ import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
 import com.core.domain.model.TagWithNotes
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
+import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
@@ -38,6 +39,7 @@ class NotesViewModelTest {
     private lateinit var getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase
     private lateinit var createTagUseCase: CreateTagUseCase
     private lateinit var updateNoteDoneUseCase: UpdateNoteDoneUseCase
+    private lateinit var updateNoteDeletedUseCase: UpdateNoteDeletedUseCase
     private lateinit var viewModel: NotesViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -84,6 +86,7 @@ class NotesViewModelTest {
         getAllNotesWithTagUseCase = mockk()
         getAllTagsWithNotesUseCase = mockk()
         updateNoteDoneUseCase = mockk()
+        updateNoteDeletedUseCase = mockk()
         createTagUseCase = mockk()
         Dispatchers.setMain(testDispatcher)
     }
@@ -101,6 +104,7 @@ class NotesViewModelTest {
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
                     createTagUseCase = createTagUseCase,
                     updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
                 )
 
             // Assert
@@ -130,6 +134,7 @@ class NotesViewModelTest {
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
                     createTagUseCase = createTagUseCase,
                     updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
                 )
 
             // Assert
@@ -155,6 +160,7 @@ class NotesViewModelTest {
                     getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
                     createTagUseCase = createTagUseCase,
                     updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
                 )
 
             // // Act & Assert

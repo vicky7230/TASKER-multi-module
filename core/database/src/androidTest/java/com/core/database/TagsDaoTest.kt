@@ -8,6 +8,7 @@ import com.core.database.entity.NoteEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
 import com.core.database.entity.UpdateTagName
+import com.core.database.entity.toActiveNoteEntity
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -106,8 +107,8 @@ class TagsDaoTest {
 
             // Assert
             assertEquals(result.size, 2)
-            assertEquals(TagWithNotesEntity(tag = tags[0], notes = listOf(note1)), result[0])
-            assertEquals(TagWithNotesEntity(tag = tags[1], notes = listOf(note2)), result[1])
+            assertEquals(TagWithNotesEntity(tag = tags[0], notes = listOf(note1.toActiveNoteEntity())), result[0])
+            assertEquals(TagWithNotesEntity(tag = tags[1], notes = listOf(note2.toActiveNoteEntity())), result[1])
         }
 
     @Test
@@ -132,7 +133,7 @@ class TagsDaoTest {
             val result = tagsDao.getTagWithNotes(1).first()
 
             // Assert
-            assertEquals(TagWithNotesEntity(tag = tag, notes = listOf(note)), result)
+            assertEquals(TagWithNotesEntity(tag = tag, notes = listOf(note.toActiveNoteEntity())), result)
         }
 
     @Test

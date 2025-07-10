@@ -56,6 +56,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-510725634">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_5" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-261021053">
           <value>
             <AndroidTestResultsTableState>
@@ -170,6 +183,7 @@
                   <entry key="Duration" value="143" />
                   <entry key="Pixel_5" value="172" />
                   <entry key="Tests" value="412" />
+                  <entry key="vivo V2318" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -197,6 +211,7 @@
                   <entry key="Nexus_10" value="120" />
                   <entry key="Pixel_5" value="120" />
                   <entry key="Tests" value="360" />
+                  <entry key="vivo V2318" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -210,6 +225,7 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_5" value="120" />
                   <entry key="Tests" value="360" />
+                  <entry key="vivo V2318" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
