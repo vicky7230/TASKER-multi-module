@@ -7,6 +7,7 @@ import com.core.database.di.BaseApplicationTest
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
 import com.core.database.entity.TagEntity
+import com.core.database.entity.UpdateNoteDeleted
 import com.core.database.entity.UpdateNoteDone
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
@@ -204,5 +205,31 @@ class NotesDaoTest {
             // Assert
             val result = notesDao.getNoteById(note.id)
             assertEquals(true, result?.done)
+        }
+
+    @Test
+    fun updateNoteDeleted_getNoteById() =
+        runTest {
+            // Arrange
+            val tag = TagEntity(id = 1, name = "Test Tag", color = "#FFFFFF")
+            tagsDao.insertTag(tag)
+            val note =
+                NoteEntity(
+                    id = 1,
+                    content = "Test note",
+                    timestamp = 1633024800000L,
+                    tagId = 1,
+                    done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
+                )
+            notesDao.upsertNotes(listOf(note))
+
+            // Act
+            notesDao.updateNoteDeleted(UpdateNoteDeleted(note.id, true))
+
+            // Assert
+            val result = notesDao.getNoteById(note.id)
+            assertEquals(true, result?.isDeleted)
         }
 }

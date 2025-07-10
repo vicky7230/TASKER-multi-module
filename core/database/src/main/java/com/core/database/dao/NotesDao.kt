@@ -7,6 +7,7 @@ import androidx.room.Update
 import androidx.room.Upsert
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
+import com.core.database.entity.UpdateNoteDeleted
 import com.core.database.entity.UpdateNoteDone
 import kotlinx.coroutines.flow.Flow
 
@@ -26,9 +27,12 @@ interface NotesDao {
     suspend fun getNoteWithTagById(id: Long): NoteWithTagEntity?
 
     @Transaction
-    @Query("SELECT * FROM notes")
+    @Query("SELECT * FROM notes WHERE isDeleted = 0")
     fun getAllNotesWithTag(): Flow<List<NoteWithTagEntity>>
 
     @Update(entity = NoteEntity::class)
     suspend fun updateNoteDone(updateNoteDone: UpdateNoteDone): Int
+
+    @Update(entity = NoteEntity::class)
+    suspend fun updateNoteDeleted(updateNoteDeleted: UpdateNoteDeleted): Int
 }

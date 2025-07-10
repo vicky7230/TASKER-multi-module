@@ -1,5 +1,6 @@
 package com.feature.tags.data.mapper
 
+import com.core.database.entity.ActiveNoteEntity
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
@@ -10,6 +11,17 @@ import com.core.domain.model.TagWithNotes
 import kotlinx.collections.immutable.toPersistentList
 
 fun NoteEntity.toDomain(): Note =
+    Note(
+        id = id,
+        content = content,
+        timestamp = timestamp,
+        tagId = tagId,
+        done = done,
+        date = date,
+        time = time,
+    )
+
+fun ActiveNoteEntity.toDomain(): Note =
     Note(
         id = id,
         content = content,

@@ -3,6 +3,7 @@ package com.feature.notes.data.repo
 import com.core.database.NotesDb
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
+import com.core.database.entity.UpdateNoteDeleted
 import com.core.database.entity.UpdateNoteDone
 import com.core.domain.model.Note
 import com.core.domain.model.NoteWithTag
@@ -40,4 +41,9 @@ class NotesRepositoryImpl
             id: Long,
             done: Boolean,
         ) = notesDb.getNotesDao().updateNoteDone(UpdateNoteDone(id, done))
+
+        override suspend fun updateNoteDeleted(
+            id: Long,
+            deleted: Boolean,
+        ) = notesDb.getNotesDao().updateNoteDeleted(UpdateNoteDeleted(id, deleted))
     }

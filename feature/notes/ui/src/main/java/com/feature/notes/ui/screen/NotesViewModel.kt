@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.core.common.utils.TimeUtils
 import com.core.domain.model.NoteWithTag
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
+import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
@@ -32,12 +33,14 @@ class NotesViewModel
         private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
         private val createTagUseCase: CreateTagUseCase,
         private val updateNoteDoneUseCase: UpdateNoteDoneUseCase,
+        private val updateNoteDeletedUseCase: UpdateNoteDeletedUseCase,
     ) : ViewModel() {
         companion object {
             private const val TAG = "NotesViewModel"
         }
 
-        private val _notesUiState: MutableStateFlow<NotesUiState> = MutableStateFlow(NotesUiState.Loading)
+        private val _notesUiState: MutableStateFlow<NotesUiState> =
+            MutableStateFlow(NotesUiState.Loading)
         val notesUiState: StateFlow<NotesUiState> = _notesUiState.asStateFlow()
 
         init {
@@ -103,6 +106,12 @@ class NotesViewModel
         fun markNoteAsDone(noteWithTag: NoteWithTag) {
             viewModelScope.launch {
                 updateNoteDoneUseCase(id = noteWithTag.id, done = true)
+            }
+        }
+
+        fun markNoteAsDeleted(noteWithTag: NoteWithTag) {
+            viewModelScope.launch {
+                updateNoteDeletedUseCase(id = noteWithTag.id, deleted = true)
             }
         }
     }

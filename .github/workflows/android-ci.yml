@@ -70,6 +70,8 @@ jobs:
   android-test:
     name: Run Instrumented Tests
     runs-on: macos-13
+    env:
+      GRADLE_OPTS: "-Xmx4g -Dkotlin.daemon.jvm.options=-Xmx2g"
     # Optional: needs: [test]
 
     steps:
@@ -83,6 +85,9 @@ jobs:
 
       - name: Setup Gradle cache
         uses: gradle/gradle-build-action@v2
+
+      - name: Clean build
+        run: ./gradlew clean
 
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2

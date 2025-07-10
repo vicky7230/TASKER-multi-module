@@ -10,4 +10,5 @@ data class NoteWithTag(
     val tagId: Long,
     val tagName: String,
     val tagColor: String,
+    val optionRevealed: Boolean = false,
 )
