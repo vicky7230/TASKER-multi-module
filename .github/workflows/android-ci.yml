@@ -48,12 +48,13 @@ jobs:
         run: ./gradlew detekt
 
   test:
-    name: Run Unit Tests
+    name: Run Unit Tests (dev flavor)
     runs-on: ubuntu-latest
     # Optional: needs: [ktlint, detekt]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -65,17 +66,18 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDevDebugUnitTest
 
   android-test:
-    name: Run Instrumented Tests
+    name: Run Instrumented Tests (dev flavor)
     runs-on: macos-13
     env:
       GRADLE_OPTS: "-Xmx4g -Dkotlin.daemon.jvm.options=-Xmx2g"
     # Optional: needs: [test]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -89,7 +91,7 @@ jobs:
       - name: Clean build
         run: ./gradlew clean
 
-      - name: Run Instrumented Tests
+      - name: Run Instrumented Tests (devDebug)
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30

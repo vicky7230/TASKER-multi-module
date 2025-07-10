@@ -98,6 +98,20 @@ android {
             // Uses default debug keystore
         }
     }
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("prod") {
+            dimension = "environment"
+            applicationIdSuffix = null
+            versionNameSuffix = null
+        }
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17

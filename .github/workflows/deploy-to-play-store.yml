@@ -40,7 +40,7 @@ jobs:
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
 
       - name: Build Android App Bundle (AAB)
-        run: ./gradlew bundleRelease
+        run: ./gradlew bundleProdRelease
         # Pass signing credentials as environment variables to Gradle.
         # Gradle's System.getenv() will pick these up.
         env:
@@ -50,7 +50,7 @@ jobs:
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
 
       - name: Check if AAB exists
-        run: test -f app/build/outputs/bundle/release/app-release.aab
+        run: test -f app/build/outputs/bundle/release/app-prod-release.aab
 
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1

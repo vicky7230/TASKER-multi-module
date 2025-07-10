@@ -2,13 +2,13 @@
 
 echo "🧪 Running unit tests before push..."
 
-./gradlew testDebugUnitTest
+./gradlew testDevDebugUnitTest
 
 UNIT_TEST_STATUS=$?
 
 echo "📱 Running instrumented (Android) tests before push..."
 
-./gradlew connectedDebugAndroidTest
+./gradlew connectedDevDebugAndroidTest
 
 ANDROID_TEST_STATUS=$?
 
