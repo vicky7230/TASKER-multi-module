@@ -76,7 +76,7 @@ subprojects {
             buildTypes {
                 getByName("debug") {
                     enableUnitTestCoverage = true
-                    enableAndroidTestCoverage = true
+                    enableAndroidTestCoverage = project.hasProperty("withAndroidCoverage")
                 }
             }
         }
@@ -87,7 +87,7 @@ subprojects {
             buildTypes {
                 getByName("debug") {
                     enableUnitTestCoverage = true
-                    enableAndroidTestCoverage = true
+                    enableAndroidTestCoverage = project.hasProperty("withAndroidCoverage")
                 }
             }
         }
@@ -377,7 +377,9 @@ tasks.register<JacocoReport>("jacocoFullCoverageReportAllModules") {
 }
 
 // =============================
-// Run-All Test + Report Task : ./gradlew runAllCoverageAndReport
+// Run-All Test + Report Task :
+// For Faster, Unit Test-Only Coverage: ./gradlew runAllCoverageAndReport
+// For Full Coverage unit + androidTest: ./gradlew runAllCoverageAndReport -PwithAndroidCoverage
 // =============================
 tasks.register("runAllCoverageAndReport") {
     group = "Verification"
