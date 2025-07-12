@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.core.domain.model.Note
 import com.core.domain.model.TagWithNotes
+import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
 import com.feature.tags.domain.usecase.UpdateTagNameUseCase
@@ -33,6 +34,7 @@ class TagsViewModelTest {
     private lateinit var getTagWithNotesUseCase: GetTagWithNotesUseCase
     private lateinit var updateTagNameUseCase: UpdateTagNameUseCase
     private lateinit var updateNoteDoneUseCase: UpdateNoteDoneUseCase
+    private lateinit var updateNoteDeletedUseCase: UpdateNoteDeletedUseCase
     private lateinit var tagsViewModel: TagsViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -70,6 +72,7 @@ class TagsViewModelTest {
         getTagWithNotesUseCase = mockk()
         updateTagNameUseCase = mockk()
         updateNoteDoneUseCase = mockk()
+        updateNoteDeletedUseCase = mockk()
     }
 
     @Test
@@ -84,8 +87,9 @@ class TagsViewModelTest {
                 TagsViewModel(
                     savedStateHandle = savedStateHandle,
                     getTagWithNotesUseCase = getTagWithNotesUseCase,
-                    updateTagNameUseCase = updateTagNameUseCase,
-                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateTagNameUseCase = { updateTagNameUseCase },
+                    updateNoteDoneUseCase = { updateNoteDoneUseCase },
+                    updateNoteDeletedUseCase = { updateNoteDeletedUseCase },
                 )
 
             // Assert
@@ -109,8 +113,9 @@ class TagsViewModelTest {
                 TagsViewModel(
                     savedStateHandle = savedStateHandle,
                     getTagWithNotesUseCase = getTagWithNotesUseCase,
-                    updateTagNameUseCase = updateTagNameUseCase,
-                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateTagNameUseCase = { updateTagNameUseCase },
+                    updateNoteDoneUseCase = { updateNoteDoneUseCase },
+                    updateNoteDeletedUseCase = { updateNoteDeletedUseCase },
                 )
 
             // Assert
@@ -133,8 +138,9 @@ class TagsViewModelTest {
                 TagsViewModel(
                     savedStateHandle = savedStateHandle,
                     getTagWithNotesUseCase = getTagWithNotesUseCase,
-                    updateTagNameUseCase = updateTagNameUseCase,
-                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateTagNameUseCase = { updateTagNameUseCase },
+                    updateNoteDoneUseCase = { updateNoteDoneUseCase },
+                    updateNoteDeletedUseCase = { updateNoteDeletedUseCase },
                 )
 
             // Act & Assert
@@ -161,8 +167,9 @@ class TagsViewModelTest {
                 TagsViewModel(
                     savedStateHandle = savedStateHandle,
                     getTagWithNotesUseCase = getTagWithNotesUseCase,
-                    updateTagNameUseCase = updateTagNameUseCase,
-                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateTagNameUseCase = { updateTagNameUseCase },
+                    updateNoteDoneUseCase = { updateNoteDoneUseCase },
+                    updateNoteDeletedUseCase = { updateNoteDeletedUseCase },
                 )
 
             // Assert
@@ -185,7 +192,7 @@ class TagsViewModelTest {
         }
 
     @Test
-    fun markNoteAsDone_shouldMarkANoteAsDone() =
+    fun markNoteAsDone_shouldMarkNoteAsDone() =
         runTest {
             // Arrange
             val note =
@@ -207,8 +214,9 @@ class TagsViewModelTest {
                 TagsViewModel(
                     savedStateHandle = savedStateHandle,
                     getTagWithNotesUseCase = getTagWithNotesUseCase,
-                    updateTagNameUseCase = updateTagNameUseCase,
-                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateTagNameUseCase = { updateTagNameUseCase },
+                    updateNoteDoneUseCase = { updateNoteDoneUseCase },
+                    updateNoteDeletedUseCase = { updateNoteDeletedUseCase },
                 )
 
             // Assert
@@ -219,6 +227,46 @@ class TagsViewModelTest {
                 tagsViewModel.markNoteAsDone(note = note)
                 advanceUntilIdle()
                 coVerify { updateNoteDoneUseCase(note.id, true) }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun markNoteAsDeleted_shouldMarkNoteAsDeleted() =
+        runTest {
+            // Arrange
+            val note =
+                Note(
+                    id = 1L,
+                    content = "Test note 1",
+                    timestamp = 123456789,
+                    tagId = 1L,
+                    done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
+                )
+            every { getTagWithNotesUseCase(any()) } returns flowOf(tagWithNotes)
+            savedStateHandle = SavedStateHandle(mapOf("tagId" to 1L))
+            coEvery { updateNoteDeletedUseCase(any(), any()) } returns 1
+
+            // Act
+            tagsViewModel =
+                TagsViewModel(
+                    savedStateHandle = savedStateHandle,
+                    getTagWithNotesUseCase = getTagWithNotesUseCase,
+                    updateTagNameUseCase = { updateTagNameUseCase },
+                    updateNoteDoneUseCase = { updateNoteDoneUseCase },
+                    updateNoteDeletedUseCase = { updateNoteDeletedUseCase },
+                )
+
+            // Assert
+            tagsViewModel.tagsUiState.test {
+                assertEquals(TagsUiState.Idle, awaitItem())
+                assertEquals(TagsUiState.Loading, awaitItem())
+                assertEquals(TagsUiState.TagLoaded(tagWithNotes), awaitItem())
+                tagsViewModel.markNoteAsDeleted(note = note)
+                advanceUntilIdle()
+                coVerify { updateNoteDeletedUseCase(note.id, true) }
                 cancelAndIgnoreRemainingEvents()
             }
         }

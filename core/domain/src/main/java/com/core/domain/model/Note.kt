@@ -8,4 +8,5 @@ data class Note(
     val done: Boolean,
     val date: String,
     val time: String,
+    val optionRevealed: Boolean = false,
 )

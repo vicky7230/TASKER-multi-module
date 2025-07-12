@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,14 +19,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.core.common.theme.LightGray
+import com.core.common.theme.Red
 import com.core.common.theme.TaskerTheme
+import com.core.common.ui.ActionIcon
+import com.core.common.ui.SwipeableItemWithActions
 import com.core.common.utils.toColorSafely
 import com.core.domain.model.Note
 import com.core.domain.model.TagWithNotes
@@ -39,6 +45,7 @@ fun TagContent(
     onNoteClick: (Note) -> Unit,
     onEditTagClick: (TagWithNotes) -> Unit,
     onNoteDoneClick: (Note) -> Unit,
+    onNoteDeleteClick: (Note) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -96,12 +103,27 @@ fun TagContent(
                         .fillMaxSize(),
             ) {
                 items(tagsUiState.tag.notes, key = { it.id }) { note ->
-                    TagNoteItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        note = note,
-                        onNoteClick = onNoteClick,
-                        onNoteDoneClick = onNoteDoneClick,
-                    )
+
+                    SwipeableItemWithActions(
+                        modifier = Modifier.animateItem(),
+                        isRevealed = note.optionRevealed,
+                        actions = {
+                            ActionIcon(
+                                onClick = { onNoteDeleteClick(note) },
+                                backgroundColor = Red,
+                                icon = ImageVector.vectorResource(id = com.core.common.R.drawable.ic_delete),
+                                modifier = Modifier.fillMaxHeight(),
+                                contentDescription = "Delete Icon",
+                            )
+                        },
+                    ) {
+                        TagNoteItem(
+                            modifier = Modifier.fillMaxWidth().background(tagsUiState.tag.color.toColorSafely()),
+                            note = note,
+                            onNoteClick = onNoteClick,
+                            onNoteDoneClick = onNoteDoneClick,
+                        )
+                    }
                     HorizontalDivider(
                         modifier = Modifier.padding(start = 60.dp),
                         color = Color.White,
@@ -119,10 +141,15 @@ private fun TagContentPreview() {
     TaskerTheme {
         TagContent(
             modifier = Modifier.fillMaxSize(),
-            tagsUiState = TagsUiState.TagLoaded(tag = tagWithNotes, tagsUiBottomSheet = TagsUiBottomSheet.None),
+            tagsUiState =
+                TagsUiState.TagLoaded(
+                    tag = tagWithNotes,
+                    tagsUiBottomSheet = TagsUiBottomSheet.None,
+                ),
             onEditTagClick = {},
             onNoteClick = {},
             onNoteDoneClick = {},
+            onNoteDeleteClick = {},
         )
     }
 }

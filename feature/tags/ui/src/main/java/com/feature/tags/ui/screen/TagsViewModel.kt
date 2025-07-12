@@ -9,9 +9,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.core.common.navigation.TagScreen
 import com.core.domain.model.Note
+import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
 import com.feature.tags.domain.usecase.UpdateTagNameUseCase
+import dagger.Lazy
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -26,8 +28,9 @@ class TagsViewModel
     constructor(
         @Assisted private val savedStateHandle: SavedStateHandle,
         private val getTagWithNotesUseCase: GetTagWithNotesUseCase,
-        private val updateTagNameUseCase: UpdateTagNameUseCase,
-        private val updateNoteDoneUseCase: UpdateNoteDoneUseCase,
+        private val updateTagNameUseCase: Lazy<UpdateTagNameUseCase>,
+        private val updateNoteDoneUseCase: Lazy<UpdateNoteDoneUseCase>,
+        private val updateNoteDeletedUseCase: Lazy<UpdateNoteDeletedUseCase>,
     ) : ViewModel() {
         companion object {
             private val TAG = TagsViewModel::class.simpleName
@@ -65,7 +68,7 @@ class TagsViewModel
             @Suppress("TooGenericExceptionCaught")
             viewModelScope.launch {
                 try {
-                    updateTagNameUseCase(tagId = tagId, newName = newName)
+                    updateTagNameUseCase.get()(tagId = tagId, newName = newName)
                 } catch (ex: Exception) {
                     Log.e(TAG, "Error updating tag name: ${ex.message}", ex)
                 }
@@ -84,7 +87,13 @@ class TagsViewModel
 
         fun markNoteAsDone(note: Note) {
             viewModelScope.launch {
-                updateNoteDoneUseCase(id = note.id, done = true)
+                updateNoteDoneUseCase.get()(id = note.id, done = true)
+            }
+        }
+
+        fun markNoteAsDeleted(note: Note) {
+            viewModelScope.launch {
+                updateNoteDeletedUseCase.get()(id = note.id, deleted = true)
             }
         }
     }
