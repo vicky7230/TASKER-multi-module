@@ -57,7 +57,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_KEY }}
           packageName: com.vicky7230.tasker2 # <<-- IMPORTANT: Replace with your actual app's package name
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab # <<-- IMPORTANT: Verify this path for your AAB
+          releaseFiles: app/build/outputs/bundle/release/app-prod-release.aab # <<-- IMPORTANT: Verify this path for your AAB
           track: production # Options: 'production', 'beta', 'alpha', 'internal', 'internalsharing'
           status: completed # Options: 'completed', 'draft', 'inProgress', 'halted'
           # Optional parameters:
