@@ -1,4 +1,4 @@
-name: CodiumAI PR-Agent
+name: AI Pr Review
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   pr_agent_job:
+    name: Review Pr
     if: ${{ github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
     permissions:
