@@ -18,8 +18,8 @@ android {
         applicationId = "com.vicky7230.tasker2"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.1.1" // Semantic Versioning (Major.Minor.Patch)
+        versionCode = 4
+        versionName = "0.1.2" // Semantic Versioning (Major.Minor.Patch)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
