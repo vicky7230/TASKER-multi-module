@@ -25,6 +25,7 @@ fun TagScreenUi(
     onSaveTagNameClick: (Long, String) -> Unit,
     onNoteClick: (Note) -> Unit,
     onNoteDoneClick: (Note) -> Unit,
+    onNoteDeleteClick: (Note) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state = tagsUiState
@@ -62,6 +63,7 @@ fun TagScreenUi(
                         onNoteClick = onNoteClick,
                         onEditTagClick = onEditTagClick,
                         onNoteDoneClick = onNoteDoneClick,
+                        onNoteDeleteClick = onNoteDeleteClick,
                     )
 
                     if (state.tagsUiBottomSheet is TagsUiBottomSheet.RenameTagBottomSheet) {
@@ -93,6 +95,7 @@ private fun TagScreenPreview(
             hideEditTagBottomSheet = {},
             onNoteClick = {},
             onNoteDoneClick = {},
+            onNoteDeleteClick = {},
         )
     }
 }

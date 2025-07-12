@@ -76,6 +76,7 @@ internal class InternalTagsFeatureApi
                             navHostController.navigate(AddEditNoteScreen(noteId = note.id))
                         },
                         onNoteDoneClick = tagsViewModel::markNoteAsDone,
+                        onNoteDeleteClick = tagsViewModel::markNoteAsDeleted,
                     )
                 }
             }
