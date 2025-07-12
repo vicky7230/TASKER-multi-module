@@ -184,6 +184,45 @@ class TagsViewModelTest {
             }
         }
 
+    @Test
+    fun markNoteAsDone_shouldMarkANoteAsDone() =
+        runTest {
+            // Arrange
+            val note =
+                Note(
+                    id = 1L,
+                    content = "Test note 1",
+                    timestamp = 123456789,
+                    tagId = 1L,
+                    done = false,
+                    date = "2025-06-25",
+                    time = "00:00:00",
+                )
+            every { getTagWithNotesUseCase(any()) } returns flowOf(tagWithNotes)
+            savedStateHandle = SavedStateHandle(mapOf("tagId" to 1L))
+            coEvery { updateNoteDoneUseCase(any(), any()) } returns 1
+
+            // Act
+            tagsViewModel =
+                TagsViewModel(
+                    savedStateHandle = savedStateHandle,
+                    getTagWithNotesUseCase = getTagWithNotesUseCase,
+                    updateTagNameUseCase = updateTagNameUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                )
+
+            // Assert
+            tagsViewModel.tagsUiState.test {
+                assertEquals(TagsUiState.Idle, awaitItem())
+                assertEquals(TagsUiState.Loading, awaitItem())
+                assertEquals(TagsUiState.TagLoaded(tagWithNotes), awaitItem())
+                tagsViewModel.markNoteAsDone(note = note)
+                advanceUntilIdle()
+                coVerify { updateNoteDoneUseCase(note.id, true) }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
     @After
     fun tearDown() {
         Dispatchers.resetMain()
