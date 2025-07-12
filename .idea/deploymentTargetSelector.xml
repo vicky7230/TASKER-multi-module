@@ -13,7 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="NotedDbMigrationTest">
+      <SelectionState runConfigName="markNoteAsDone_should_mark_A_note_As_done()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
