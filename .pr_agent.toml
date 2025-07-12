@@ -2,4 +2,7 @@
 model="openrouter/qwen/qwen-2.5-coder-32b-instruct:free"
 custom_model_max_tokens=9000
 [github_action_config]
+auto_review = true
+auto_describe = true
+auto_improve = true
 pr_actions = ['opened', 'reopened', 'ready_for_review', 'review_requested', 'synchronize']

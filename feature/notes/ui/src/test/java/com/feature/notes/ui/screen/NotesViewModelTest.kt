@@ -12,6 +12,8 @@ import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -24,6 +26,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -207,6 +210,123 @@ class NotesViewModelTest {
                     true,
                     (state as NotesUiState.NotesLoaded).fabExpanded,
                 )
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `createTag should create a new tag`() =
+        runTest {
+            // Arrange
+            val newTagName = "New Test Tag"
+            val newTagColor = Color.Blue.toHexString()
+            val expectedNewTagId = 1L
+
+            every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
+            every { getAllTagsWithNotesUseCase() } returns flowOf(fakeTags)
+            coEvery { createTagUseCase(any(), any()) } returns expectedNewTagId
+
+            viewModel =
+                NotesViewModel(
+                    getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
+                    getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
+                )
+
+            // Act & Assert
+            viewModel.notesUiState.test {
+                assertEquals(NotesUiState.Loading, awaitItem())
+                val loadedState = awaitItem()
+                assertTrue(loadedState is NotesUiState.NotesLoaded)
+                viewModel.createTag(newTagName, newTagColor)
+                advanceUntilIdle()
+                coVerify { createTagUseCase(newTagName, newTagColor) }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `markNoteAsDone should mark a note as done`() =
+        runTest {
+            // Arrange
+            val noteWithTag =
+                NoteWithTag(
+                    id = 1,
+                    content = "Note 1",
+                    timestamp = timesStamp,
+                    tagId = 1,
+                    done = false,
+                    tagName = "Tag 1",
+                    tagColor = "#FFFFFF",
+                    date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                    time = "00:00:00",
+                )
+
+            every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
+            every { getAllTagsWithNotesUseCase() } returns flowOf(fakeTags)
+            coEvery { updateNoteDoneUseCase(any(), any()) } returns 1
+
+            viewModel =
+                NotesViewModel(
+                    getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
+                    getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
+                )
+
+            // Act & Assert
+            viewModel.notesUiState.test {
+                assertEquals(NotesUiState.Loading, awaitItem())
+                val loadedState = awaitItem()
+                assertTrue(loadedState is NotesUiState.NotesLoaded)
+                viewModel.markNoteAsDone(noteWithTag)
+                advanceUntilIdle()
+                coVerify { updateNoteDoneUseCase(noteWithTag.id, true) }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `markNoteAsDeleted should mark a note as deleted`() =
+        runTest {
+            // Arrange
+            val noteWithTag =
+                NoteWithTag(
+                    id = 1,
+                    content = "Note 1",
+                    timestamp = timesStamp,
+                    tagId = 1,
+                    done = false,
+                    tagName = "Tag 1",
+                    tagColor = "#FFFFFF",
+                    date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                    time = "00:00:00",
+                )
+
+            every { getAllNotesWithTagUseCase() } returns flowOf(fakeNotes)
+            every { getAllTagsWithNotesUseCase() } returns flowOf(fakeTags)
+            coEvery { updateNoteDeletedUseCase(any(), any()) } returns 1
+
+            viewModel =
+                NotesViewModel(
+                    getAllNotesWithTagUseCase = getAllNotesWithTagUseCase,
+                    getAllTagsWithNotesUseCase = getAllTagsWithNotesUseCase,
+                    createTagUseCase = createTagUseCase,
+                    updateNoteDoneUseCase = updateNoteDoneUseCase,
+                    updateNoteDeletedUseCase = updateNoteDeletedUseCase,
+                )
+
+            // Act & Assert
+            viewModel.notesUiState.test {
+                assertEquals(NotesUiState.Loading, awaitItem())
+                val loadedState = awaitItem()
+                assertTrue(loadedState is NotesUiState.NotesLoaded)
+                viewModel.markNoteAsDeleted(noteWithTag)
+                advanceUntilIdle()
+                coVerify { updateNoteDeletedUseCase(noteWithTag.id, true) }
                 cancelAndIgnoreRemainingEvents()
             }
         }
