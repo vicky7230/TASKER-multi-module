@@ -8,14 +8,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.core.common.navigation.AddEditNoteScreen
+import com.core.common.navigation.Dest
 import com.core.domain.model.NoteWithTag
 import com.core.domain.usecase.GetAllTagsWithNotesUseCase
 import com.feature.add_edit_note.domain.usecase.GetNoteWithTagByIdUseCase
 import com.feature.add_edit_note.domain.usecase.UpsertNotesUseCase
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,22 +26,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 private const val TAG = "NoteContent"
 
+@HiltViewModel
 class AddEditNoteViewModel
-    @AssistedInject
+    @Inject
     constructor(
-        @Assisted private val savedStateHandle: SavedStateHandle,
+        private val savedStateHandle: SavedStateHandle,
         private val getNoteWithTagByIdUseCase: GetNoteWithTagByIdUseCase,
         private val upsertNotesUseCase: UpsertNotesUseCase,
         private val getAllTagsWithNotesUseCase: GetAllTagsWithNotesUseCase,
     ) : ViewModel() {
-        @AssistedFactory
-        interface Factory {
-            fun create(savedStateHandle: SavedStateHandle): AddEditNoteViewModel
-        }
-
         private val _addEditeNoteUiState: MutableStateFlow<AddEditNoteUiState> =
             MutableStateFlow(AddEditNoteUiState.Idle)
         val addEditeNoteUiState: StateFlow<AddEditNoteUiState> =
@@ -55,7 +50,7 @@ class AddEditNoteViewModel
         private var currentNote: NoteWithTag? = null
 
         init {
-            val addEditNoteScreen = savedStateHandle.toRoute<AddEditNoteScreen>()
+            val addEditNoteScreen = savedStateHandle.toRoute<Dest.AddEditNote>()
             getNoteAndTags(addEditNoteScreen.noteId)
         }
 

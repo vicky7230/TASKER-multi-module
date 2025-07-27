@@ -1,32 +1,33 @@
 package com.core.database
 
-import androidx.test.core.app.ApplicationProvider
 import com.core.database.dao.NotesDao
 import com.core.database.dao.TagsDao
-import com.core.database.di.BaseApplicationTest
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.TagWithNotesEntity
 import com.core.database.entity.UpdateTagName
 import com.core.database.entity.toActiveNoteEntity
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class TagsDaoTest {
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
     private lateinit var notesDb: NotesDb
     private lateinit var tagsDao: TagsDao
     private lateinit var notesDao: NotesDao
 
     @Before
     fun setUp() {
-        val appContext = ApplicationProvider.getApplicationContext<BaseApplicationTest>()
-        notesDb = appContext.applicationComponentTest.notesDb()
-        tagsDao = notesDb.getTagsDao()
-        notesDao = notesDb.getNotesDao()
+        hiltRule.inject()
     }
 
     @After
@@ -107,8 +108,20 @@ class TagsDaoTest {
 
             // Assert
             assertEquals(result.size, 2)
-            assertEquals(TagWithNotesEntity(tag = tags[0], notes = listOf(note1.toActiveNoteEntity())), result[0])
-            assertEquals(TagWithNotesEntity(tag = tags[1], notes = listOf(note2.toActiveNoteEntity())), result[1])
+            assertEquals(
+                TagWithNotesEntity(
+                    tag = tags[0],
+                    notes = listOf(note1.toActiveNoteEntity()),
+                ),
+                result[0],
+            )
+            assertEquals(
+                TagWithNotesEntity(
+                    tag = tags[1],
+                    notes = listOf(note2.toActiveNoteEntity()),
+                ),
+                result[1],
+            )
         }
 
     @Test
@@ -133,7 +146,10 @@ class TagsDaoTest {
             val result = tagsDao.getTagWithNotes(1).first()
 
             // Assert
-            assertEquals(TagWithNotesEntity(tag = tag, notes = listOf(note.toActiveNoteEntity())), result)
+            assertEquals(
+                TagWithNotesEntity(tag = tag, notes = listOf(note.toActiveNoteEntity())),
+                result,
+            )
         }
 
     @Test

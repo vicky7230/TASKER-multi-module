@@ -1,33 +1,34 @@
 package com.core.database
 
-import androidx.test.core.app.ApplicationProvider
 import com.core.database.dao.NotesDao
 import com.core.database.dao.TagsDao
-import com.core.database.di.BaseApplicationTest
 import com.core.database.entity.NoteEntity
 import com.core.database.entity.NoteWithTagEntity
 import com.core.database.entity.TagEntity
 import com.core.database.entity.UpdateNoteDeleted
 import com.core.database.entity.UpdateNoteDone
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class NotesDaoTest {
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
     private lateinit var notesDb: NotesDb
     private lateinit var notesDao: NotesDao
     private lateinit var tagsDao: TagsDao
 
     @Before
     fun setUp() {
-        val appContext = ApplicationProvider.getApplicationContext<BaseApplicationTest>()
-        notesDb = appContext.applicationComponentTest.notesDb()
-        notesDao = notesDb.getNotesDao()
-        tagsDao = notesDb.getTagsDao()
+        hiltRule.inject()
     }
 
     @After

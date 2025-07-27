@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("plugin.serialization") version "2.0.21"
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -67,4 +67,7 @@ dependencies {
 
     // Immutable persistent collections for Kotlin
     implementation(libs.kotlinx.collections.immutable)
+
+    // navigation compose
+    implementation(libs.androidx.navigation.compose)
 }

@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
     kotlin("kapt")
-    id("com.google.devtools.ksp")
-    id("androidx.room")
 }
 
 android {
@@ -13,8 +13,7 @@ android {
     defaultConfig {
         minSdk = 24
 
-        // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner = "com.core.database.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -47,9 +46,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // dagger2
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    // dagger hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.56.2")
+    // ...with Kotlin.
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.56.2")
 
     // room
     implementation(libs.androidx.room.runtime)

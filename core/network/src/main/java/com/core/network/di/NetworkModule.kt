@@ -6,6 +6,8 @@ import com.core.network.ApiService
 import com.core.network.utils.Constants
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -15,6 +17,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
     @Singleton

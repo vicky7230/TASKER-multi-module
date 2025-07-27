@@ -10,15 +10,21 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.core.database.NotesDb
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
 class DatabaseModule {
     @Singleton
     @Provides
-    fun provideProductsDb(context: Context): NotesDb =
+    fun provideProductsDb(
+        @ApplicationContext context: Context,
+    ): NotesDb =
         Room
             .databaseBuilder(context, NotesDb::class.java, "NotesDb")
             .addCallback(

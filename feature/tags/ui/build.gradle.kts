@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -50,8 +51,6 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:feature_api"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
 
@@ -74,9 +73,10 @@ dependencies {
     // navigation compose
     implementation(libs.androidx.navigation.compose)
 
-    // dagger2
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    // dagger hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)

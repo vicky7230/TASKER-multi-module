@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -45,8 +46,7 @@ dependencies {
     // Immutable persistent collections for Kotlin
     implementation(libs.kotlinx.collections.immutable)
 
-    // dagger2
-    implementation(libs.dagger)
-
-    kapt(libs.dagger.compiler)
+    // dagger hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
 }

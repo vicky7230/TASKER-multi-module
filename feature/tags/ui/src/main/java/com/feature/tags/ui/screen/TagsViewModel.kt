@@ -7,26 +7,26 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.core.common.navigation.TagScreen
+import com.core.common.navigation.Dest
 import com.core.domain.model.Note
 import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.tags.domain.usecase.GetTagWithNotesUseCase
 import com.feature.tags.domain.usecase.UpdateTagNameUseCase
 import dagger.Lazy
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
 class TagsViewModel
-    @AssistedInject
+    @Inject
     constructor(
-        @Assisted private val savedStateHandle: SavedStateHandle,
+        private val savedStateHandle: SavedStateHandle,
         private val getTagWithNotesUseCase: GetTagWithNotesUseCase,
         private val updateTagNameUseCase: Lazy<UpdateTagNameUseCase>,
         private val updateNoteDoneUseCase: Lazy<UpdateNoteDoneUseCase>,
@@ -36,16 +36,11 @@ class TagsViewModel
             private val TAG = TagsViewModel::class.simpleName
         }
 
-        @AssistedFactory
-        interface Factory {
-            fun create(savedStateHandle: SavedStateHandle): TagsViewModel
-        }
-
         private val _tagsUiState: MutableStateFlow<TagsUiState> = MutableStateFlow(TagsUiState.Idle)
         val tagsUiState: StateFlow<TagsUiState> = _tagsUiState.asStateFlow()
 
         init {
-            val tagsScreen = savedStateHandle.toRoute<TagScreen>()
+            val tagsScreen = savedStateHandle.toRoute<Dest.Tags>()
             viewModelScope.launch {
                 _tagsUiState.value = TagsUiState.Loading
                 @Suppress("TooGenericExceptionCaught")

@@ -18,23 +18,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.core.common.navigation.SubGraph
 import com.core.common.theme.TaskerTheme
-import com.vicky7230.tasker2.navigation.AppNavGraph
-import com.vicky7230.tasker2.navigation.NavigationProvider
+import com.vicky7230.tasker2.navigation.DefaultNavigator
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var navigationProvider: NavigationProvider
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var defaultNavigator: DefaultNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as BaseApplication).applicationComponent.inject(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -51,7 +49,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 val navController = rememberNavController()
-                App(navHostController = navController, navigationProvider = navigationProvider, viewModelFactory = viewModelFactory)
+                App(navHostController = navController, defaultNavigator = defaultNavigator)
             }
         }
     }
@@ -60,8 +58,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App(
     navHostController: NavHostController,
-    navigationProvider: NavigationProvider,
-    viewModelFactory: ViewModelProvider.Factory,
+    defaultNavigator: DefaultNavigator,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -72,10 +69,19 @@ fun App(
                 .windowInsetsPadding(WindowInsets.navigationBars),
         color = MaterialTheme.colorScheme.background,
     ) {
-        AppNavGraph(
-            navController = navHostController,
-            navigationProvider = navigationProvider,
-            viewModelFactory = viewModelFactory,
-        )
+        NavHost(navController = navHostController, startDestination = SubGraph.Notes) {
+            defaultNavigator.notesFeature.registerGraph(
+                navHostController = navHostController,
+                navGraphBuilder = this,
+            )
+            defaultNavigator.addEditNoteFeature.registerGraph(
+                navHostController = navHostController,
+                navGraphBuilder = this,
+            )
+            defaultNavigator.tagsFeature.registerGraph(
+                navHostController = navHostController,
+                navGraphBuilder = this,
+            )
+        }
     }
 }
