@@ -24,13 +24,14 @@ retrofit = "2.11.0"
 kotlinxSerializationJson = "1.8.1"
 loggingInterceptor = "4.12.0"
 converterKotlinxSerialization = "2.11.0"
-dagger = "2.56.2"
 roomRuntime = "2.7.2"
 turbine = "1.2.0"
 calendar = "2.7.0"
 ktlint = "12.3.0"
 detekt = "1.23.8"
 ksp = "2.0.21-1.0.27"
+hilt = "2.57"
+hiltNavigationCompose = "1.2.0"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
@@ -67,10 +68,11 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "converterKotlinxSerialization" }
-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-kizitonwose-calendar-compose = {module = "com.kizitonwose.calendar:compose", version.ref = "calendar"}
+kizitonwose-calendar-compose = { module = "com.kizitonwose.calendar:compose", version.ref = "calendar" }
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -81,3 +83,5 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "roomRuntime" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -5,9 +5,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
-    kotlin("plugin.serialization") version "2.0.21"
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -131,7 +131,6 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
-    implementation(project(":core:feature_api"))
 
     implementation(project(":feature:notes:data"))
     implementation(project(":feature:notes:domain"))
@@ -160,9 +159,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // dagger2
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    // dagger-hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
 
     // navigation compose
     implementation(libs.androidx.navigation.compose)

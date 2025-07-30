@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -54,9 +54,9 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
 
-    // dagger2
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    // dagger hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
 
     // Immutable persistent collections for Kotlin
     implementation(libs.kotlinx.collections.immutable)

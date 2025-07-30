@@ -14,6 +14,7 @@ import com.core.domain.usecase.UpdateNoteDeletedUseCase
 import com.core.domain.usecase.UpdateNoteDoneUseCase
 import com.feature.notes.domain.usecase.CreateTagUseCase
 import com.feature.notes.domain.usecase.GetAllNotesWithTagUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
 
+@HiltViewModel
 class NotesViewModel
     @Inject
     constructor(

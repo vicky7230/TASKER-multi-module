@@ -1,13 +1,11 @@
-package com.core.feature_api
+package com.core.common.navigation
 
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 
-interface FeatureApi {
+interface Feature {
     fun registerGraph(
         navHostController: NavHostController,
         navGraphBuilder: NavGraphBuilder,
-        viewModelFactory: ViewModelProvider.Factory,
     )
 }
